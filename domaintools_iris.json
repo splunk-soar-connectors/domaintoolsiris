@@ -1,0 +1,1077 @@
+{
+  "appid":"f18b7ef9-0cbd-4dbb-b8ed-ce62e17f0603",
+  "name":"DomainTools Iris",
+  "description":"Use the DomainTools Iris Investigate API to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more",
+  "publisher":"DomainTools",
+  "package_name":"phantom_domaintools_iris",
+  "type":"information",
+  "license":"Copyright (c) Phantom Corporation 2016-2018",
+  "main_module":"domaintools_iris_connector.pyc",
+  "app_version":"1.0.1",
+  "utctime_updated":"2018-09-15T22:42:45.000000Z",
+  "product_vendor":"DomainTools",
+  "product_name":"DomainTools Iris",
+  "product_version_regex":".*",
+  "min_phantom_version":"3.0.247",
+  "logo":"DT-iris-logo.svg",
+  "logo_dark":"DT-iris-white-logo.svg",
+  "configuration":{
+     "username":{
+        "description":"User Name",
+        "data_type":"string",
+        "required":true,
+        "order":0
+     },
+     "key":{
+        "description":"API Key",
+        "data_type":"password",
+        "required":true,
+        "order":1
+     },
+     "ssl":{
+        "description":"Use SSL",
+        "data_type":"boolean",
+        "default":true,
+        "order":2
+     }
+  },
+  "actions":[
+      {
+        "action": "test connectivity",
+        "description": "Validate the asset configuration for connectivity",
+        "type": "test",
+        "identifier": "test_asset_connectivity",
+        "read_only": true,
+        "parameters": {},
+        "output": [],
+        "versions": "EQ(*)"
+    },
+     {
+        "action":"domain reputation",
+        "description":"Evaluates the risk of a given domain",
+        "verbose":"",
+        "type":"investigate",
+        "identifier":"domain_reputation",
+        "read_only":true,
+        "parameters":{
+           "domain":{
+              "description":"Domain to query",
+              "data_type":"string",
+              "contains":[
+                 "url",
+                 "domain"
+              ],
+              "required":true,
+              "primary":true
+           }
+        },
+        "render":{
+           "width":12,
+           "title":"Domain Reputation",
+           "type":"custom",
+           "height":10,
+           "view":"iris_view.display_risk_score"
+        },
+        "output":[
+           {
+              "data_path":"action_result.status",
+              "data_type":"string"
+           },
+           {
+              "data_path":"action_result.parameter.domain",
+              "data_type":"string",
+              "contains":[
+                 "url",
+                 "domain"
+              ]
+           },
+           {
+              "data_path":"action_result.summary.domain_risk",
+              "data_type":"numeric"
+           },
+           {
+            "data_path":"action_result.summary.is_whitelist",
+            "data_type":"boolean"
+          },
+          {
+            "data_path":"action_result.summary.proximity",
+            "data_type":"numeric"
+          },
+          {
+            "data_path":"action_result.summary.threat_profile",
+            "data_type":"numeric"
+         },
+         {
+          "data_path":"action_result.summary.threat_profile_malware",
+          "data_type":"numeric"
+        },
+        {
+          "data_path":"action_result.summary.threat_profile_spam",
+          "data_type":"numeric"
+        },
+        {
+          "data_path":"action_result.summary.threat_profile_phishing",
+          "data_type":"numeric"
+        }
+        ],
+        "versions":"EQ(*)"
+     },
+     {
+        "action":"pivot",
+        "description":"Find domains connected by any supported Iris search parameter",
+        "verbose":"",
+        "type":"investigate",
+        "identifier":"pivot_action",
+        "read_only":true,
+        "parameters":{
+           "query_value":{
+              "description":"value to query",
+              "data_type":"string",
+              "contains":[
+                "url",
+                "domain",
+                "ip",
+                "email"
+              ],
+              "required":true,
+              "primary":true,
+              "order":1
+           },
+           "pivot_type":{
+              "description":"field to pivot on",
+              "data_type":"string",
+              "value_list":[
+                 "domain",
+                 "ip",
+                 "email_domain",
+                 "email",
+                 "nameserver_host",
+                 "nameserver_domain",
+                 "nameserver_ip",
+                 "registrar",
+                 "registrant",
+                 "registrant_org",
+                 "mailserver_host",
+                 "mailserver_domain",
+                 "mailserver_ip",
+                 "redirect_domain",
+                 "ssl_hash",
+                 "ssl_subject",
+                 "ssl_email",
+                 "ssl_org",
+                 "google_analytics",
+                 "adsense",
+                 "asn",
+                 "isp_name"
+              ],
+              "required":true,
+              "order": 0
+           },
+           "status":{
+            "description":"return domains of this registration type",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "value_list": ["Any", "Active", "Inactive"],
+            "default": "Any",
+            "order": 2
+          },
+          "data_updated_after":{
+           "description":"Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+           "data_type":"string",
+           "required":false,
+           "primary":true,
+           "order": 3
+         },
+          "tld":{
+            "description":"Limit results to only include domains in a specific top-level domain (i.e. “tld=com” or “tld=ru”)",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "order": 4
+          },
+          "create_date":{
+          "description":"Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+          "data_type":"string",
+          "required":false,
+          "primary":true,
+          "order": 5
+        },
+        "expiration_date":{
+          "description":"Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+          "data_type":"string",
+          "required":false,
+          "primary":true,
+          "order": 6
+        }
+        },
+        "render":{
+           "width":12,
+           "title":"Connected Domains",
+           "type":"table",
+           "height":10
+        },
+        "output":[
+           {
+              "data_path":"action_result.data.*.results.*.domain",
+              "data_type":"string",
+              "contains":[
+                 "domain"
+              ],
+              "column_order":0,
+              "column_name":"Connected Domain(s)"
+           },
+           {
+            "data_path":"action_result.data.*.results.*.domain_risk.risk_score",
+            "data_type":"numeric",
+            "column_order":1,
+            "column_name":"Risk Score"
+         }
+        ],
+        "versions":"EQ(*)"
+     },
+     {
+      "action":"reverse domain",
+      "description":"Extract IPs from a single domain response for further pivoting",
+      "verbose":"",
+      "type":"investigate",
+      "identifier":"reverse_lookup_domain",
+      "read_only":true,
+      "parameters":{
+        "domain":{
+           "description":"Domain to query",
+           "data_type":"string",
+           "contains":[
+              "url",
+              "domain"
+           ],
+           "required":true,
+           "primary":true
+          }
+      },
+      "render":{
+         "width":12,
+         "title":"Connected IPs",
+         "type":"table",
+         "height":10
+      },
+      "output":[
+         {
+            "data_path":"action_result.summary.ip_list.*.ip",
+            "data_type":"string",
+            "contains":[
+               "ip"
+            ],
+            "column_order":0,
+            "column_name":"IP"
+         },
+         {
+          "data_path":"action_result.summary.ip_list.*.type",
+          "data_type":"string",
+          "column_order":1,
+          "column_name":"Type"
+       },
+       {
+        "data_path":"action_result.summary.ip_list.*.count",
+        "data_type":"numeric",
+        "column_order":2,
+        "column_name":"Connected Domain Count"
+     }
+      ],
+      "versions":"EQ(*)"
+   },
+     {
+      "action": "reverse ip",
+      "description": "Find domains with web hosting IP, NS IP or MX IP",
+      "type": "investigate",
+      "identifier": "reverse_lookup_ip",
+      "read_only": true,
+      "parameters": {
+          "ip": {
+              "description": "IP address to query",
+              "data_type": "string",
+              "contains": [
+                  "ip"
+              ],
+              "primary": true,
+              "required": true,
+              "order":0
+           },
+           "status":{
+            "description":"return domains of this registration type",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "value_list": ["Any", "Active", "Inactive"],
+            "default": "Any",
+            "order": 1
+          },
+          "data_updated_after":{
+           "description":"Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+           "data_type":"string",
+           "required":false,
+           "primary":true,
+           "order": 2
+         },
+          "tld":{
+            "description":"Limit results to only include domains in a specific top-level domain (i.e. “tld=com” or “tld=ru”)",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "order": 3
+          },
+          "create_date":{
+          "description":"Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+          "data_type":"string",
+          "required":false,
+          "primary":true,
+          "order": 4
+        },
+        "expiration_date":{
+          "description":"Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+          "data_type":"string",
+          "required":false,
+          "primary":true,
+          "order": 5
+        }
+      },
+      "render": {
+          "type": "table",
+          "width": 12,
+          "height": 10,
+          "title": "Reverse IP"
+      },
+      "output": [
+          {
+              "data_path": "action_result.status",
+              "data_type": "string"
+          },
+          {
+              "data_path": "action_result.parameter.ip",
+              "data_type": "string",
+              "contains": [
+                  "ip"
+              ],
+              "column_name": "Query IP",
+              "column_order": 1
+          },
+          {
+              "data_path": "action_result.data.*.results.*.domain",
+              "data_type": "string",
+              "column_name": "Related Domain Names",
+              "column_order": 2,
+              "contains": [
+                  "domain"
+              ]
+          },
+          {
+            "data_path":"action_result.data.*.results.*.domain_risk.risk_score",
+            "data_type":"numeric",
+            "column_order":3,
+            "column_name":"Risk Score"
+         }
+      ],
+      "versions": "EQ(*)"
+      },
+      {
+        "action": "load hash",
+        "description": "Load or monitor Iris search results by Iris export hash",
+        "type": "intelligence",
+        "identifier": "load_hash",
+        "read_only": true,
+        "parameters": {
+            "hash": {
+                "description": "Iris search hash to load",
+                "data_type": "string",
+                "primary": true,
+                "required": true,
+                "order":0
+             },
+             "status":{
+              "description":"return domains of this registration type",
+              "data_type":"string",
+              "required":false,
+              "primary":true,
+              "value_list": ["Any", "Active", "Inactive"],
+              "default": "Any",
+              "order": 1
+            },
+            "data_updated_after":{
+             "description":"Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+             "data_type":"string",
+             "required":false,
+             "primary":true,
+             "order": 2
+           },
+            "tld":{
+              "description":"Limit results to only include domains in a specific top-level domain (i.e. “tld=com” or “tld=ru”)",
+              "data_type":"string",
+              "required":false,
+              "primary":true,
+              "order": 3
+            },
+            "create_date":{
+            "description":"Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "order": 4
+          },
+          "expiration_date":{
+            "description":"Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "order": 5
+          }
+        },
+        "render": {
+            "type": "table",
+            "width": 12,
+            "height": 10,
+            "title": "Iris Search"
+        },
+        "output": [
+            {
+                "data_path": "action_result.status",
+                "data_type": "string"
+            },
+            {
+                "data_path": "action_result.data.*.results.*.domain",
+                "data_type": "string",
+                "column_name": "Domain Results",
+                "column_order": 1,
+
+                "contains": [
+                    "domain"
+                ]
+            },
+            {
+             "data_path":"action_result.data.*.results.*.domain_risk.risk_score",
+             "data_type":"numeric",
+             "column_order":2,
+             "column_name":"Risk Score"
+          }
+        ],
+        "versions": "EQ(*)"
+        },
+      {
+        "action": "reverse email",
+            "description": "Find domains with email in Whois, DNS SOA or SSL certificate",
+            "type": "investigate",
+            "identifier": "reverse_whois_email",
+            "read_only": true,
+            "parameters": {
+                "email": {
+                    "description": "email query",
+                    "data_type": "string",
+                    "contains": [
+                        "email"
+                    ],
+                    "primary": true,
+                    "required": true,
+                    "order": 0
+            },
+             "status":{
+              "description":"return domains of this registration type",
+              "data_type":"string",
+              "required":false,
+              "primary":true,
+              "value_list": ["Any", "Active", "Inactive"],
+              "default": "Any",
+              "order": 1
+            },
+            "data_updated_after":{
+             "description":"Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+             "data_type":"string",
+             "required":false,
+             "primary":true,
+             "order": 2
+           },
+            "tld":{
+              "description":"Limit results to only include domains in a specific top-level domain (i.e. “tld=com” or “tld=ru”)",
+              "data_type":"string",
+              "required":false,
+              "primary":true,
+              "order": 3
+            },
+            "create_date":{
+            "description":"Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "order": 4
+          },
+          "expiration_date":{
+            "description":"Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+            "data_type":"string",
+            "required":false,
+            "primary":true,
+            "order": 5
+          }
+                },
+            "render": {
+                "type": "table",
+                "width": 12,
+                "height": 10,
+                "title": "Reverse Email"
+            },
+          "output": [
+              {
+                  "data_path": "action_result.status",
+                  "data_type": "string"
+              },
+              {
+                  "data_path": "action_result.parameter.email",
+                  "data_type": "string",
+                  "contains": [
+                      "email"
+                  ],
+                  "column_name": "Query Email",
+                  "column_order": 1
+              },
+              {
+                  "data_path": "action_result.data.*.results.*.domain",
+                  "data_type": "string",
+                  "column_name": "Related Domain Names",
+                  "column_order": 2,
+                  "contains": [
+                      "domain"
+                  ]
+              },
+              {
+               "data_path":"action_result.data.*.results.*.domain_risk.risk_score",
+               "data_type":"numeric",
+               "column_order":3,
+               "column_name":"Risk Score"
+            }
+          ],
+        "versions": "EQ(*)"
+        },
+     {
+      "action":"whois domain",
+      "description":"Get all Iris data for a domain, including Whois",
+      "type":"investigate",
+      "identifier":"domain_enrich",
+      "read_only":true,
+      "parameters":{
+         "domain":{
+            "description":"Domain to query",
+            "data_type":"string",
+            "contains":[
+               "url",
+               "domain"
+            ],
+            "required":true,
+            "primary":true
+         }
+      },
+      "render":{
+         "type":"custom",
+         "width":10,
+         "height":10,
+         "title":"Domain Profile",
+         "view":"iris_view.display_domain_profile"
+      },
+      "output":[
+         {
+            "data_path":"action_result.status",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.alexa",
+            "data_type":"numeric"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.adsense.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.google_analytics.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.name.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.org.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.street.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.city.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.state.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.postal.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.country.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.phone.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.admin_contact.fax.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.name.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.org.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.street.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.city.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.state.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.postal.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.country.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.phone.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.billing_contact.fax.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.name.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.org.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.street.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.city.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.state.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.postal.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.country.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.phone.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_contact.fax.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.name.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.org.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.street.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.city.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.state.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.postal.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.country.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.phone.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.technical_contact.fax.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.create_date.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.expiration_date.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.email_domain.*.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.soa_email.*.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.additional_whois_email.*.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.ip.*.address.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.ip.*.asn.*.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.ip.*.country_code.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.ip.*.isp.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.mx.*.host.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.mx.*.domain.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.mx.*.ip.*.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.name_server.*.host.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.name_server.*.domain.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.name_server.*.ip.*.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.redirect.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.redirect_domain.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_name.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrant_org.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.registrar.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.ssl_info.*.hash.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.ssl_info.*.subject.value",
+            "data_type":"string"
+         },
+         {
+            "data_path":"action_result.data.0.results.0.ssl_info.*.organization.value",
+            "data_type":"string"
+         },
+         {
+          "data_path":"action_result.data.0.results.0.adsense.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.google_analytics.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.name.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.org.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.street.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.city.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.state.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.postal.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.country.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.phone.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.admin_contact.fax.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.name.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.org.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.street.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.city.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.state.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.postal.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.country.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.phone.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.billing_contact.fax.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.name.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.org.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.street.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.city.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.state.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.postal.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.country.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.phone.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_contact.fax.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.name.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.org.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.street.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.city.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.state.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.postal.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.country.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.phone.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.technical_contact.fax.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.create_date.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.expiration_date.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.email_domain.*.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.soa_email.*.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.additional_whois_email.*.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.ip.*.address.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.ip.*.asn.*.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.ip.*.country_code.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.ip.*.isp.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.mx.*.host.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.mx.*.domain.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.mx.*.ip.*.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.name_server.*.host.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.name_server.*.domain.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.name_server.*.ip.*.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.redirect.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.redirect_domain.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_name.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrant_org.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.registrar.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.ssl_info.*.hash.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.ssl_info.*.subject.count",
+          "data_type":"numeric"
+       },
+       {
+          "data_path":"action_result.data.0.results.0.ssl_info.*.organization.count",
+          "data_type":"numeric"
+       }
+      ],
+      "versions":"EQ(*)"
+   }
+  ]
+}
