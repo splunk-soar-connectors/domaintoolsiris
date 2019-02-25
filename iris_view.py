@@ -1,9 +1,11 @@
 import collections
 
+
 def unique_list(l):
     ulist = []
     [ulist.append(x) for x in l if x not in ulist]
     return ulist
+
 
 def create_score_span(score):
     i_score = int(score)
@@ -12,20 +14,22 @@ def create_score_span(score):
         severity = "high"
     elif i_score >= 70:
         severity = "medium"
-    return "<span style='min-width:30px;margin-bottom:2px;' class='label severity "+severity+"'>"+str(score)+"</span>"
+    return "<span style='min-width:30px;margin-bottom:2px;' class='label severity " + severity + "'>" + str(score) + "</span>"
+
 
 def flatten(d, parent_key='', sep=' '):
     items = []
     for k, v in d.items():
         if k != "count":
-          k = k.replace("_"," ")
+          k = k.replace("_", " ")
           new_key = parent_key + sep + k if parent_key else k
-          new_key = new_key.replace("_"," ").replace("value","")
+          new_key = new_key.replace("_", " ").replace("value", "")
           if isinstance(v, collections.MutableMapping):
               items.extend(flatten(v, new_key, sep=sep).items())
           else:
               items.append((new_key, v))
     return dict(items)
+
 
 def render_list(list_obj):
     ret_str = ""
@@ -38,26 +42,28 @@ def render_list(list_obj):
     for item in list_obj:
         if type(item) is dict:
             if "name" in item and 'risk_score' in item:
-              title_str = item['name'].replace('_',' ').strip()
-              if item['name'] != "whitelist" :
-                ret_str +="<span style='display:inline-block;min-width:140px;vertical-align:top;'>"+title_str.title() + ":</span> "+create_score_span(item['risk_score'])+"\n"
+              title_str = item['name'].replace('_', ' ').strip()
+              if item['name'] != "whitelist":
+                ret_str += "<span style='display:inline-block;min-width:140px;vertical-align:top;'>" \
+                           + title_str.title() + ":</span> " + create_score_span(item['risk_score']) + "\n"
               else:
-                ret_str +="Whitelist\n"
+                ret_str += "Whitelist\n"
             else:
               flattened = flatten(item)
               for k in flattened:
-                title_str = k.replace('value','').strip()
+                title_str = k.replace('value', '').strip()
                 if title_str:
-                    title_str = "<span style='display:inline-block;min-width:85px;vertical-align:top;'>"+title_str.title() + ":</span>"
-                ret_str += title_str + render_list(flattened[k])+"\n"
+                    title_str = "<span style='display:inline-block;min-width:85px;vertical-align:top;'>"\
+                                + title_str.title() + ":</span>"
+                ret_str += title_str + render_list(flattened[k]) + "\n"
         elif type(item) is list:
             for list_item in item:
               ret_str += render_list(list_item)
         else:
             ret_str += str(item)
 
-
     return ret_str
+
 
 def get_ctx_result(result):
     ctx_result = {}
@@ -67,7 +73,7 @@ def get_ctx_result(result):
     ctx_result['param'] = param
 
     if (data):
-        ctx_result['data'] = flatten(data[0]['results'][0] )
+        ctx_result['data'] = flatten(data[0] )
         sorted_keys = sorted(ctx_result['data'], key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
         ctx_result['sorted_data'] = []
         for key in sorted_keys:
@@ -76,9 +82,9 @@ def get_ctx_result(result):
             if type(ctx_result['data'][key]) is list:
               data_value = render_list(ctx_result['data'][key])
             key = ' '.join(unique_list(key.split()))
-            ctx_result['sorted_data'].append((key,data_value))
+            ctx_result['sorted_data'].append((key, data_value))
 
-        #handle risk score item stuff
+        # handle risk score item stuff
         rs_index = [y[0] for y in ctx_result['sorted_data']].index('domain risk score')
         rs_item = ctx_result['sorted_data'].pop(rs_index)
         span = create_score_span(rs_item[1])
@@ -86,6 +92,7 @@ def get_ctx_result(result):
         ctx_result['sorted_data'].insert(1, new_tuple)
 
     return ctx_result
+
 
 def display_domain_profile(provides, all_app_runs, context):
 
@@ -100,6 +107,7 @@ def display_domain_profile(provides, all_app_runs, context):
     # print context
     return 'iris_domain_profile.html'
 
+
 def display_risk_score(provides, all_app_runs, context):
 
     context['results'] = results = []
@@ -108,7 +116,7 @@ def display_risk_score(provides, all_app_runs, context):
 
             data = result.get_data()
             if (data):
-                ctx_result = {'data':data[0]['results'][0]}
+                ctx_result = {'data': data[0]}
 
                 sorted_data = []
                 sorted_data.append( ('domain risk score', create_score_span(ctx_result['data']['domain_risk']['risk_score'])))

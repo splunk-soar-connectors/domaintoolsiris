@@ -1,14 +1,7 @@
 # --
 # File: domaintools_connector.py
 #
-# Copyright (c) Phantom Cyber Corporation, 2016-2017
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
+# Copyright (c) 2019 DomainTools, LLC
 #
 # --
 
@@ -27,18 +20,17 @@ import hashlib
 
 import requests
 
+
 # Define the App Class
 class DomainToolsConnector(BaseConnector):
     ACTION_ID_DOMAIN_REPUTATION = "domain_reputation"
     ACTION_ID_DOMAIN_ENRICH = "domain_enrich"
     ACTION_ID_WHOIS_DOMAIN = "whois_domain"
-    ACTION_ID_PIVOT  = "pivot_action"
+    ACTION_ID_PIVOT = "pivot_action"
     ACTION_ID_REVERSE_IP = "reverse_lookup_ip"
     ACTION_ID_REVERSE_EMAIL = "reverse_whois_email"
     ACTION_ID_REVERSE_DOMAIN = "reverse_lookup_domain"
-    ACTION_ID_LOAD_HASH= "load_hash"
-
-
+    ACTION_ID_LOAD_HASH = "load_hash"
 
     DOMAINTOOLS = 'api.domaintools.com'
     API_VERSION = 'v1'
@@ -80,7 +72,18 @@ class DomainToolsConnector(BaseConnector):
 
         if (status == 200) and (response):
             self._clean_empty_response(response)
-            action_result.add_data(response)
+
+            if 'results' in response:
+                action_result.update_summary({'Connected Domains Count': len(response['results'])})
+                action_result.update_data(response['results'])
+            else:
+                action_result.add_data(response)
+
+            if response['limit_exceeded']:
+                msg = response['message']
+                action_result.update_summary({'Error': msg})
+                return action_result.set_status(phantom.APP_ERROR, msg)
+
             return action_result.set_status(phantom.APP_SUCCESS)
 
         return action_result.set_status(phantom.APP_ERROR,
@@ -127,7 +130,6 @@ class DomainToolsConnector(BaseConnector):
 
         self.debug_print(r.url)
 
-
         # Now parse and add the response into the action result
         try:
             return self._parse_response(action_result, r, response_json, ignore400=ignore400)
@@ -157,9 +159,7 @@ class DomainToolsConnector(BaseConnector):
 
         return self.set_status_save_progress(phantom.APP_SUCCESS, 'Successfully connected to domaintools.com.\nTest Connectivity passed')
 
-
     def handle_action(self, param):
-
         ret_val = phantom.APP_SUCCESS
 
         # Get the action that we are supposed to execute for this App Run
@@ -170,7 +170,7 @@ class DomainToolsConnector(BaseConnector):
         # Get the config
         config = self.get_config()
 
-        self._ssl = config['ssl']
+        self._ssl = config.get('ssl', False)
         self._username = config['username']
         self._key = config['key']
 
@@ -183,21 +183,22 @@ class DomainToolsConnector(BaseConnector):
         elif action_id == self.ACTION_ID_PIVOT:
             ret_val = self._pivot_action(param)
         elif action_id == self.ACTION_ID_REVERSE_IP:
-            updates = {'pivot_type':'ip', 'query_value':param['ip'], 'ip':param['ip']}
+            updates = {'pivot_type': 'ip', 'query_value': param['ip'], 'ip': param['ip']}
             param.update(updates)
             ret_val = self._pivot_action(param)
         elif action_id == self.ACTION_ID_REVERSE_EMAIL:
-            updates = {'pivot_type':'email', 'query_value':param['email'], 'email':param['email']}
+            updates = {'pivot_type': 'email', 'query_value': param['email'], 'email': param['email']}
             param.update(updates)
             ret_val = self._pivot_action(param)
         elif action_id == self.ACTION_ID_REVERSE_DOMAIN:
             ret_val = self._reverse_domain(param)
         elif action_id == self.ACTION_ID_LOAD_HASH:
-            data = {'pivot_type':'search_hash', 'query_value':param['hash'], 'hash':param['hash']}
+            data = {'pivot_type': 'search_hash', 'query_value': param['hash'], 'hash': param['hash']}
             param.update(data)
             ret_val = self._pivot_action(param)
 
         return ret_val
+
     def _reverse_domain(self, param):
         action_result = self.add_action_result(ActionResult(param))
         params = {'domain': param.get('domain')}
@@ -213,19 +214,19 @@ class DomainToolsConnector(BaseConnector):
 
         ips = []
 
-        for a in data[0]['results'][0]['ip']:
+        for a in data[0]['ip']:
             if 'address' in a:
-                ips.append( { 'ip':a['address']['value'], 'type':'Host IP', 'count': a['address']['count']  } )
+                ips.append( { 'ip': a['address']['value'], 'type': 'Host IP', 'count': a['address']['count']  } )
 
-        for a in data[0]['results'][0]['mx']:
+        for a in data[0]['mx']:
             if 'ip' in a:
                 for b in a['ip']:
-                    ips.append( { 'ip':b['value'], 'type':'MX IP', 'count': b['count']  } )
+                    ips.append( { 'ip': b['value'], 'type': 'MX IP', 'count': b['count']  } )
 
-        for a in data[0]['results'][0]['name_server']:
+        for a in data[0]['name_server']:
             if 'ip' in a:
                 for b in a['ip']:
-                    ips.append( { 'ip':b['value'], 'type':'NS IP', 'count': b['count']  } )
+                    ips.append( { 'ip': b['value'], 'type': 'NS IP', 'count': b['count']  } )
 
         action_result.update_summary({'ip_list': ips })
 
@@ -237,7 +238,7 @@ class DomainToolsConnector(BaseConnector):
         return self._do_domain_enrich(action_result, params)
 
     def _do_domain_enrich(self, action_result, params):
-        ret_val = self._do_query('iris-investigate', action_result, data=params)
+        self._do_query('iris-investigate', action_result, data=params)
         return action_result.get_status()
 
     def _domain_reputation(self, param):
@@ -246,7 +247,7 @@ class DomainToolsConnector(BaseConnector):
         domain_to_query = param['domain']
         params = {'domain': domain_to_query}
 
-        ret_val = self._do_query('iris-investigate',  action_result, data=params)
+        ret_val = self._do_query('iris-investigate', action_result, data=params)
 
         if not ret_val:
             return action_result.get_data()
@@ -256,9 +257,9 @@ class DomainToolsConnector(BaseConnector):
         if not data:
             return action_result.get_status()
 
-        action_result.update_summary({'domain_risk': data[0]['results'][0]['domain_risk']['risk_score']})
+        action_result.update_summary({'domain_risk': data[0]['domain_risk']['risk_score']})
 
-        for a in data[0]['results'][0]['domain_risk']['components']:
+        for a in data[0]['domain_risk']['components']:
             if(a['name'] == "whitelist"):
               action_result.update_summary({'is_whitelisted': True})
             else:
@@ -306,24 +307,12 @@ class DomainToolsConnector(BaseConnector):
         if not ret_val:
             return action_result.get_data()
 
-        data = action_result.get_data()
-        if 'results' in data[0]:
-            action_result.update_summary({'Connected Domains Count':len(data[0]['results'])})
-
-        if data[0]['limit_exceeded']:
-            msg = data[0]['message']
-            action_result.update_summary({'Error':msg})
-            return action_result.set_status(phantom.APP_ERROR, msg)
-
-
         return action_result.get_status()
+
 
 if __name__ == '__main__':
 
     import sys
-    import pudb
-
-    #pudb.set_trace()
 
     if (len(sys.argv) < 2):
         print "No test json specified as input"
