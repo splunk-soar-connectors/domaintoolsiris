@@ -1,5 +1,5 @@
 # --
-# File: domaintools_connector.py
+# File: domaintools_iris_connector.py
 #
 # Copyright (c) 2019 DomainTools, LLC
 #
