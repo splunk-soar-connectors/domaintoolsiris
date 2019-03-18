@@ -154,8 +154,8 @@ class DomainToolsConnector(BaseConnector):
                 raise Exception(action_result.get_message())
         except Exception as e:
             message = 'Failed to connect to domaintools.com'
-            self.set_status(phantom.APP_ERROR, message, e)
-            return self.get_status()
+            action_result.set_status(phantom.APP_ERROR, message, e)
+            return action_result.get_status()
 
         return self.set_status_save_progress(phantom.APP_SUCCESS, 'Successfully connected to domaintools.com.\nTest Connectivity passed')
 
@@ -171,8 +171,8 @@ class DomainToolsConnector(BaseConnector):
         config = self.get_config()
 
         self._ssl = config.get('ssl', False)
-        self._username = config['username']
-        self._key = config['key']
+        self._username = config['username'].encode('utf-8')
+        self._key = config['key'].encode('utf-8')
 
         if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity()

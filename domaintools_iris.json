@@ -13,8 +13,8 @@
   "product_name": "DomainTools Iris",
   "product_version_regex": ".*",
   "min_phantom_version": "4.0.1068",
-  "logo": "DT-iris-logo.svg",
-  "logo_dark": "DT-iris-white-logo.svg",
+  "logo": "logo_domaintools_iris.svg",
+  "logo_dark": "logo_domaintools_iris_dark.svg",
   "configuration": {
     "username": {
       "description": "User Name",
@@ -112,6 +112,24 @@
         {
           "data_path": "action_result.summary.threat_profile_phishing",
           "data_type": "numeric"
+        },
+        {
+          "data_path": "action_result.message",
+          "data_type": "string"
+        },
+        {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
+        },
+        {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
         }
       ],
       "versions": "EQ(*)"
@@ -217,6 +235,44 @@
       },
       "output": [
         {
+          "data_path": "action_result.status",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.query_value",
+          "data_type": "string",
+          "contains": [
+            "url",
+            "domain",
+            "ip",
+            "email"
+          ]
+        },
+        {
+          "data_path": "action_result.parameter.pivot_type",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.status",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.data_updated_after",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.tld",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.create_date",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.expiration_date",
+          "data_type": "string"
+        },
+        {
           "data_path": "action_result.data.*.domain",
           "data_type": "string",
           "contains": [
@@ -230,6 +286,28 @@
           "data_type": "numeric",
           "column_order": 1,
           "column_name": "Risk Score"
+        },
+        {
+          "data_path": "action_result.summary",
+          "data_type": "string"
+        },
+        {
+            "data_path": "action_result.message",
+            "data_type": "string"
+        },
+        {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
+        },
+        {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
         }
       ],
       "versions": "EQ(*)"
@@ -261,6 +339,18 @@
       },
       "output": [
         {
+          "data_path": "action_result.status",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.domain",
+          "data_type": "string",
+          "contains": [
+            "url",
+            "domain"
+          ]
+        },
+        {
           "data_path": "action_result.summary.ip_list.*.ip",
           "data_type": "string",
           "contains": [
@@ -280,6 +370,24 @@
           "data_type": "numeric",
           "column_order": 2,
           "column_name": "Connected Domain Count"
+        },
+        {
+            "data_path": "action_result.message",
+            "data_type": "string"
+        },
+        {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
+        },
+        {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
         }
       ],
       "versions": "EQ(*)"
@@ -364,6 +472,26 @@
           "column_order": 1
         },
         {
+          "data_path": "action_result.parameter.status",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.data_updated_after",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.tld",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.create_date",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.expiration_date",
+          "data_type": "string"
+        },
+        {
           "data_path": "action_result.data.*.domain",
           "data_type": "string",
           "column_name": "Related Domain Names",
@@ -377,6 +505,28 @@
           "data_type": "numeric",
           "column_order": 3,
           "column_name": "Risk Score"
+        },
+        {
+          "data_path": "action_result.summary",
+          "data_type": "string"
+        },
+        {
+            "data_path": "action_result.message",
+            "data_type": "string"
+        },
+        {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
+        },
+        {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
         }
       ],
       "versions": "EQ(*)"
@@ -384,7 +534,7 @@
     {
       "action": "load hash",
       "description": "Load or monitor Iris search results by Iris export hash",
-      "type": "intelligence",
+      "type": "investigate",
       "identifier": "load_hash",
       "read_only": true,
       "parameters": {
@@ -393,6 +543,9 @@
           "data_type": "string",
           "primary": true,
           "required": true,
+          "contains": [
+            "hash"
+          ],
           "order": 0
         },
         "status": {
@@ -449,6 +602,35 @@
           "data_type": "string"
         },
         {
+          "data_path": "action_result.parameter.hash",
+          "data_type": "string",
+          "contains": [
+            "hash"
+          ],
+          "column_name": "Hash",
+          "column_order": 0
+        },
+        {
+          "data_path": "action_result.parameter.status",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.data_updated_after",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.tld",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.create_date",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.expiration_date",
+          "data_type": "string"
+        },
+        {
           "data_path": "action_result.data.*.domain",
           "data_type": "string",
           "column_name": "Domain Results",
@@ -462,6 +644,28 @@
           "data_type": "numeric",
           "column_order": 2,
           "column_name": "Risk Score"
+        },
+        {
+          "data_path": "action_result.summary",
+          "data_type": "string"
+        },
+        {
+            "data_path": "action_result.message",
+            "data_type": "string"
+        },
+        {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
+        },
+        {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
         }
       ],
       "versions": "EQ(*)"
@@ -546,6 +750,26 @@
           "column_order": 1
         },
         {
+          "data_path": "action_result.parameter.status",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.data_updated_after",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.tld",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.create_date",
+          "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.expiration_date",
+          "data_type": "string"
+        },
+        {
           "data_path": "action_result.data.*.domain",
           "data_type": "string",
           "column_name": "Related Domain Names",
@@ -559,6 +783,28 @@
           "data_type": "numeric",
           "column_order": 3,
           "column_name": "Risk Score"
+        },
+        {
+          "data_path": "action_result.summary",
+          "data_type": "string"
+        },
+        {
+            "data_path": "action_result.message",
+            "data_type": "string"
+        },
+        {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
+        },
+        {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
         }
       ],
       "versions": "EQ(*)"
@@ -593,6 +839,14 @@
         {
           "data_path": "action_result.status",
           "data_type": "string"
+        },
+        {
+          "data_path": "action_result.parameter.domain",
+          "data_type": "string",
+          "contains": [
+            "url",
+            "domain"
+          ]
         },
         {
           "data_path": "action_result.data.*.alexa",
@@ -1085,6 +1339,28 @@
         {
           "data_path": "action_result.data.*.ssl_info.*.organization.count",
           "data_type": "numeric"
+        },
+        {
+          "data_path": "action_result.summary",
+          "data_type": "string"
+        },
+        {
+            "data_path": "action_result.message",
+            "data_type": "string"
+        },
+        {
+            "data_path": "summary.total_objects",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
+        },
+        {
+            "data_path": "summary.total_objects_successful",
+            "data_type": "numeric",
+            "example_values": [
+                1
+            ]
         }
       ],
       "versions": "EQ(*)"
