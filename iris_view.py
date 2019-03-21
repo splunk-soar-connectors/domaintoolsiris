@@ -1,3 +1,10 @@
+# --
+# File: iris_view.py
+#
+# Copyright (c) 2019 DomainTools, LLC
+#
+# --
+
 import collections
 
 

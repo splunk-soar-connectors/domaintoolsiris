@@ -1,2 +1,3 @@
 dont_post_rpm
+.git*
 *.py
