@@ -71,23 +71,23 @@ class DomainToolsConnector(BaseConnector):
                             'ssl_hash, ssl_subject, ssl_email, ssl_org, google_analytics, adsense, asn, isp_name, ' \
                             'search_hash.'
             action_result.add_data({})
-            return action_result.set_status(phantom.APP_SUCCESS, error_message)
+            return action_result.set_status(phantom.APP_ERROR, error_message)
 
         if status == 403:
             error_message = 'The credentials you entered do not match an active account.'
             action_result.add_data({})
-            return action_result.set_status(phantom.APP_SUCCESS, error_message)
+            return action_result.set_status(phantom.APP_ERROR, error_message)
 
         if status == 404:
             action_result.add_data({})
-            return action_result.set_status(phantom.APP_SUCCESS,
+            return action_result.set_status(phantom.APP_ERROR,
                                             error.get('message', 'Domain Tools failed to find IP/Domain'))
 
         if status == 503:
             error_message = 'There was an error processing your request. Please try again or contact ' \
                             '<a href=\"http://www.domaintools.com/support\">support</a> with questions.'
             action_result.add_data({})
-            return action_result.set_status(phantom.APP_SUCCESS, error_message)
+            return action_result.set_status(phantom.APP_ERROR, error_message)
 
         if (status == 200) and (response):
             self._clean_empty_response(response)
