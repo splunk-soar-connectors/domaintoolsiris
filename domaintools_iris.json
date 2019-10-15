@@ -969,7 +969,7 @@
           "data_type": "string"
         },
         {
-          "data_path": "action_result.data.*.tags.*",
+          "data_path": "action_result.data.*.tags.*.label",
           "data_type": "string"
         },
         {
