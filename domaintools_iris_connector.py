@@ -115,12 +115,28 @@ class DomainToolsConnector(BaseConnector):
         data['app_partner'] = 'phantomcyber'
 
         self.save_progress("Connecting to domaintools")
+        url_params = "?"
+        for k, search in data.items():
+            url_params = "{}&{}={}".format(url_params, k, search)
 
-        try:
-            self.save_progress("url is : {} (data {})".format(url, data))
-            r = requests.post(url, data=data)
-        except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR, "REST API failed", e)
+        get = True
+        if url_params != "?":
+            url = "{}{}".format(url, url_params)
+            if len(url_params) > 2000:
+                get = False
+
+        if get:  # We only want to use POST if we absolutely have to.
+            try:
+                self.save_progress("GET: {}".format(url))
+                r = requests.get(url)
+            except Exception as e:
+                return action_result.set_status(phantom.APP_ERROR, "REST API failed", e)
+        else:
+            try:
+                self.save_progress("POST: {} body: {}".format(url, data))
+                r = requests.post(url, data=data)
+            except Exception as e:
+                return action_result.set_status(phantom.APP_ERROR, "REST API failed", e)
 
         self.save_progress("Parsing response...")
         try:
