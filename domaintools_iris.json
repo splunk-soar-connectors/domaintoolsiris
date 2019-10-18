@@ -969,6 +969,10 @@
           "data_type": "string"
         },
         {
+          "data_path": "action_result.data.*.tags.*.label",
+          "data_type": "string"
+        },
+        {
           "data_path": "action_result.data.*.technical_contact.name.value",
           "data_type": "string"
         },
