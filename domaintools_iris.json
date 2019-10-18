@@ -543,9 +543,6 @@
           "data_type": "string",
           "primary": true,
           "required": true,
-          "contains": [
-            "hash"
-          ],
           "order": 0
         },
         "status": {
@@ -603,12 +600,7 @@
         },
         {
           "data_path": "action_result.parameter.hash",
-          "data_type": "string",
-          "contains": [
-            "hash"
-          ],
-          "column_name": "Hash",
-          "column_order": 0
+          "data_type": "string"
         },
         {
           "data_path": "action_result.parameter.status",
@@ -634,7 +626,7 @@
           "data_path": "action_result.data.*.domain",
           "data_type": "string",
           "column_name": "Domain Results",
-          "column_order": 1,
+          "column_order": 0,
           "contains": [
             "domain"
           ]
@@ -642,7 +634,7 @@
         {
           "data_path": "action_result.data.*.domain_risk.risk_score",
           "data_type": "numeric",
-          "column_order": 2,
+          "column_order": 1,
           "column_name": "Risk Score"
         },
         {
