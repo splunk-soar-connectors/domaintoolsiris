@@ -54,7 +54,7 @@ class DomainToolsConnector(BaseConnector):
         if response.get('domains') == []:
             del response['domains']
 
-    def _parse_response(self, action_result, r, response_json, ignore400=False):
+    def _parse_response(self, action_result, r, response_json):
         """
         No need to do exception handling, since this function call has a try...except around it.
         If you do want to catch a specific exception to generate proper error strings, go ahead
@@ -64,11 +64,30 @@ class DomainToolsConnector(BaseConnector):
         response = response_json.get('response')
         error = response_json.get('error', {})
 
-        if (status == 404) or (
-                        (status == 400) and (ignore400) and (error.get('message', '').startswith('No IP addresses'))):
+        if status == 400:
+            error_message = 'You must include at least one search parameter from the list: domain, ip, email, ' \
+                            'email_domain, nameserver_host, nameserver_domain, nameserver_ip, registrar, registrant, ' \
+                            'registrant_org, mailserver_host, mailserver_domain, mailserver_ip, redirect_domain, ' \
+                            'ssl_hash, ssl_subject, ssl_email, ssl_org, google_analytics, adsense, asn, isp_name, ' \
+                            'search_hash.'
             action_result.add_data({})
-            return action_result.set_status(phantom.APP_SUCCESS,
+            return action_result.set_status(phantom.APP_ERROR, error_message)
+
+        if status == 403:
+            error_message = 'The credentials you entered do not match an active account.'
+            action_result.add_data({})
+            return action_result.set_status(phantom.APP_ERROR, error_message)
+
+        if status == 404:
+            action_result.add_data({})
+            return action_result.set_status(phantom.APP_ERROR,
                                             error.get('message', 'Domain Tools failed to find IP/Domain'))
+
+        if status == 503:
+            error_message = 'There was an error processing your request. Please try again or contact ' \
+                            '<a href=\"http://www.domaintools.com/support\">support</a> with questions.'
+            action_result.add_data({})
+            return action_result.set_status(phantom.APP_ERROR, error_message)
 
         if (status == 200) and (response):
             self._clean_empty_response(response)
@@ -89,7 +108,7 @@ class DomainToolsConnector(BaseConnector):
         return action_result.set_status(phantom.APP_ERROR,
                                         error.get('message', 'An unknown error occurred while querying domaintools.'))
 
-    def _do_query(self, endpoint, action_result, data=None, ignore400=False):
+    def _do_query(self, endpoint, action_result, data=None):
         if data is None:
             data = dict()
 
@@ -132,7 +151,7 @@ class DomainToolsConnector(BaseConnector):
 
         # Now parse and add the response into the action result
         try:
-            return self._parse_response(action_result, r, response_json, ignore400=ignore400)
+            return self._parse_response(action_result, r, response_json)
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR, 'An error occurred while parsing domaintools reponse', e)
 
