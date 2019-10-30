@@ -537,11 +537,7 @@
                 "hash": {
                     "description": "Iris search hash to load",
                     "data_type": "string",
-                    "primary": true,
                     "required": true,
-                    "contains": [
-                        "hash"
-                    ],
                     "order": 0
                 },
                 "status": {
