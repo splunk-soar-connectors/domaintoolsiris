@@ -139,7 +139,7 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "domaintools pivot",
+            "action": "pivot domain",
             "description": "Find domains connected by any supported Iris search parameter",
             "type": "investigate",
             "identifier": "pivot_action",
