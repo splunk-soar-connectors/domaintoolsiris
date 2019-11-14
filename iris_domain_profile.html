@@ -1,0 +1,24 @@
+{% extends 'widgets/widget_template.html' %}
+{% load custom_template %}
+
+{% block custom_title_prop %}{% if title_logo %}style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"{% endif %}{% endblock %}
+{% block title1 %}{{ title1 }}{% endblock %}
+{% block title2 %}{{ title2 }}{% endblock %}
+{% block custom_tools %}
+{% endblock %}
+
+{% block widget_content %}
+<div style="font-size:12px;text-transform: uppercase">Domain Profile</div>
+<table class="phantom-table dataTable no-footer">
+  {% for result in results %}
+    {% if result.data.domain %}
+        <div style="display:block; text-align:right; text-decoration:underline; margin-right:12px">
+          <a target="_blank" href="https://research.domaintools.com/iris/search/?q={{ result.data.domain }}">Investigate in Iris</a>
+        </div>
+    {% endif %}
+    {% for key, value in result.sorted_data %}
+      <tr><td style="vertical-align:top">{{ key | title }}:</td><td>{% autoescape off %}{{ value | linebreaks }}{% endautoescape %}</td></tr>
+    {% endfor %}
+  {% endfor %}
+</table>
+{% endblock %}
