@@ -69,12 +69,12 @@ class DomainToolsConnector(BaseConnector):
                             'email_domain, nameserver_host, nameserver_domain, nameserver_ip, registrar, registrant, ' \
                             'registrant_org, mailserver_host, mailserver_domain, mailserver_ip, redirect_domain, ' \
                             'ssl_hash, ssl_subject, ssl_email, ssl_org, google_analytics, adsense, asn, isp_name, ' \
-                            'search_hash.'
+                            'search_hash'
             action_result.add_data({})
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
         if status == 403:
-            error_message = 'The credentials you entered do not match an active account.'
+            error_message = 'The credentials you entered do not match an active account'
             action_result.add_data({})
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
@@ -85,7 +85,7 @@ class DomainToolsConnector(BaseConnector):
 
         if status == 503:
             error_message = 'There was an error processing your request. Please try again or contact ' \
-                            '<a href=\"http://www.domaintools.com/support\">support</a> with questions.'
+                            '<a href=\"http://www.domaintools.com/support\">support</a> with questions'
             action_result.add_data({})
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
@@ -106,7 +106,7 @@ class DomainToolsConnector(BaseConnector):
             return action_result.set_status(phantom.APP_SUCCESS)
 
         return action_result.set_status(phantom.APP_ERROR,
-                                        error.get('message', 'An unknown error occurred while querying domaintools.'))
+                                        error.get('message', 'An unknown error occurred while querying domaintools'))
 
     def _do_query(self, endpoint, action_result, data=None):
         if data is None:
