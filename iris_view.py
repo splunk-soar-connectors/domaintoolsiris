@@ -6,6 +6,7 @@
 # --
 
 import collections
+import copy
 
 
 def unique_list(l):
@@ -35,6 +36,7 @@ def flatten(d, parent_key='', sep=' '):
               items.extend(flatten(v, new_key, sep=sep).items())
           else:
               items.append((new_key, v))
+
     return dict(items)
 
 
@@ -111,7 +113,7 @@ def display_domain_profile(provides, all_app_runs, context):
             if (not ctx_result):
                 continue
             results.append(ctx_result)
-    # print context
+
     return 'iris_domain_profile.html'
 
 
@@ -122,14 +124,38 @@ def display_risk_score(provides, all_app_runs, context):
         for result in action_results:
 
             data = result.get_data()
-            if (data):
+            if data:
                 ctx_result = {'data': data[0]}
+                risk_scores = ctx_result['data'].get('domain_risk', {}).get('components')
+                # Add proximity score to blacklisted domains, see comment below
+                if risk_scores:
+                    ctx_result['data']["domain_risk"]['components'] = add_proximity_to_blacklisted_domain(risk_scores)
 
                 sorted_data = []
-                sorted_data.append( ('domain risk score', create_score_span(ctx_result['data']['domain_risk']['risk_score'])))
-                sorted_data.append( ('domain risk components', render_list(ctx_result['data']["domain_risk"]['components'])) )
+                sorted_data.append(('domain risk score', create_score_span(
+                    ctx_result['data'].get('domain_risk', {}).get('risk_score'))))
+                sorted_data.append(('domain risk components', render_list(
+                    ctx_result['data'].get('domain_risk', {}).get('components', []))))
                 ctx_result['sorted_data'] = sorted_data
 
                 results.append(ctx_result)
-    # print context
+
     return 'iris_risk_score.html'
+
+
+# Clients want proximity score to show for blacklisted domains. The API removes proximity when it is
+# 100 and changes it to blacklist. This is not an optimal solution and should probably be thought out
+# to understand the clients needs and goals, then have the backend team work on getting the contract
+# the way the clients need it to be. We are doing the same thing in the splunk app.
+def add_proximity_to_blacklisted_domain(risk_scores):
+    blacklisted = next((item for item in risk_scores if item['name'] == 'blacklist'), None)
+    # We only want to do this if the domain is blacklisted
+    if blacklisted:
+        # Make sure proximity isn't there, this prevents duplicate proximity scores if the iris api adds it
+        proximity = next((item for item in risk_scores if item['name'] == 'proximity'), None)
+        if proximity is None:
+            blacklist = copy.deepcopy(blacklisted)
+            blacklist['name'] = 'proximity'
+            risk_scores.insert(1, blacklist)
+
+    return risk_scores
