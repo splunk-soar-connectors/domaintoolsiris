@@ -75,7 +75,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.domain",
@@ -146,7 +150,7 @@
             "read_only": true,
             "parameters": {
                 "query_value": {
-                    "description": "value to query",
+                    "description": "Value to query",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -189,7 +193,7 @@
                     "order": 0
                 },
                 "status": {
-                    "description": "return domains of this registration type",
+                    "description": "Return domains of this registration type",
                     "data_type": "string",
                     "required": false,
                     "value_list": [
@@ -234,7 +238,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -325,7 +333,8 @@
                         "domain"
                     ],
                     "required": true,
-                    "primary": true
+                    "primary": true,
+                    "order": 0
                 }
             },
             "render": {
@@ -337,7 +346,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.domain",
@@ -411,7 +424,7 @@
                     "order": 0
                 },
                 "status": {
-                    "description": "return domains of this registration type",
+                    "description": "Return domains of this registration type",
                     "data_type": "string",
                     "required": false,
                     "value_list": [
@@ -456,7 +469,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -586,7 +603,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -660,7 +681,7 @@
             "read_only": true,
             "parameters": {
                 "email": {
-                    "description": "email query",
+                    "description": "Email query",
                     "data_type": "string",
                     "contains": [
                         "email"
@@ -670,7 +691,7 @@
                     "order": 0
                 },
                 "status": {
-                    "description": "return domains of this registration type",
+                    "description": "Return domains of this registration type",
                     "data_type": "string",
                     "required": false,
                     "value_list": [
@@ -715,7 +736,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -815,7 +840,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.domain",
