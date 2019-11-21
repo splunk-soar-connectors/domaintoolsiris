@@ -1,7 +1,7 @@
 {
     "appid": "f18b7ef9-0cbd-4dbb-b8ed-ce62e17f0603",
     "name": "DomainTools Iris",
-    "description": "Use the DomainTools Iris Investigate API to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more. Looking for playbooks to go with DomainTools data? We've got you covered: https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom",
+    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris. For the playbooks on the domain tool data visit https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom",
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
