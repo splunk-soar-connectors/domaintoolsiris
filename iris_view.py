@@ -1,7 +1,7 @@
 # --
 # File: iris_view.py
 #
-# Copyright (c) 2019 DomainTools, LLC
+# Copyright (c) 2019-2020 DomainTools, LLC
 #
 # --
 
@@ -123,7 +123,14 @@ def display_risk_score(provides, all_app_runs, context):
     for summary, action_results in all_app_runs:
         for result in action_results:
 
+            ctx_result = {}
+            param = result.get_param()
             data = result.get_data()
+
+            if param:
+                ctx_result['param'] = param
+            data = result.get_data()
+
             if data:
                 ctx_result = {'data': data[0]}
                 risk_scores = ctx_result['data'].get('domain_risk', {}).get('components')
@@ -138,7 +145,7 @@ def display_risk_score(provides, all_app_runs, context):
                     ctx_result['data'].get('domain_risk', {}).get('components', []))))
                 ctx_result['sorted_data'] = sorted_data
 
-                results.append(ctx_result)
+            results.append(ctx_result)
 
     return 'iris_risk_score.html'
 
