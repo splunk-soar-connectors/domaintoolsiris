@@ -1,11 +1,11 @@
 {
     "appid": "f18b7ef9-0cbd-4dbb-b8ed-ce62e17f0603",
     "name": "DomainTools Iris",
-    "description": "Use the DomainTools Iris Investigate API to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more. Looking for playbooks to go with DomainTools data? We've got you covered: https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom",
+    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris. For the playbooks on the domain tool data visit https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom",
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019 DomainTools, LLC",
+    "license": "Copyright (c) 2019-2020 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.pyc",
     "app_version": "1.1.0",
     "utctime_updated": "2019-11-11T22:29:16.000000Z",
@@ -75,7 +75,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.domain",
@@ -139,14 +143,14 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "pivot domain",
+            "action": "pivot action",
             "description": "Find domains connected by any supported Iris search parameter",
             "type": "investigate",
             "identifier": "pivot_action",
             "read_only": true,
             "parameters": {
                 "query_value": {
-                    "description": "value to query",
+                    "description": "Value to query",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -189,7 +193,7 @@
                     "order": 0
                 },
                 "status": {
-                    "description": "return domains of this registration type",
+                    "description": "Return domains of this registration type",
                     "data_type": "string",
                     "required": false,
                     "value_list": [
@@ -234,7 +238,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -325,7 +333,8 @@
                         "domain"
                     ],
                     "required": true,
-                    "primary": true
+                    "primary": true,
+                    "order": 0
                 }
             },
             "render": {
@@ -337,7 +346,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.domain",
@@ -411,7 +424,7 @@
                     "order": 0
                 },
                 "status": {
-                    "description": "return domains of this registration type",
+                    "description": "Return domains of this registration type",
                     "data_type": "string",
                     "required": false,
                     "value_list": [
@@ -456,7 +469,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -586,7 +603,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -660,7 +681,7 @@
             "read_only": true,
             "parameters": {
                 "email": {
-                    "description": "email query",
+                    "description": "Email query",
                     "data_type": "string",
                     "contains": [
                         "email"
@@ -670,7 +691,7 @@
                     "order": 0
                 },
                 "status": {
-                    "description": "return domains of this registration type",
+                    "description": "Return domains of this registration type",
                     "data_type": "string",
                     "required": false,
                     "value_list": [
@@ -715,7 +736,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.create_date",
@@ -815,7 +840,11 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.domain",
