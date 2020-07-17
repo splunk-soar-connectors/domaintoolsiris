@@ -206,7 +206,7 @@ class DomainToolsConnector(BaseConnector):
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 if error_code == "ascii":
                     error_msg = "Unicode value found. Please enter the valid input."
-                return action_result.set_status(phantom.APP_ERROR, "REST API failed.Error Code: {0}. Error Message: {1}".format(error_code, error_msg))
+                return action_result.set_status(phantom.APP_ERROR, "REST API failed. Error Code: {0}. Error Message: {1}".format(error_code, error_msg))
         else:
             try:
                 self.save_progress("POST: {} body: {}".format(url, data))
@@ -215,7 +215,7 @@ class DomainToolsConnector(BaseConnector):
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 if error_code == "ascii":
                     error_msg = "Unicode value found. Please enter the valid input."
-                return action_result.set_status(phantom.APP_ERROR, "REST API failed.Error Code: {0}. Error Message: {1}".format(error_code, error_msg))
+                return action_result.set_status(phantom.APP_ERROR, "REST API failed. Error Code: {0}. Error Message: {1}".format(error_code, error_msg))
 
         self.save_progress("Parsing response...")
         try:
