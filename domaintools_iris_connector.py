@@ -6,6 +6,7 @@
 # --
 
 # Phantom App imports
+
 import phantom.app as phantom
 
 from phantom.base_connector import BaseConnector
@@ -17,6 +18,7 @@ import sys
 import json
 from datetime import datetime, timedelta
 import hmac
+import codecs
 import hashlib
 
 import requests
@@ -62,7 +64,6 @@ class DomainToolsConnector(BaseConnector):
     def _handle_py_ver_compat_for_input_str(self, input_str):
         """
         This method returns the encoded|original string based on the Python version.
-        :param python_version: Information of the Python version
         :param input_str: Input string to be processed
         :return: input_str (Processed input string based on following logic 'input_str - Python 3; encoded input_str - Python 2')
         """
@@ -74,6 +75,17 @@ class DomainToolsConnector(BaseConnector):
             self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
 
         return input_str
+
+    def _handle_py_ver_for_byte(self, input_str):
+        """
+        This method returns the binary|original string based on the Python version.
+        :param input_str: Input string to be processed
+        :return: input_str (Processed input string based on following logic 'input_str - Python 2; binary data input_str - Python 3')
+        """
+        if self._python_version < 3:
+            return input_str
+        else:
+            return codecs.latin_1_encode(input_str)[0]
 
     def _get_error_message_from_exception(self, e):
         """ This function is used to get appropriate error message from the exception.
@@ -139,7 +151,8 @@ class DomainToolsConnector(BaseConnector):
                                             error.get('message', 'Domain Tools failed to find IP/Domain'))
 
         if status == 503:
-            error_message = error.get('message', "There was an error processing your request. Please try again or contact support (http://www.domaintools.com/support) with questions.")
+            error_message = error.get('message',
+                                      "There was an error processing your request. Please try again or contact support (http://www.domaintools.com/support) with questions.")
             action_result.add_data({})
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
@@ -178,7 +191,8 @@ class DomainToolsConnector(BaseConnector):
 
         sig_message = self._username + timestamp + full_endpoint
 
-        sig = hmac.new(str(self._key), str(sig_message), digestmod=hashlib.sha1)
+        # to handle binary input data, we called the _handle_py_ver_for_byte
+        sig = hmac.new(self._handle_py_ver_for_byte(self._key), self._handle_py_ver_for_byte(sig_message), digestmod=hashlib.sha1)
 
         data['api_username'] = self._username
         data['timestamp'] = timestamp
@@ -189,8 +203,12 @@ class DomainToolsConnector(BaseConnector):
 
         self.save_progress("Connecting to domaintools")
         url_params = "?"
-        for k, search in data.items():
-            url_params = "{}&{}={}".format(url_params, k, search)
+        try:
+            for k, search in data.items():
+                url_params = "{}&{}={}".format(url_params, k, search)
+        except:
+            for k, search in list(data.items()):
+                url_params = "{}&{}={}".format(url_params, k, search)
 
         get = True
         if url_params != "?":
@@ -206,7 +224,9 @@ class DomainToolsConnector(BaseConnector):
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 if error_code == "ascii":
                     error_msg = "Unicode value found. Please enter the valid input."
-                return action_result.set_status(phantom.APP_ERROR, "REST API failed. Error Code: {0}. Error Message: {1}".format(error_code, error_msg))
+                return action_result.set_status(phantom.APP_ERROR,
+                                                "REST API failed. Error Code: {0}. Error Message: {1}".format(
+                                                    error_code, error_msg))
         else:
             try:
                 self.save_progress("POST: {} body: {}".format(url, data))
@@ -215,7 +235,9 @@ class DomainToolsConnector(BaseConnector):
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 if error_code == "ascii":
                     error_msg = "Unicode value found. Please enter the valid input."
-                return action_result.set_status(phantom.APP_ERROR, "REST API failed. Error Code: {0}. Error Message: {1}".format(error_code, error_msg))
+                return action_result.set_status(phantom.APP_ERROR,
+                                                "REST API failed. Error Code: {0}. Error Message: {1}".format(
+                                                    error_code, error_msg))
 
         self.save_progress("Parsing response...")
         try:
@@ -252,7 +274,8 @@ class DomainToolsConnector(BaseConnector):
             action_result.set_status(phantom.APP_ERROR, message, e)
             return action_result.get_status()
 
-        return self.set_status_save_progress(phantom.APP_SUCCESS, 'Successfully connected to domaintools.com.\nTest Connectivity passed')
+        return self.set_status_save_progress(phantom.APP_SUCCESS,
+                                             'Successfully connected to domaintools.com.\nTest Connectivity passed')
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
@@ -269,7 +292,7 @@ class DomainToolsConnector(BaseConnector):
         self.save_progress("Username:", self._handle_py_ver_compat_for_input_str(config['username']))
         self._username = self._handle_py_ver_compat_for_input_str(config['username'])
         # self._username = config['username'].encode('utf-8')
-        self._key = config['key'].encode('utf-8')
+        self._key = self._handle_py_ver_compat_for_input_str(config['key'])
 
         if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity()
@@ -313,19 +336,19 @@ class DomainToolsConnector(BaseConnector):
 
         for a in data[0]['ip']:
             if 'address' in a:
-                ips.append( { 'ip': a['address']['value'], 'type': 'Host IP', 'count': a['address']['count']  } )
+                ips.append({'ip': a['address']['value'], 'type': 'Host IP', 'count': a['address']['count']})
 
         for a in data[0]['mx']:
             if 'ip' in a:
                 for b in a['ip']:
-                    ips.append( { 'ip': b['value'], 'type': 'MX IP', 'count': b['count']  } )
+                    ips.append({'ip': b['value'], 'type': 'MX IP', 'count': b['count']})
 
         for a in data[0]['name_server']:
             if 'ip' in a:
                 for b in a['ip']:
-                    ips.append( { 'ip': b['value'], 'type': 'NS IP', 'count': b['count']  } )
+                    ips.append({'ip': b['value'], 'type': 'NS IP', 'count': b['count']})
 
-        action_result.update_summary({'ip_list': ips })
+        action_result.update_summary({'ip_list': ips})
 
         return action_result.get_status()
 
@@ -358,10 +381,10 @@ class DomainToolsConnector(BaseConnector):
         action_result.update_summary({'domain_risk': data[0]['domain_risk']['risk_score']})
 
         for a in data[0]['domain_risk']['components']:
-            if(a['name'] == "whitelist"):
-              action_result.update_summary({'is_whitelisted': True})
+            if (a['name'] == "whitelist"):
+                action_result.update_summary({'is_whitelisted': True})
             else:
-              action_result.update_summary({a['name']: a['risk_score']})
+                action_result.update_summary({a['name']: a['risk_score']})
 
         return action_result.get_status()
 
