@@ -206,7 +206,6 @@ class DomainToolsConnector(BaseConnector):
         try:
             for k, search in data.items():
                 url_params = "{}&{}={}".format(url_params, k, search)
-                url_params = "{}&{}={}".format(url_params, k, search)
         except:
             for k, search in list(data.items()):
                 url_params = "{}&{}={}".format(url_params, k, search)
