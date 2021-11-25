@@ -1,11 +1,12 @@
 # --
 # File: domaintools_iris_connector.py
 #
-# Copyright (c) 2019-2020 DomainTools, LLC
+# Copyright (c) 2019-2021 DomainTools, LLC
 #
 # --
 
 # Phantom App imports
+
 import phantom.app as phantom
 
 from phantom.base_connector import BaseConnector
@@ -13,9 +14,11 @@ from phantom.action_result import ActionResult
 
 # Imports local to this App
 
+import sys
 import json
 from datetime import datetime, timedelta
 import hmac
+import codecs
 import hashlib
 
 import requests
@@ -35,6 +38,10 @@ class DomainToolsConnector(BaseConnector):
     DOMAINTOOLS = 'api.domaintools.com'
     API_VERSION = 'v1'
 
+    DOMAINTOOLS_ERR_INVALID_URL = "Error connecting to server. Invalid URL."
+    DOMAINTOOLS_ERR_CONNECTION_REFUSED = "Error connecting to server. Connection refused from the server."
+    DOMAINTOOLS_ERR_INVALID_SCHEMA = "Error connecting to server. No connection adapters were found."
+
     def __init__(self):
 
         # Call the BaseConnectors init first
@@ -47,7 +54,46 @@ class DomainToolsConnector(BaseConnector):
     def initialize(self):
         # get the app version
         self.app_version_number = self.get_app_json().get('app_version', '')
+
+        # Fetching the Python major version
+        try:
+            self._python_version = int(sys.version_info[0])
+        except:
+            return self.set_status(phantom.APP_ERROR,
+                                   "Error occurred while fetching the Phantom server's Python major version")
+
         return phantom.APP_SUCCESS
+
+    def _handle_py_ver_for_byte(self, input_str):
+        """
+        This method returns the binary|original string based on the Python version.
+        :param input_str: Input string to be processed
+        :return: input_str (Processed input string based on following logic 'input_str - Python 2; binary data input_str - Python 3')
+        """
+        if self._python_version < 3:
+            return input_str
+        else:
+            return codecs.latin_1_encode(input_str)[0]
+
+    def _get_error_message_from_exception(self, e):
+        """ This function is used to get appropriate error message from the exception.
+        :param e: Exception object
+        :return: error message
+        """
+        error_code = "Error code unavailable"
+        error_msg = "Unknown error occurred. Please check the asset configuration and|or the action parameters."
+
+        try:
+            if e.args:
+                if len(e.args) > 1:
+                    error_code = e.args[0]
+                    error_msg = e.args[1]
+                elif len(e.args) == 1:
+                    error_msg = e.args[0]
+        except:
+            pass
+
+        return error_code, error_msg
 
     def _clean_empty_response(self, response):
         # PAPP-2087 DomainTools - Reverse Email table widget shows contextual action for no domain
@@ -84,8 +130,8 @@ class DomainToolsConnector(BaseConnector):
                                             error.get('message', 'Domain Tools failed to find IP/Domain'))
 
         if status == 503:
-            error_message = 'There was an error processing your request. Please try again or contact ' \
-                            '<a href=\"http://www.domaintools.com/support\">support</a> with questions'
+            error_message = error.get('message',
+                                      "There was an error processing your request. Please try again or contact support (http://www.domaintools.com/support) with questions.")
             action_result.add_data({})
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
@@ -98,8 +144,8 @@ class DomainToolsConnector(BaseConnector):
             else:
                 action_result.add_data(response)
 
-            if response['limit_exceeded']:
-                msg = response['message']
+            if response.get('limit_exceeded'):
+                msg = response.get('message', 'Response limit exceeded, please narrow your search')
                 action_result.update_summary({'Error': msg})
                 return action_result.set_status(phantom.APP_ERROR, msg)
 
@@ -122,9 +168,10 @@ class DomainToolsConnector(BaseConnector):
 
         timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
-        sig_message = self._username + timestamp + full_endpoint
+        sig_message = "{}{}{}".format(self._username, timestamp, full_endpoint)
 
-        sig = hmac.new(str(self._key), str(sig_message), digestmod=hashlib.sha1)
+        # to handle binary input data, we called the _handle_py_ver_for_byte
+        sig = hmac.new(self._handle_py_ver_for_byte(self._key), self._handle_py_ver_for_byte(sig_message), digestmod=hashlib.sha1)
 
         data['api_username'] = self._username
         data['timestamp'] = timestamp
@@ -133,10 +180,14 @@ class DomainToolsConnector(BaseConnector):
         data['app_version'] = self.app_version_number
         data['app_partner'] = 'phantomcyber'
 
-        self.save_progress("Connecting to domaintools")
+        self.save_progress("Connecting to domaintools.com")
         url_params = "?"
-        for k, search in data.items():
-            url_params = "{}&{}={}".format(url_params, k, search)
+        try:
+            for k, search in data.items():
+                url_params = "{}&{}={}".format(url_params, k, search)
+        except:
+            for k, search in list(data.items()):
+                url_params = "{}&{}={}".format(url_params, k, search)
 
         get = True
         if url_params != "?":
@@ -146,22 +197,66 @@ class DomainToolsConnector(BaseConnector):
 
         if get:  # We only want to use POST if we absolutely have to.
             try:
-                self.save_progress("GET: {}".format(url))
+                # We do not need to display the URL on the phantom UI. Hence, adding it as a debug statement.
+                self.debug_print("GET: {}".format(url))
                 r = requests.get(url)
+            except requests.exceptions.InvalidURL as e:
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+                self.debug_print(msg)
+                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_URL)
+            except requests.exceptions.ConnectionError as e:
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+                self.debug_print(msg)
+                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_CONNECTION_REFUSED)
+            except requests.exceptions.InvalidSchema as e:
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+                self.debug_print(msg)
+                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_SCHEMA)
             except Exception as e:
-                return action_result.set_status(phantom.APP_ERROR, "REST API failed", e)
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                if error_code == "ascii":
+                    error_msg = "Unicode value found. Please enter the valid input."
+                return action_result.set_status(phantom.APP_ERROR,
+                                                "REST API failed. Error Code: {0}. Error Message: {1}".format(
+                                                    error_code, error_msg))
         else:
             try:
-                self.save_progress("POST: {} body: {}".format(url, data))
+                # We do not need to display the URL and data on the phantom UI. Hence, adding it as a debug statement.
+                self.debug_print("POST: {} body: {}".format(url, data))
                 r = requests.post(url, data=data)
+            except requests.exceptions.InvalidURL as e:
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+                self.debug_print(msg)
+                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_URL)
+            except requests.exceptions.ConnectionError as e:
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+                self.debug_print(msg)
+                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_CONNECTION_REFUSED)
+            except requests.exceptions.InvalidSchema as e:
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+                self.debug_print(msg)
+                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_SCHEMA)
             except Exception as e:
-                return action_result.set_status(phantom.APP_ERROR, "REST API failed", e)
+                error_code, error_msg = self._get_error_message_from_exception(e)
+                if error_code == "ascii":
+                    error_msg = "Unicode value found. Please enter the valid input."
+                return action_result.set_status(phantom.APP_ERROR,
+                                                "REST API failed. Error Code: {0}. Error Message: {1}".format(
+                                                    error_code, error_msg))
 
         self.save_progress("Parsing response...")
         try:
             response_json = r.json()
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR, "Unable to parse response as a valid JSON", e)
+            error_code, error_msg = self._get_error_message_from_exception(e)
+            msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+            return action_result.set_status(phantom.APP_ERROR, "Unable to parse response as a valid JSON. {}".format(msg))
 
         self.debug_print(r.url)
 
@@ -169,17 +264,14 @@ class DomainToolsConnector(BaseConnector):
         try:
             return self._parse_response(action_result, r, response_json)
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR, 'An error occurred while parsing domaintools reponse', e)
-
-        return phantom.APP_SUCCESS
+            error_code, error_msg = self._get_error_message_from_exception(e)
+            msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+            return action_result.set_status(phantom.APP_ERROR, 'An error occurred while parsing domaintools response. {}'.format(msg))
 
     def _test_connectivity(self):
         params = {'domain': "domaintools.net"}
 
         self.save_progress("Performing test query")
-
-        # Progress
-        self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, 'domaintools.com')
 
         action_result = self.add_action_result(ActionResult(dict(params)))
 
@@ -189,10 +281,12 @@ class DomainToolsConnector(BaseConnector):
                 raise Exception(action_result.get_message())
         except Exception as e:
             message = 'Failed to connect to domaintools.com'
-            action_result.set_status(phantom.APP_ERROR, message, e)
-            return action_result.get_status()
+            self.save_progress("{}. {}".format(message, e))
+            return action_result.set_status(phantom.APP_ERROR)
 
-        return self.set_status_save_progress(phantom.APP_SUCCESS, 'Successfully connected to domaintools.com.\nTest Connectivity passed')
+        self.save_progress('Successfully connected to domaintools.com')
+        self.save_progress('Test Connectivity passed')
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
@@ -200,14 +294,14 @@ class DomainToolsConnector(BaseConnector):
         # Get the action that we are supposed to execute for this App Run
         action_id = self.get_action_identifier()
 
-        self.debug_print("action_id", self.get_action_identifier())
+        self.debug_print("action_id: {}".format(self.get_action_identifier()))
 
         # Get the config
         config = self.get_config()
 
         self._ssl = config.get('ssl', False)
-        self._username = config['username'].encode('utf-8')
-        self._key = config['key'].encode('utf-8')
+        self._username = config['username']
+        self._key = config['key']
 
         if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity()
@@ -249,27 +343,28 @@ class DomainToolsConnector(BaseConnector):
 
         ips = []
 
-        for a in data[0]['ip']:
+        for a in data[0].get('ip', []):
             if 'address' in a:
-                ips.append( { 'ip': a['address']['value'], 'type': 'Host IP', 'count': a['address']['count']  } )
+                ips.append({'ip': a.get('address', {}).get('value'), 'type': 'Host IP', 'count': a.get('address', {}).get('count')})
 
-        for a in data[0]['mx']:
+        for a in data[0].get('mx', []):
             if 'ip' in a:
                 for b in a['ip']:
-                    ips.append( { 'ip': b['value'], 'type': 'MX IP', 'count': b['count']  } )
+                    ips.append({'ip': b.get('value'), 'type': 'MX IP', 'count': b.get('count')})
 
-        for a in data[0]['name_server']:
+        for a in data[0].get('name_server', []):
             if 'ip' in a:
-                for b in a['ip']:
-                    ips.append( { 'ip': b['value'], 'type': 'NS IP', 'count': b['count']  } )
+                for b in a.get('ip'):
+                    ips.append({'ip': b.get('value'), 'type': 'NS IP', 'count': b.get('count')})
 
-        action_result.update_summary({'ip_list': ips })
+        action_result.update_summary({'ip_list': ips})
 
         return action_result.get_status()
 
     def _domain_enrich(self, param):
         action_result = self.add_action_result(ActionResult(param))
-        params = {'domain': param.get('domain')}
+        domain_name = param.get('domain')
+        params = {'domain': domain_name}
         return self._do_domain_enrich(action_result, params)
 
     def _do_domain_enrich(self, action_result, params):
@@ -292,13 +387,13 @@ class DomainToolsConnector(BaseConnector):
         if not data:
             return action_result.get_status()
 
-        action_result.update_summary({'domain_risk': data[0]['domain_risk']['risk_score']})
+        action_result.update_summary({'domain_risk': data[0].get('domain_risk', {}).get('risk_score')})
 
-        for a in data[0]['domain_risk']['components']:
-            if(a['name'] == "whitelist"):
-              action_result.update_summary({'is_whitelisted': True})
+        for a in data[0].get('domain_risk', {}).get('components', []):
+            if a.get('name', '') == "whitelist":
+                action_result.update_summary({'is_whitelisted': True})
             else:
-              action_result.update_summary({a['name']: a['risk_score']})
+                action_result.update_summary({a.get('name'): a.get('risk_score')})
 
         return action_result.get_status()
 
@@ -347,20 +442,66 @@ class DomainToolsConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import sys
+    # import pudb
+    import argparse
 
-    if (len(sys.argv) < 2):
-        print "No test json specified as input"
-        exit(0)
+    # pudb.set_trace()
 
-    with open(sys.argv[1]) as f:
+    argparser = argparse.ArgumentParser()
+
+    argparser.add_argument('input_test_json', help='Input Test JSON file')
+    argparser.add_argument('-u', '--username', help='username', required=False)
+    argparser.add_argument('-p', '--password', help='password', required=False)
+
+    args = argparser.parse_args()
+    session_id = None
+
+    username = args.username
+    password = args.password
+
+    if (username is not None and password is None):
+        # User specified a username but not a password, so ask
+        import getpass
+
+        password = getpass.getpass("Password: ")
+
+    if (username and password):
+        try:
+            login_url = DomainToolsConnector._get_phantom_base_url() + '/login'
+
+            print("Accessing the Login page")
+            r = requests.get(login_url, verify=False)
+            csrftoken = r.cookies['csrftoken']
+
+            data = dict()
+            data['username'] = username
+            data['password'] = password
+            data['csrfmiddlewaretoken'] = csrftoken
+
+            headers = dict()
+            headers['Cookie'] = 'csrftoken=' + csrftoken
+            headers['Referer'] = login_url
+
+            print("Logging into Platform to get the session id")
+            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            session_id = r2.cookies['sessionid']
+        except Exception as e:
+            print("Unable to get session id from the platform. Error: " + str(e))
+            exit(1)
+
+    with open(args.input_test_json) as f:
         in_json = f.read()
         in_json = json.loads(in_json)
         print(json.dumps(in_json, indent=4))
 
         connector = DomainToolsConnector()
         connector.print_progress_message = True
+
+        if (session_id is not None):
+            in_json['user_session_token'] = session_id
+            connector._set_csrf_info(csrftoken, headers['Referer'])
+
         ret_val = connector._handle_action(json.dumps(in_json), None)
-        print (json.dumps(json.loads(ret_val), indent=4))
+        print(json.dumps(json.loads(ret_val), indent=4))
 
     exit(0)

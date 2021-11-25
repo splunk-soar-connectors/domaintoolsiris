@@ -1,7 +1,7 @@
 # --
 # File: iris_view.py
 #
-# Copyright (c) 2019-2020 DomainTools, LLC
+# Copyright (c) 2019-2021 DomainTools, LLC
 #
 # --
 
@@ -9,9 +9,9 @@ import collections
 import copy
 
 
-def unique_list(l):
+def unique_list(raw_list):
     ulist = []
-    [ulist.append(x) for x in l if x not in ulist]
+    [ulist.append(x) for x in raw_list if x not in ulist]
     return ulist
 
 

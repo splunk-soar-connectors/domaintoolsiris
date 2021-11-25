@@ -1,18 +1,19 @@
 {
     "appid": "f18b7ef9-0cbd-4dbb-b8ed-ce62e17f0603",
     "name": "DomainTools Iris",
-    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris. For the playbooks on the domain tool data visit https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom",
+    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris",
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019-2020 DomainTools, LLC",
-    "main_module": "domaintools_iris_connector.pyc",
-    "app_version": "1.1.0",
-    "utctime_updated": "2019-11-11T22:29:16.000000Z",
+    "license": "Copyright (c) 2019-2021 DomainTools, LLC",
+    "main_module": "domaintools_iris_connector.py",
+    "app_version": "1.2.0",
+    "utctime_updated": "2021-10-21T22:29:16.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris",
     "product_version_regex": ".*",
-    "min_phantom_version": "4.5.15922",
+    "min_phantom_version": "5.0.0",
+    "python_version": "3",
     "logo": "logo_domaintools_iris.svg",
     "logo_dark": "logo_domaintools_iris_dark.svg",
     "configuration": {
@@ -74,14 +75,6 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
                     "data_path": "action_result.parameter.domain",
                     "data_type": "string",
                     "contains": [
@@ -94,12 +87,28 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.summary.domain_risk",
                     "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.summary.is_whitelist",
-                    "data_type": "boolean"
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
                 },
                 {
                     "data_path": "action_result.summary.proximity",
@@ -120,10 +129,6 @@
                 {
                     "data_path": "action_result.summary.threat_profile_spam",
                     "data_type": "numeric"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string"
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -195,7 +200,6 @@
                 "status": {
                     "description": "Return domains of this registration type",
                     "data_type": "string",
-                    "required": false,
                     "value_list": [
                         "Any",
                         "Active",
@@ -207,25 +211,21 @@
                 "data_updated_after": {
                     "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 3
                 },
                 "tld": {
                     "description": "Limit results to only include domains in a specific top-level domain (i.e. \u201ctld=com\u201d or \u201ctld=ru\u201d)",
                     "data_type": "string",
-                    "required": false,
                     "order": 4
                 },
                 "create_date": {
                     "description": "Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 5
                 },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 6
                 }
             },
@@ -236,14 +236,6 @@
                 "height": 10
             },
             "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
                 {
                     "data_path": "action_result.parameter.create_date",
                     "data_type": "string"
@@ -294,11 +286,19 @@
                     "column_name": "Risk Score"
                 },
                 {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
                     "data_type": "string"
                 },
                 {
@@ -345,14 +345,6 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "failed",
-                        "success"
-                    ]
-                },
-                {
                     "data_path": "action_result.parameter.domain",
                     "data_type": "string",
                     "contains": [
@@ -362,6 +354,18 @@
                 },
                 {
                     "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
                     "data_type": "string"
                 },
                 {
@@ -384,10 +388,6 @@
                     "data_type": "string",
                     "column_order": 1,
                     "column_name": "Type"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string"
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -426,7 +426,6 @@
                 "status": {
                     "description": "Return domains of this registration type",
                     "data_type": "string",
-                    "required": false,
                     "value_list": [
                         "Any",
                         "Active",
@@ -438,25 +437,21 @@
                 "data_updated_after": {
                     "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 2
                 },
                 "tld": {
                     "description": "Limit results to only include domains in a specific top-level domain (i.e. \u201ctld=com\u201d or \u201ctld=ru\u201d)",
                     "data_type": "string",
-                    "required": false,
                     "order": 3
                 },
                 "create_date": {
                     "description": "Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 4
                 },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 5
                 }
             },
@@ -467,14 +462,6 @@
                 "title": "Reverse IP"
             },
             "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
                 {
                     "data_path": "action_result.parameter.create_date",
                     "data_type": "string"
@@ -520,11 +507,19 @@
                     "column_name": "Risk Score"
                 },
                 {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
                     "data_type": "string"
                 },
                 {
@@ -560,7 +555,6 @@
                 "status": {
                     "description": "Return domains of this registration type",
                     "data_type": "string",
-                    "required": false,
                     "value_list": [
                         "Any",
                         "Active",
@@ -572,25 +566,21 @@
                 "data_updated_after": {
                     "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 2
                 },
                 "tld": {
                     "description": "Limit results to only include domains in a specific top-level domain (i.e. \u201ctld=com\u201d or \u201ctld=ru\u201d)",
                     "data_type": "string",
-                    "required": false,
                     "order": 3
                 },
                 "create_date": {
                     "description": "Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 4
                 },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 5
                 }
             },
@@ -601,14 +591,6 @@
                 "title": "Iris Search"
             },
             "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "failed",
-                        "success"
-                    ]
-                },
                 {
                     "data_path": "action_result.parameter.create_date",
                     "data_type": "string"
@@ -649,11 +631,19 @@
                     "column_name": "Risk Score"
                 },
                 {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
                     "data_type": "string"
                 },
                 {
@@ -693,7 +683,6 @@
                 "status": {
                     "description": "Return domains of this registration type",
                     "data_type": "string",
-                    "required": false,
                     "value_list": [
                         "Any",
                         "Active",
@@ -705,25 +694,21 @@
                 "data_updated_after": {
                     "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 2
                 },
                 "tld": {
                     "description": "Limit results to only include domains in a specific top-level domain (i.e. \u201ctld=com\u201d or \u201ctld=ru\u201d)",
                     "data_type": "string",
-                    "required": false,
                     "order": 3
                 },
                 "create_date": {
                     "description": "Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 4
                 },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "required": false,
                     "order": 5
                 }
             },
@@ -734,14 +719,6 @@
                 "title": "Reverse Email"
             },
             "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
                 {
                     "data_path": "action_result.parameter.create_date",
                     "data_type": "string"
@@ -787,11 +764,19 @@
                     "column_name": "Risk Score"
                 },
                 {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
                     "data_type": "string"
                 },
                 {
@@ -838,14 +823,6 @@
                 "view": "iris_view.display_domain_profile"
             },
             "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "failed",
-                        "success"
-                    ]
-                },
                 {
                     "data_path": "action_result.parameter.domain",
                     "data_type": "string",
@@ -1355,11 +1332,19 @@
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
                     "data_type": "string"
                 },
                 {
