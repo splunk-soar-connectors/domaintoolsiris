@@ -52,11 +52,11 @@ def render_list(list_obj):
         if type(item) is dict:
             if "name" in item and 'risk_score' in item:
               title_str = item['name'].replace('_', ' ').strip()
-              if item['name'] != "whitelist":
+              if item['name'] != "zerolist":
                 ret_str += "<span style='display:inline-block;min-width:140px;vertical-align:top;'>" \
                            + title_str.title() + ":</span> " + create_score_span(item['risk_score']) + "\n"
               else:
-                ret_str += "Whitelist\n"
+                ret_str += "Zerolist\n"
             else:
               flattened = flatten(item)
               for k in flattened:
@@ -94,11 +94,15 @@ def get_ctx_result(result):
             ctx_result['sorted_data'].append((key, data_value))
 
         # handle risk score item stuff
-        rs_index = [y[0] for y in ctx_result['sorted_data']].index('domain risk score')
-        rs_item = ctx_result['sorted_data'].pop(rs_index)
-        span = create_score_span(rs_item[1])
-        new_tuple = ("domain risk score", span)
-        ctx_result['sorted_data'].insert(1, new_tuple)
+        if('risk_score' in data[0]['domain_risk']):
+            rs_index = [y[0] for y in ctx_result['sorted_data']].index('domain risk score')
+            rs_item = ctx_result['sorted_data'].pop(rs_index)
+            span = create_score_span(rs_item[1])
+            new_tuple = ("domain risk score", span)
+            ctx_result['sorted_data'].insert(1, new_tuple)
+        else:
+            new_tuple = ("domain risk score", "")
+            ctx_result['sorted_data'].insert(1, new_tuple)
 
     return ctx_result
 
