@@ -131,7 +131,8 @@ class DomainToolsConnector(BaseConnector):
 
         if status == 503:
             error_message = error.get('message',
-                                      "There was an error processing your request. Please try again or contact support (http://www.domaintools.com/support) with questions.")
+                                      ("There was an error processing your request. "
+                                       "Please try again or contact support (http://www.domaintools.com/support) with questions."))
             action_result.add_data({})
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
