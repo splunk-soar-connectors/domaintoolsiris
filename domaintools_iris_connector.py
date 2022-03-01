@@ -309,23 +309,17 @@ class DomainToolsConnector(BaseConnector):
         elif action_id == self.ACTION_ID_PIVOT:
             ret_val = self._pivot_action(param)
         elif action_id == self.ACTION_ID_REVERSE_IP:
-            updates = {'pivot_type': 'ip', 'query_value': param['ip'], 'ip': param['ip']}
-            param.update(updates)
-            ret_val = self._pivot_action(param)
+            ret_val = self._reverse_lookup_ip(param)
         elif action_id == self.ACTION_ID_REVERSE_EMAIL:
-            updates = {'pivot_type': 'email', 'query_value': param['email'], 'email': param['email']}
-            param.update(updates)
-            ret_val = self._pivot_action(param)
+            ret_val = self._reverse_whois_email(param)
         elif action_id == self.ACTION_ID_REVERSE_DOMAIN:
-            ret_val = self._reverse_domain(param)
+            ret_val = self._reverse_lookup_domain(param)
         elif action_id == self.ACTION_ID_LOAD_HASH:
-            data = {'pivot_type': 'search_hash', 'query_value': param['hash'], 'hash': param['hash']}
-            param.update(data)
-            ret_val = self._pivot_action(param)
+            ret_val = self._load_hash(param)
 
         return ret_val
 
-    def _reverse_domain(self, param):
+    def _reverse_lookup_domain(self, param):
         action_result = self.add_action_result(ActionResult(param))
         params = {'domain': param.get('domain')}
         ret_val = self._do_query('iris-investigate', action_result, data=params)
@@ -359,9 +353,11 @@ class DomainToolsConnector(BaseConnector):
         return action_result.get_status()
 
     def _domain_enrich(self, param):
+        self.save_progress("Starting domain_enrich action.")
         action_result = self.add_action_result(ActionResult(param))
         domain_name = param.get('domain')
         params = {'domain': domain_name}
+        self.save_progress("Completed domain_enrich action.")
         return self._do_domain_enrich(action_result, params)
 
     def _do_domain_enrich(self, action_result, params):
@@ -393,6 +389,21 @@ class DomainToolsConnector(BaseConnector):
                 action_result.update_summary({a.get('name'): a.get('risk_score')})
 
         return action_result.get_status()
+
+    def _reverse_lookup_ip(self, param):
+        updates = {'pivot_type': 'ip', 'query_value': param['ip'], 'ip': param['ip']}
+        param.update(updates)
+        return self._pivot_action(param)
+
+    def _reverse_whois_email(self, param):
+        updates = {'pivot_type': 'email', 'query_value': param['email'], 'email': param['email']}
+        param.update(updates)
+        return self._pivot_action(param)
+
+    def _load_hash(self, param):
+        data = {'pivot_type': 'search_hash', 'query_value': param['hash'], 'hash': param['hash']}
+        param.update(data)
+        return self._pivot_action(param)
 
     def _pivot_action(self, param):
         action_result = self.add_action_result(ActionResult(param))
