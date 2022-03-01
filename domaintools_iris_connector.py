@@ -19,10 +19,6 @@ import requests
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
-# Imports local to this App
-
-
-
 
 # Define the App Class
 class DomainToolsConnector(BaseConnector):
