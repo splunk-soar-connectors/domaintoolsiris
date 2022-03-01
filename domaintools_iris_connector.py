@@ -7,21 +7,21 @@
 
 # Phantom App imports
 
-import phantom.app as phantom
+import codecs
+import hashlib
+import hmac
+import json
+import sys
+from datetime import datetime, timedelta
 
-from phantom.base_connector import BaseConnector
+import phantom.app as phantom
+import requests
 from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 # Imports local to this App
 
-import sys
-import json
-from datetime import datetime, timedelta
-import hmac
-import codecs
-import hashlib
 
-import requests
 
 
 # Define the App Class
