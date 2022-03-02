@@ -196,7 +196,7 @@ class DomainToolsConnector(BaseConnector):
             try:
                 # We do not need to display the URL on the phantom UI. Hence, adding it as a debug statement.
                 self.debug_print("GET: {}".format(url))
-                r = requests.get(url)
+                r = requests.get(url, timeout=5)
             except requests.exceptions.InvalidURL as e:
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
@@ -223,7 +223,7 @@ class DomainToolsConnector(BaseConnector):
             try:
                 # We do not need to display the URL and data on the phantom UI. Hence, adding it as a debug statement.
                 self.debug_print("POST: {} body: {}".format(url, data))
-                r = requests.post(url, data=data)
+                r = requests.post(url, data=data, timeout=5)
             except requests.exceptions.InvalidURL as e:
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
@@ -478,7 +478,7 @@ if __name__ == '__main__':
             login_url = DomainToolsConnector._get_phantom_base_url() + '/login'
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, timeout=5)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -491,11 +491,11 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, data=data, headers=headers, timeout=5)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -512,4 +512,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
