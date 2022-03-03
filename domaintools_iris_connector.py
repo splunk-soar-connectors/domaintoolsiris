@@ -7,21 +7,17 @@
 
 # Phantom App imports
 
-import phantom.app as phantom
-
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
-# Imports local to this App
-
-import sys
-import json
-from datetime import datetime, timedelta
-import hmac
 import codecs
 import hashlib
+import hmac
+import json
+import sys
+from datetime import datetime, timedelta
 
+import phantom.app as phantom
 import requests
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 
 # Define the App Class
@@ -131,7 +127,8 @@ class DomainToolsConnector(BaseConnector):
 
         if status == 503:
             error_message = error.get('message',
-                                      "There was an error processing your request. Please try again or contact support (http://www.domaintools.com/support) with questions.")
+                                      ("There was an error processing your request. "
+                                       "Please try again or contact support (http://www.domaintools.com/support) with questions."))
             action_result.add_data({})
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
@@ -199,7 +196,7 @@ class DomainToolsConnector(BaseConnector):
             try:
                 # We do not need to display the URL on the phantom UI. Hence, adding it as a debug statement.
                 self.debug_print("GET: {}".format(url))
-                r = requests.get(url)
+                r = requests.get(url, timeout=60)
             except requests.exceptions.InvalidURL as e:
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
@@ -226,7 +223,7 @@ class DomainToolsConnector(BaseConnector):
             try:
                 # We do not need to display the URL and data on the phantom UI. Hence, adding it as a debug statement.
                 self.debug_print("POST: {} body: {}".format(url, data))
-                r = requests.post(url, data=data)
+                r = requests.post(url, data=data, timeout=60)
             except requests.exceptions.InvalidURL as e:
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
@@ -312,23 +309,17 @@ class DomainToolsConnector(BaseConnector):
         elif action_id == self.ACTION_ID_PIVOT:
             ret_val = self._pivot_action(param)
         elif action_id == self.ACTION_ID_REVERSE_IP:
-            updates = {'pivot_type': 'ip', 'query_value': param['ip'], 'ip': param['ip']}
-            param.update(updates)
-            ret_val = self._pivot_action(param)
+            ret_val = self._reverse_lookup_ip(param)
         elif action_id == self.ACTION_ID_REVERSE_EMAIL:
-            updates = {'pivot_type': 'email', 'query_value': param['email'], 'email': param['email']}
-            param.update(updates)
-            ret_val = self._pivot_action(param)
+            ret_val = self._reverse_whois_email(param)
         elif action_id == self.ACTION_ID_REVERSE_DOMAIN:
-            ret_val = self._reverse_domain(param)
+            ret_val = self._reverse_lookup_domain(param)
         elif action_id == self.ACTION_ID_LOAD_HASH:
-            data = {'pivot_type': 'search_hash', 'query_value': param['hash'], 'hash': param['hash']}
-            param.update(data)
-            ret_val = self._pivot_action(param)
+            ret_val = self._load_hash(param)
 
         return ret_val
 
-    def _reverse_domain(self, param):
+    def _reverse_lookup_domain(self, param):
         action_result = self.add_action_result(ActionResult(param))
         params = {'domain': param.get('domain')}
         ret_val = self._do_query('iris-investigate', action_result, data=params)
@@ -362,9 +353,11 @@ class DomainToolsConnector(BaseConnector):
         return action_result.get_status()
 
     def _domain_enrich(self, param):
+        self.save_progress("Starting domain_enrich action.")
         action_result = self.add_action_result(ActionResult(param))
         domain_name = param.get('domain')
         params = {'domain': domain_name}
+        self.save_progress("Completed domain_enrich action.")
         return self._do_domain_enrich(action_result, params)
 
     def _do_domain_enrich(self, action_result, params):
@@ -396,6 +389,21 @@ class DomainToolsConnector(BaseConnector):
                 action_result.update_summary({a.get('name'): a.get('risk_score')})
 
         return action_result.get_status()
+
+    def _reverse_lookup_ip(self, param):
+        updates = {'pivot_type': 'ip', 'query_value': param['ip'], 'ip': param['ip']}
+        param.update(updates)
+        return self._pivot_action(param)
+
+    def _reverse_whois_email(self, param):
+        updates = {'pivot_type': 'email', 'query_value': param['email'], 'email': param['email']}
+        param.update(updates)
+        return self._pivot_action(param)
+
+    def _load_hash(self, param):
+        data = {'pivot_type': 'search_hash', 'query_value': param['hash'], 'hash': param['hash']}
+        param.update(data)
+        return self._pivot_action(param)
 
     def _pivot_action(self, param):
         action_result = self.add_action_result(ActionResult(param))
@@ -470,7 +478,7 @@ if __name__ == '__main__':
             login_url = DomainToolsConnector._get_phantom_base_url() + '/login'
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, timeout=60)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -483,11 +491,11 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, data=data, headers=headers, timeout=60)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -504,4 +512,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
