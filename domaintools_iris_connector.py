@@ -196,7 +196,7 @@ class DomainToolsConnector(BaseConnector):
             try:
                 # We do not need to display the URL on the phantom UI. Hence, adding it as a debug statement.
                 self.debug_print("GET: {}".format(url))
-                r = requests.get(url, timeout=5)
+                r = requests.get(url, timeout=60)
             except requests.exceptions.InvalidURL as e:
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
@@ -223,7 +223,7 @@ class DomainToolsConnector(BaseConnector):
             try:
                 # We do not need to display the URL and data on the phantom UI. Hence, adding it as a debug statement.
                 self.debug_print("POST: {} body: {}".format(url, data))
-                r = requests.post(url, data=data, timeout=5)
+                r = requests.post(url, data=data, timeout=60)
             except requests.exceptions.InvalidURL as e:
                 error_code, error_msg = self._get_error_message_from_exception(e)
                 msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
@@ -478,7 +478,7 @@ if __name__ == '__main__':
             login_url = DomainToolsConnector._get_phantom_base_url() + '/login'
 
             print("Accessing the Login page")
-            r = requests.get(login_url, timeout=5)
+            r = requests.get(login_url, timeout=60)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -491,7 +491,7 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, data=data, headers=headers, timeout=5)
+            r2 = requests.post(login_url, data=data, headers=headers, timeout=60)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
