@@ -7,8 +7,8 @@
     "type": "information",
     "license": "Copyright (c) 2019-2021 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.2.1",
-    "utctime_updated": "2022-01-07T21:37:30.000000Z",
+    "app_version": "1.2.2",
+    "utctime_updated": "2022-04-04T19:19:15.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris",
     "product_version_regex": ".*",
@@ -17,8 +17,12 @@
     "logo": "logo_domaintools_iris.svg",
     "logo_dark": "logo_domaintools_iris_dark.svg",
     "contributors": [
-        {"name": "Wesley Agena"},
-        {"name":  "Chuck Woodraska"}
+        {
+            "name": "Wesley Agena"
+        },
+        {
+            "name": "Chuck Woodraska"
+        }
     ],
     "configuration": {
         "username": {
