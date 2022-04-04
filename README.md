@@ -2,7 +2,7 @@
 # DomainTools Iris
 
 Publisher: DomainTools  
-Connector Version: 1\.2\.1  
+Connector Version: 1\.2\.2  
 Product Vendor: DomainTools  
 Product Name: DomainTools Iris  
 Product Version Supported (regex): "\.\*"  
@@ -25,7 +25,7 @@ This app supports investigative actions to profile domain names, get risk scores
 [comment]: # "and limitations under the License."
 [comment]: # ""
 **Note:** For the playbooks on the domain tools data, visit
-[this](https://github.com/DomainTools/playbooks/tree/main/Splunk%20SOAR) Github repository.
+[this](https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom) Github repository.
 
 
 ### Configuration Variables
