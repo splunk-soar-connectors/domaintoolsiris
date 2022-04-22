@@ -1,3 +1,2 @@
 **Unreleased**
-Updated Branding of Iris to Iris Investigate
-Minor documentation clean-up items
+* Updated Branding of Iris To Iris Investigate []
