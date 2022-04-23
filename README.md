@@ -25,17 +25,8 @@ This app supports investigative actions to profile domain names, get risk scores
 [comment]: # "and limitations under the License."
 [comment]: # ""
 **Note:** For the playbooks on the domain tools data, visit
-[this](https://github.com/DomainTools/playbooks/tree/main/Splunk%20SOAR) Github repository.
+[this](https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom) Github repository.
 
-## Port Information
-
-The app uses HTTP/ HTTPS protocol for communicating with the DomainTools API server. Below are the default
-ports used by Splunk SOAR.
-
-|         Service Name | Transport Protocol | Port |
-|----------------------|--------------------|------|
-|         http         | tcp                | 80   |
-|         https        | tcp                | 443  |
 
 ### Configuration Variables
 The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a DomainTools Iris Investigate asset in SOAR.
@@ -108,7 +99,7 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **query\_value** |  required  | Value to query | string |  `url`  `domain`  `ip`  `email` 
 **pivot\_type** |  required  | Field to pivot on | string | 
 **status** |  optional  | Return domains of this registration type | string | 
-**data\_updated\_after** |  optional  | Iris investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
