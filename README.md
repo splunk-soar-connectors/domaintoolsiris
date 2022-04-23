@@ -1,17 +1,17 @@
 [comment]: # "Auto-generated SOAR connector documentation"
-# DomainTools Iris
+# DomainTools Iris Investigate
 
 Publisher: DomainTools  
-Connector Version: 1\.2\.2  
+Connector Version: 1\.2\.3  
 Product Vendor: DomainTools  
-Product Name: DomainTools Iris  
+Product Name: DomainTools Iris Investigate  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 5\.1\.0  
+Minimum Product Version: 5\.2\.0  
 
-This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris
+This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
 
 [comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2019-2021 DomainTools, LLC"
+[comment]: # "  Copyright (c) 2019-2022 DomainTools, LLC"
 [comment]: # ""
 [comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "you may not use this file except in compliance with the License."
@@ -29,7 +29,7 @@ This app supports investigative actions to profile domain names, get risk scores
 
 
 ### Configuration Variables
-The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a DomainTools Iris asset in SOAR.
+The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a DomainTools Iris Investigate asset in SOAR.
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
@@ -40,12 +40,12 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity  
 [domain reputation](#action-domain-reputation) - Evaluates the risk of a given domain  
-[pivot action](#action-pivot-action) - Find domains connected by any supported Iris search parameter  
+[pivot action](#action-pivot-action) - Find domains connected by any supported Iris Investigate search parameter  
 [reverse domain](#action-reverse-domain) - Extract IPs from a single domain response for further pivoting  
 [reverse ip](#action-reverse-ip) - Find domains with web hosting IP, NS IP or MX IP  
-[load hash](#action-load-hash) - Load or monitor Iris search results by Iris export hash  
+[load hash](#action-load-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash  
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate  
-[whois domain](#action-whois-domain) - Get all Iris data for a domain, including Whois  
+[whois domain](#action-whois-domain) - Get all Iris Investigate data for a domain, including Whois  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -88,7 +88,7 @@ summary\.total\_objects | numeric |
 summary\.total\_objects\_successful | numeric |   
 
 ## action: 'pivot action'
-Find domains connected by any supported Iris search parameter
+Find domains connected by any supported Iris Investigate search parameter
 
 Type: **investigate**  
 Read only: **True**
@@ -99,7 +99,7 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **query\_value** |  required  | Value to query | string |  `url`  `domain`  `ip`  `email` 
 **pivot\_type** |  required  | Field to pivot on | string | 
 **status** |  optional  | Return domains of this registration type | string | 
-**data\_updated\_after** |  optional  | Iris records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
@@ -157,7 +157,7 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **ip** |  required  | IP address to query | string |  `ip` 
 **status** |  optional  | Return domains of this registration type | string | 
-**data\_updated\_after** |  optional  | Iris records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
@@ -180,7 +180,7 @@ summary\.total\_objects | numeric |
 summary\.total\_objects\_successful | numeric |   
 
 ## action: 'load hash'
-Load or monitor Iris search results by Iris export hash
+Load or monitor Iris Investigate search results by Iris Investigate export hash
 
 Type: **investigate**  
 Read only: **True**
@@ -188,9 +188,9 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**hash** |  required  | Iris search hash to load | string | 
+**hash** |  required  | Iris Investigate search hash to load | string | 
 **status** |  optional  | Return domains of this registration type | string | 
-**data\_updated\_after** |  optional  | Iris records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
@@ -223,7 +223,7 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **email** |  required  | Email query | string |  `email` 
 **status** |  optional  | Return domains of this registration type | string | 
-**data\_updated\_after** |  optional  | Iris records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
@@ -246,7 +246,7 @@ summary\.total\_objects | numeric |
 summary\.total\_objects\_successful | numeric |   
 
 ## action: 'whois domain'
-Get all Iris data for a domain, including Whois
+Get all Iris Investigate data for a domain, including Whois
 
 Type: **investigate**  
 Read only: **True**
