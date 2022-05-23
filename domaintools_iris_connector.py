@@ -5,26 +5,36 @@
 #
 # --
 
-# Phantom App imports
+# Splunk SOAR App imports
+import phantom.app as phantom
 
+from phantom.base_connector import BaseConnector
+from phantom.action_result import ActionResult
+
+# Imports local to this App
+import sys
+import json
+from datetime import datetime, timedelta
+import hmac
 import codecs
 import hashlib
-import hmac
-import json
-import sys
-from datetime import datetime, timedelta
-
-import phantom.app as phantom
+import tldextract
+import re
+from domaintools import API
+import hashlib
 import requests
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
+
+
+TLD_LIST_CACHE_FILE_NAME = "public_suffix_list.dat"
 
 
 # Define the App Class
 class DomainToolsConnector(BaseConnector):
     ACTION_ID_DOMAIN_REPUTATION = "domain_reputation"
     ACTION_ID_DOMAIN_ENRICH = "domain_enrich"
-    ACTION_ID_WHOIS_DOMAIN = "whois_domain"
+    ACTION_ID_DOMAIN_INVESTIGATE = "domain_investigate"
     ACTION_ID_PIVOT = "pivot_action"
     ACTION_ID_REVERSE_IP = "reverse_lookup_ip"
     ACTION_ID_REVERSE_EMAIL = "reverse_whois_email"
@@ -46,17 +56,22 @@ class DomainToolsConnector(BaseConnector):
         self._ssl = None
         self._username = None
         self._key = None
+        self._domain = None
 
     def initialize(self):
-        # get the app version
-        self.app_version_number = self.get_app_json().get('app_version', '')
+        # get the app configuation - super class pulls domaintools_iris.json
+        app_json_configuration = self.get_app_json()
+
+        self.app_version_number = app_json_configuration.get('app_version', '')
+        self.app_name = app_json_configuration.get('name', '')
+        self.app_partner = 'splunk_soar'
 
         # Fetching the Python major version
         try:
             self._python_version = int(sys.version_info[0])
         except:
             return self.set_status(phantom.APP_ERROR,
-                                   "Error occurred while fetching the Phantom server's Python major version")
+                                   "Error occurred while getting the Splunk SOAR server's Python major version")
 
         return phantom.APP_SUCCESS
 
@@ -96,15 +111,15 @@ class DomainToolsConnector(BaseConnector):
         if response.get('domains') == []:
             del response['domains']
 
-    def _parse_response(self, action_result, r, response_json):
+    def _parse_response(self, action_result, response_json):
         """
         No need to do exception handling, since this function call has a try...except around it.
         If you do want to catch a specific exception to generate proper error strings, go ahead
         """
 
-        status = r.status_code
         response = response_json.get('response')
         error = response_json.get('error', {})
+        status = int(error.get('code', 200))
 
         if status == 400:
             error_message = 'You must include at least one search parameter from the list: domain, ip, email, ' \
@@ -151,139 +166,82 @@ class DomainToolsConnector(BaseConnector):
         return action_result.set_status(phantom.APP_ERROR,
                                         error.get('message', 'An unknown error occurred while querying domaintools'))
 
-    def _do_query(self, endpoint, action_result, data=None):
-        if data is None:
-            data = dict()
+    def _do_query(self, service, action_result, query_args=None):
+        """
+        Call DT API and send the response to be parsed
+        This function uses the DomainTools Python API to get the requested data from an action.
+        Documentation: https://github.com/DomainTools/python_api
+        
+        :param: service (str): Currently only using iris_investigate, this the function call for dt api
+        :param: action_result (obj): Splunk SOAR object
+        :param: query_args (str): Parameters to send the service
+        :return: APP_SUCCESS or APP_ERROR
+        """
 
-        ssl = 's'
+        self.save_progress("Connecting to domaintools")
 
-        if not self._ssl:
-            ssl = ''
-
-        full_endpoint = '/{}/{}/'.format(self.API_VERSION, endpoint)
-        url = 'http{}://{}{}'.format(ssl, self.DOMAINTOOLS, full_endpoint)
-
-        timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
-        sig_message = "{}{}{}".format(self._username, timestamp, full_endpoint)
-
-        # to handle binary input data, we called the _handle_py_ver_for_byte
-        sig = hmac.new(self._handle_py_ver_for_byte(self._key), self._handle_py_ver_for_byte(sig_message), digestmod=hashlib.sha1)
-
-        data['api_username'] = self._username
-        data['timestamp'] = timestamp
-        data['signature'] = sig.hexdigest()
-        data['app_name'] = 'phantom_domaintools_iris'
-        data['app_version'] = self.app_version_number
-        data['app_partner'] = 'phantomcyber'
-
-        self.save_progress("Connecting to domaintools.com")
-        url_params = "?"
         try:
-            for k, search in data.items():
-                url_params = "{}&{}={}".format(url_params, k, search)
-        except:
-            for k, search in list(data.items()):
-                url_params = "{}&{}={}".format(url_params, k, search)
+            dt_api = API(
+                    self._username,
+                    self._key,
+                    app_partner=self.app_partner,
+                    app_name=self.app_name,
+                    app_version=self.app_version_number,
+                    proxy_url=None,
+                    verify_ssl=self._ssl,
+                    https=self._ssl,
+                    always_sign_api_key=True
+            )
+        except Exception as e:
+            return action_result.set_status(phantom.APP_ERROR, "Unable connect to DomainTools API", e)
 
-        get = True
-        if url_params != "?":
-            url = "{}{}".format(url, url_params)
-            if len(url_params) > 2000:
-                get = False
+        try:
+            domain = query_args['domain'] if 'domain' in query_args else False
+            service_api = getattr(dt_api, service)
+            # Not optimal, there is probably a better way
+            if isinstance(query_args, str):
+                response = service_api(query_args)
+            elif domain:
+                query_args.pop('domain', None)
+                response = service_api(domain, **query_args)
+            else:
+                response = service_api(**query_args)
 
-        if get:  # We only want to use POST if we absolutely have to.
-            try:
-                # We do not need to display the URL on the phantom UI. Hence, adding it as a debug statement.
-                self.debug_print("GET: {}".format(url))
-                r = requests.get(url)
-            except requests.exceptions.InvalidURL as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-                self.debug_print(msg)
-                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_URL)
-            except requests.exceptions.ConnectionError as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-                self.debug_print(msg)
-                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_CONNECTION_REFUSED)
-            except requests.exceptions.InvalidSchema as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-                self.debug_print(msg)
-                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_SCHEMA)
-            except Exception as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                if error_code == "ascii":
-                    error_msg = "Unicode value found. Please enter the valid input."
-                return action_result.set_status(phantom.APP_ERROR,
-                                                "REST API failed. Error Code: {0}. Error Message: {1}".format(
-                                                    error_code, error_msg))
-        else:
-            try:
-                # We do not need to display the URL and data on the phantom UI. Hence, adding it as a debug statement.
-                self.debug_print("POST: {} body: {}".format(url, data))
-                r = requests.post(url, data=data)
-            except requests.exceptions.InvalidURL as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-                self.debug_print(msg)
-                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_URL)
-            except requests.exceptions.ConnectionError as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-                self.debug_print(msg)
-                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_CONNECTION_REFUSED)
-            except requests.exceptions.InvalidSchema as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-                self.debug_print(msg)
-                return action_result.set_status(phantom.APP_ERROR, self.DOMAINTOOLS_ERR_INVALID_SCHEMA)
-            except Exception as e:
-                error_code, error_msg = self._get_error_message_from_exception(e)
-                if error_code == "ascii":
-                    error_msg = "Unicode value found. Please enter the valid input."
-                return action_result.set_status(phantom.APP_ERROR,
-                                                "REST API failed. Error Code: {0}. Error Message: {1}".format(
-                                                    error_code, error_msg))
+        except Exception as e:
+            return action_result.set_status(phantom.APP_ERROR, "Unable connect to DomainTools {} API".format(service), e)
 
         self.save_progress("Parsing response...")
-        try:
-            response_json = r.json()
-        except Exception as e:
-            error_code, error_msg = self._get_error_message_from_exception(e)
-            msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-            return action_result.set_status(phantom.APP_ERROR, "Unable to parse response as a valid JSON. {}".format(msg))
 
-        self.debug_print(r.url)
-
-        # Now parse and add the response into the action result
         try:
-            return self._parse_response(action_result, r, response_json)
+            response_json = response.data()
         except Exception as e:
-            error_code, error_msg = self._get_error_message_from_exception(e)
-            msg = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-            return action_result.set_status(phantom.APP_ERROR, 'An error occurred while parsing domaintools response. {}'.format(msg))
+            return action_result.set_status(phantom.APP_ERROR, "Unable to get data() from the DomainTools API response", e)
+
+        try:
+            return self._parse_response(action_result, response_json)
+        except Exception as e:
+            return action_result.set_status(phantom.APP_ERROR, 'An error occurred while parsing DomainTools response', e)
 
     def _test_connectivity(self):
         params = {'domain': "domaintools.net"}
-
         self.save_progress("Performing test query")
+
+        # Progress
+        self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, 'domaintools.com')
 
         action_result = self.add_action_result(ActionResult(dict(params)))
 
         try:
-            self._do_domain_enrich(action_result, params)
+            self._do_query('iris_investigate', action_result, query_args=params)
             if action_result.get_status() != phantom.APP_SUCCESS:
                 raise Exception(action_result.get_message())
         except Exception as e:
             message = 'Failed to connect to domaintools.com'
-            self.save_progress("{}. {}".format(message, e))
-            return action_result.set_status(phantom.APP_ERROR)
+            action_result.set_status(phantom.APP_ERROR, message, e)
+            return action_result.get_status()
 
-        self.save_progress('Successfully connected to domaintools.com')
-        self.save_progress('Test Connectivity passed')
-        return action_result.set_status(phantom.APP_SUCCESS)
+        return self.set_status_save_progress(phantom.APP_SUCCESS,
+                                            'Successfully connected to domaintools.com.\nTest Connectivity passed')
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
@@ -300,10 +258,20 @@ class DomainToolsConnector(BaseConnector):
         self._username = config['username']
         self._key = config['key']
 
+        # If there is a domain attribute, do tldextract
+        if param.get('domain'):
+            self._domain = self._get_domain(param.get('domain'))
+        # If pivoting  and the type is domain, set the query_vca
+        if param.get('pivot_type') == 'domain':
+            self._domain = self._get_domain(param.get('query_value'))
+
+         # Handle the actions
         if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity()
         elif action_id == self.ACTION_ID_DOMAIN_ENRICH:
             ret_val = self._domain_enrich(param)
+        elif action_id == self.ACTION_ID_DOMAIN_INVESTIGATE:
+            ret_val = self._domain_investigate(param)
         elif action_id == self.ACTION_ID_DOMAIN_REPUTATION:
             ret_val = self._domain_reputation(param)
         elif action_id == self.ACTION_ID_PIVOT:
@@ -319,10 +287,39 @@ class DomainToolsConnector(BaseConnector):
 
         return ret_val
 
-    def _reverse_lookup_domain(self, param):
+
+    def _refang(self, line):
+        """Refangs a line of text. See: https://bitbucket.org/johannestaas/defang
+        :param str line: the line of text to reverse the defanging of.
+        :return: the "dirty" line with actual URIs
+        """
+        dirty_line = re.sub(r'\((\.|dot)\)', '.',
+                            line, flags=re.IGNORECASE)
+        dirty_line = re.sub(r'\[(\.|dot)]', '.',
+                            dirty_line, flags=re.IGNORECASE)
+        dirty_line = re.sub(r'(\s*)h([x]{1,2})p([s]?)\[?:]?//', r'\1http\3://',
+                            dirty_line, flags=re.IGNORECASE)
+        dirty_line = re.sub(r'(\s*)(s?)fxp(s?)\[?:]?//', r'\1\2ftp\3://',
+                            dirty_line, flags=re.IGNORECASE)
+        dirty_line = re.sub(r'(\s*)\(([-.+a-zA-Z0-9]{1,12})\)\[?:]?//', r'\1\2://',
+                            dirty_line, flags=re.IGNORECASE)
+        return dirty_line
+
+    # Borrowed from https://github.com/phantomcyber/phantom-apps/blob/master/Apps/phurlvoid/urlvoid_connector.py
+    def _get_domain(self, hostname):
+        extract = None
+        try:
+            extract = tldextract.TLDExtract(cache_file=TLD_LIST_CACHE_FILE_NAME, suffix_list_urls=None)
+        except Exception as e:
+            raise Exception("tldextract result failed", e)
+        cleaned = self._refang(hostname)
+        result = extract(cleaned)
+        return "{0}.{1}".format(result.domain, result.suffix)
+
+    def _reverse_domain(self, param):
         action_result = self.add_action_result(ActionResult(param))
-        params = {'domain': param.get('domain')}
-        ret_val = self._do_query('iris-investigate', action_result, data=params)
+        params = {'domain': self._domain}
+        ret_val = self._do_query('iris_investigate', action_result, query_args=params)
 
         if not ret_val:
             return action_result.get_data()
@@ -334,19 +331,19 @@ class DomainToolsConnector(BaseConnector):
 
         ips = []
 
-        for a in data[0].get('ip', []):
+        for a in data[0]['ip']:
             if 'address' in a:
-                ips.append({'ip': a.get('address', {}).get('value'), 'type': 'Host IP', 'count': a.get('address', {}).get('count')})
+                ips.append({'ip': a['address']['value'], 'type': 'Host IP', 'count': a['address']['count']})
 
-        for a in data[0].get('mx', []):
+        for a in data[0]['mx']:
             if 'ip' in a:
                 for b in a['ip']:
-                    ips.append({'ip': b.get('value'), 'type': 'MX IP', 'count': b.get('count')})
+                    ips.append({'ip': b['value'], 'type': 'MX IP', 'count': b['count']})
 
-        for a in data[0].get('name_server', []):
+        for a in data[0]['name_server']:
             if 'ip' in a:
-                for b in a.get('ip'):
-                    ips.append({'ip': b.get('value'), 'type': 'NS IP', 'count': b.get('count')})
+                for b in a['ip']:
+                    ips.append({'ip': b['value'], 'type': 'NS IP', 'count': b['count']})
 
         action_result.update_summary({'ip_list': ips})
 
@@ -355,22 +352,26 @@ class DomainToolsConnector(BaseConnector):
     def _domain_enrich(self, param):
         self.save_progress("Starting domain_enrich action.")
         action_result = self.add_action_result(ActionResult(param))
-        domain_name = param.get('domain')
-        params = {'domain': domain_name}
-        self.save_progress("Completed domain_enrich action.")
-        return self._do_domain_enrich(action_result, params)
 
-    def _do_domain_enrich(self, action_result, params):
-        self._do_query('iris-investigate', action_result, data=params)
+        params = {'domain': self._domain}
+        self._do_query('iris_enrich', action_result, query_args=params)
+        self.save_progress("Completed domain_enrich action.")
+
+        return action_result.get_status()
+
+    def _domain_investigate(self, param):
+        action_result = self.add_action_result(ActionResult(param))
+        params = {'domain': self._domain}
+        self._do_query('iris_investigate', action_result, query_args=params)
         return action_result.get_status()
 
     def _domain_reputation(self, param):
 
         action_result = self.add_action_result(ActionResult(param))
-        domain_to_query = param['domain']
+        domain_to_query = self._domain
         params = {'domain': domain_to_query}
 
-        ret_val = self._do_query('iris-investigate', action_result, data=params)
+        ret_val = self._do_query('iris_investigate', action_result, query_args=params)
 
         if not ret_val:
             return action_result.get_data()
@@ -380,13 +381,13 @@ class DomainToolsConnector(BaseConnector):
         if not data:
             return action_result.get_status()
 
-        action_result.update_summary({'domain_risk': data[0].get('domain_risk', {}).get('risk_score')})
+        action_result.update_summary({'domain_risk': data[0]['domain_risk']['risk_score']})
 
-        for a in data[0].get('domain_risk', {}).get('components', []):
-            if a.get('name', '') == "whitelist":
-                action_result.update_summary({'is_whitelisted': True})
+        for a in data[0]['domain_risk']['components']:
+            if (a['name'] == "zerolist"):
+                action_result.update_summary({'zerolisted': True})
             else:
-                action_result.update_summary({a.get('name'): a.get('risk_score')})
+                action_result.update_summary({a['name']: a['risk_score']})
 
         return action_result.get_status()
 
@@ -407,9 +408,11 @@ class DomainToolsConnector(BaseConnector):
 
     def _pivot_action(self, param):
         action_result = self.add_action_result(ActionResult(param))
-
         query_field = param['pivot_type']
-        query_value = param['query_value']
+        if query_field == 'domain':
+            query_value = self._domain
+        else:
+            query_value = param['query_value']
 
         params = {query_field: query_value}
 
@@ -438,9 +441,9 @@ class DomainToolsConnector(BaseConnector):
                 params['expiration_date'] = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
 
         if 'status' in param and param['status'].lower() != 'any':
-            params['active'] = 'true' if param['status'].lower() == 'active' else 'false'
+            params['active'] = param['status'].lower() == 'active'
 
-        ret_val = self._do_query('iris-investigate', action_result, data=params)
+        ret_val = self._do_query('iris_investigate', action_result, query_args=params)
 
         if not ret_val:
             return action_result.get_data()
@@ -450,10 +453,7 @@ class DomainToolsConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    # import pudb
     import argparse
-
-    # pudb.set_trace()
 
     argparser = argparse.ArgumentParser()
 
