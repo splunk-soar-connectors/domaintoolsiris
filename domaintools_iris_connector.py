@@ -15,16 +15,11 @@ from phantom.action_result import ActionResult
 import sys
 import json
 from datetime import datetime, timedelta
-import hmac
 import codecs
-import hashlib
 import tldextract
 import re
 from domaintools import API
-import hashlib
 import requests
-from phantom.action_result import ActionResult
-from phantom.base_connector import BaseConnector
 
 
 TLD_LIST_CACHE_FILE_NAME = "public_suffix_list.dat"
@@ -171,7 +166,6 @@ class DomainToolsConnector(BaseConnector):
         Call DT API and send the response to be parsed
         This function uses the DomainTools Python API to get the requested data from an action.
         Documentation: https://github.com/DomainTools/python_api
-        
         :param: service (str): Currently only using iris_investigate, this the function call for dt api
         :param: action_result (obj): Splunk SOAR object
         :param: query_args (str): Parameters to send the service
@@ -265,7 +259,7 @@ class DomainToolsConnector(BaseConnector):
         if param.get('pivot_type') == 'domain':
             self._domain = self._get_domain(param.get('query_value'))
 
-         # Handle the actions
+        # Handle the actions
         if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity()
         elif action_id == self.ACTION_ID_DOMAIN_ENRICH:
@@ -286,7 +280,6 @@ class DomainToolsConnector(BaseConnector):
             ret_val = self._load_hash(param)
 
         return ret_val
-
 
     def _refang(self, line):
         """Refangs a line of text. See: https://bitbucket.org/johannestaas/defang
