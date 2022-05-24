@@ -357,7 +357,7 @@ class DomainToolsConnector(BaseConnector):
         params = {'domain': self._domain}
         self._do_query('iris_investigate', action_result, query_args=params)
         self.save_progress("Completed domain_investigate action.")
-        
+
         return action_result.get_status()
 
     def _domain_reputation(self, param):

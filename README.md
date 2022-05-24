@@ -45,7 +45,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [reverse ip](#action-reverse-ip) - Find domains with web hosting IP, NS IP or MX IP  
 [load hash](#action-load-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash  
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate  
-[whois domain](#action-whois-domain) - Get all Iris Investigate data for a domain, including Whois  
+[enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain without counts
+[investigate domain](#action-investigate-domain) - Get all Iris Investigate data for a domain
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -245,8 +246,8 @@ action\_result\.summary | string |
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
-## action: 'whois domain'
-Get all Iris Investigate data for a domain, including Whois
+## action: 'enrich domain'
+Get all Iris Investigate data for a domain except counts
 
 Type: **investigate**  
 Read only: **True**
