@@ -263,7 +263,7 @@ class DomainToolsConnector(BaseConnector):
         elif action_id == self.ACTION_ID_DOMAIN_ENRICH:
             ret_val = self._domain_enrich(param)
         elif action_id == self.ACTION_ID_DOMAIN_INVESTIGATE:
-            ret_val = self._domain_investigate(param)
+            ret_val = self._investigate_domain(param)
         elif action_id == self.ACTION_ID_DOMAIN_REPUTATION:
             ret_val = self._domain_reputation(param)
         elif action_id == self.ACTION_ID_PIVOT:
