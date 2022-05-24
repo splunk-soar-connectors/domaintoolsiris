@@ -1,7 +1,7 @@
 # --
 # File: domaintools_iris_connector.py
 #
-# Copyright (c) 2019-2021 DomainTools, LLC
+# Copyright (c) 2019-2022 DomainTools, LLC
 #
 # --
 
@@ -478,7 +478,7 @@ if __name__ == '__main__':
             login_url = DomainToolsConnector._get_phantom_base_url() + '/login'
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, timeout=60)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -491,11 +491,11 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, data=data, headers=headers, timeout=60)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()

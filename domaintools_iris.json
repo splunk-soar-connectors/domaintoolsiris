@@ -1,24 +1,28 @@
 {
     "appid": "f18b7ef9-0cbd-4dbb-b8ed-ce62e17f0603",
-    "name": "DomainTools Iris",
-    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris",
+    "name": "DomainTools Iris Investigate",
+    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate",
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019-2021 DomainTools, LLC",
+    "license": "Copyright (c) 2019-2022 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
     "app_version": "1.3.0",
     "utctime_updated": "2022-01-07T21:37:30.000000Z",
     "product_vendor": "DomainTools",
-    "product_name": "DomainTools Iris",
+    "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
-    "min_phantom_version": "5.1.0",
+    "min_phantom_version": "5.2.0",
     "python_version": "3",
     "logo": "logo_domaintools_iris.svg",
     "logo_dark": "logo_domaintools_iris_dark.svg",
     "contributors": [
-        {"name": "Wesley Agena"},
-        {"name":  "Chuck Woodraska"}
+        {
+            "name": "Wesley Agena"
+        },
+        {
+            "name": "Chuck Woodraska"
+        }
     ],
     "configuration": {
         "username": {
@@ -153,7 +157,7 @@
         },
         {
             "action": "pivot action",
-            "description": "Find domains connected by any supported Iris search parameter",
+            "description": "Find domains connected by any supported Iris Investigate search parameter",
             "type": "investigate",
             "identifier": "pivot_action",
             "read_only": true,
@@ -213,7 +217,7 @@
                     "order": 2
                 },
                 "data_updated_after": {
-                    "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+                    "description": "Iris Investigate records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
                     "order": 3
                 },
@@ -439,7 +443,7 @@
                     "order": 1
                 },
                 "data_updated_after": {
-                    "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+                    "description": "Iris Investigate records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
                     "order": 2
                 },
@@ -545,13 +549,13 @@
         },
         {
             "action": "load hash",
-            "description": "Load or monitor Iris search results by Iris export hash",
+            "description": "Load or monitor Iris Investigate search results by Iris Investigate export hash",
             "type": "investigate",
             "identifier": "load_hash",
             "read_only": true,
             "parameters": {
                 "hash": {
-                    "description": "Iris search hash to load",
+                    "description": "Iris Investigate search hash to load",
                     "data_type": "string",
                     "required": true,
                     "order": 0
@@ -568,7 +572,7 @@
                     "order": 1
                 },
                 "data_updated_after": {
-                    "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+                    "description": "Iris Investigate records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
                     "order": 2
                 },
@@ -592,7 +596,7 @@
                 "type": "table",
                 "width": 12,
                 "height": 10,
-                "title": "Iris Search"
+                "title": "Iris Investigate Search"
             },
             "output": [
                 {
@@ -696,7 +700,7 @@
                     "order": 1
                 },
                 "data_updated_after": {
-                    "description": "Iris records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
+                    "description": "Iris Investigate records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
                     "order": 2
                 },

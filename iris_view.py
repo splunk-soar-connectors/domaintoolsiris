@@ -1,7 +1,7 @@
 # --
 # File: iris_view.py
 #
-# Copyright (c) 2019-2021 DomainTools, LLC
+# Copyright (c) 2019-2022 DomainTools, LLC
 #
 # --
 
@@ -138,9 +138,9 @@ def display_risk_score(provides, all_app_runs, context):
             if data:
                 ctx_result = {'data': data[0]}
                 risk_scores = ctx_result['data'].get('domain_risk', {}).get('components')
-                # Add proximity score to blacklisted domains, see comment below
+                # Add proximity score to blocklisted domains, see comment below
                 if risk_scores:
-                    ctx_result['data']["domain_risk"]['components'] = add_proximity_to_blacklisted_domain(risk_scores)
+                    ctx_result['data']["domain_risk"]['components'] = add_proximity_to_blocklisted_domain(risk_scores)
 
                 sorted_data = []
                 sorted_data.append(('domain risk score', create_score_span(
@@ -154,19 +154,19 @@ def display_risk_score(provides, all_app_runs, context):
     return 'iris_risk_score.html'
 
 
-# Clients want proximity score to show for blacklisted domains. The API removes proximity when it is
-# 100 and changes it to blacklist. This is not an optimal solution and should probably be thought out
+# Clients want proximity score to show for blocklisted domains. The API removes proximity when it is
+# 100 and changes it to blocklist. This is not an optimal solution and should probably be thought out
 # to understand the clients needs and goals, then have the backend team work on getting the contract
 # the way the clients need it to be. We are doing the same thing in the splunk app.
-def add_proximity_to_blacklisted_domain(risk_scores):
-    blacklisted = next((item for item in risk_scores if item['name'] == 'blacklist'), None)
-    # We only want to do this if the domain is blacklisted
-    if blacklisted:
-        # Make sure proximity isn't there, this prevents duplicate proximity scores if the iris api adds it
+def add_proximity_to_blocklisted_domain(risk_scores):
+    blocklisted = next((item for item in risk_scores if item['name'] == 'blocklist'), None)
+    # We only want to do this if the domain is blocklisted
+    if blocklisted:
+        # Make sure proximity isn't there, this prevents duplicate proximity scores if the Iris Investigate API adds it
         proximity = next((item for item in risk_scores if item['name'] == 'proximity'), None)
         if proximity is None:
-            blacklist = copy.deepcopy(blacklisted)
-            blacklist['name'] = 'proximity'
-            risk_scores.insert(1, blacklist)
+            blocklist = copy.deepcopy(blocklisted)
+            blocklist['name'] = 'proximity'
+            risk_scores.insert(1, blocklist)
 
     return risk_scores
