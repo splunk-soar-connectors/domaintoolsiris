@@ -5,22 +5,20 @@
 #
 # --
 
-# Splunk SOAR App imports
-import phantom.app as phantom
-
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
+import codecs
+import json
+import re
 # Imports local to this App
 import sys
-import json
 from datetime import datetime, timedelta
-import codecs
-import tldextract
-import re
-from domaintools import API
-import requests
 
+# Splunk SOAR App imports
+import phantom.app as phantom
+import requests
+import tldextract
+from domaintools import API
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 TLD_LIST_CACHE_FILE_NAME = "public_suffix_list.dat"
 
@@ -309,7 +307,7 @@ class DomainToolsConnector(BaseConnector):
         result = extract(cleaned)
         return "{0}.{1}".format(result.domain, result.suffix)
 
-    def _reverse_domain(self, param):
+    def _reverse_lookup_domain(self, param):
         action_result = self.add_action_result(ActionResult(param))
         params = {'domain': self._domain}
         ret_val = self._do_query('iris_investigate', action_result, query_args=params)
@@ -505,4 +503,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
