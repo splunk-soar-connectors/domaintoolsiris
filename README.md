@@ -2,7 +2,7 @@
 # DomainTools Iris Investigate
 
 Publisher: DomainTools  
-Connector Version: 1\.2\.4  
+Connector Version: 1\.3\.0  
 Product Vendor: DomainTools  
 Product Name: DomainTools Iris Investigate  
 Product Version Supported (regex): "\.\*"  
@@ -391,3 +391,9 @@ action\_result\.message | string |
 action\_result\.summary | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric | 
+
+## action: 'investigate domain'
+Get all Iris Investigate data for a domain except counts
+
+Type: **investigate**  
+Read only: **True**
