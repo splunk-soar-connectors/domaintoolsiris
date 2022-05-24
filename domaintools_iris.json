@@ -1132,7 +1132,7 @@
             "action": "investigate domain",
             "description": "Get all Iris data for a domain",
             "type": "investigate",
-            "identifier": "domain_investigate",
+            "identifier": "investigate_domain",
             "read_only": true,
             "parameters": {
                 "domain": {
