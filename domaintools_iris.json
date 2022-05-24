@@ -805,330 +805,6 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "enrich domain",
-            "description": "Get all Iris data for a domain without counts",
-            "type": "investigate",
-            "identifier": "domain_enrich",
-            "read_only": true,
-            "parameters": {
-                "domain": {
-                    "description": "Domain to query",
-                    "data_type": "string",
-                    "contains": [
-                        "url",
-                        "domain"
-                    ],
-                    "required": true,
-                    "primary": true,
-                    "order": 0
-                }
-            },
-            "render": {
-                "type": "custom",
-                "width": 10,
-                "height": 10,
-                "title": "Domain Profile",
-                "view": "iris_view.display_domain_profile"
-            },
-            "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "failed",
-                        "success"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.domain",
-                    "data_type": "string",
-                    "contains": [
-                        "url",
-                        "domain"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.additional_whois_email.*.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.city.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.country.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.fax.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.name.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.org.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.phone.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.postal.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.state.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.admin_contact.street.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.adsense.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.alexa",
-                    "data_type": "numeric"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.city.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.country.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.fax.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.name.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.org.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.phone.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.postal.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.state.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.billing_contact.street.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.create_date.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.email_domain.*.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.expiration_date.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.google_analytics.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.ip.*.address.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.ip.*.asn.*.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.ip.*.country_code.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.ip.*.isp.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.mx.*.domain.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.mx.*.host.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.mx.*.ip.*.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.name_server.*.domain.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.name_server.*.host.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.name_server.*.ip.*.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.redirect.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.redirect_domain.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.city.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.country.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.email.*.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.fax.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.name.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.org.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.phone.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.postal.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.state.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_contact.street.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_name.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrant_org.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.registrar.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.soa_email.*.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.ssl_info.*.hash.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.ssl_info.*.organization.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.ssl_info.*.subject.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.tags.*.label",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.city.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.country.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.fax.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.name.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.org.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.phone.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.postal.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.state.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.technical_contact.street.value",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                }
-            ],
-            "versions": "EQ(*)"
-        },
-        {
             "action": "investigate domain",
             "description": "Get all Iris data for a domain",
             "type": "investigate",
@@ -1695,7 +1371,332 @@
                 }
             ],
             "versions": "EQ(*)"
-        }
+        },
+        {
+            "action": "enrich domain",
+            "description": "Get all Iris data for a domain without counts",
+            "type": "investigate",
+            "identifier": "domain_enrich",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to query",
+                    "data_type": "string",
+                    "contains": [
+                        "url",
+                        "domain"
+                    ],
+                    "required": true,
+                    "primary": true,
+                    "order": 0
+                }
+            },
+            "render": {
+                "type": "custom",
+                "width": 10,
+                "height": 10,
+                "title": "Domain Profile",
+                "view": "iris_view.display_domain_profile"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "url",
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.additional_whois_email.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.adsense.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.alexa",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.create_date.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.email_domain.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.expiration_date.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.google_analytics.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.address.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.asn.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.country_code.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.isp.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx.*.domain.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx.*.host.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx.*.ip.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name_server.*.domain.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name_server.*.host.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name_server.*.ip.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.redirect.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.redirect_domain.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.email.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrar.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.soa_email.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.hash.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.organization.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.subject.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tags.*.label",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+
     ],
     "pip_dependencies": {
         "pypi": [
