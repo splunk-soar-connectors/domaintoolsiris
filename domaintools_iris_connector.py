@@ -25,7 +25,7 @@ from phantom.base_connector import BaseConnector
 class DomainToolsConnector(BaseConnector):
     ACTION_ID_DOMAIN_REPUTATION = "domain_reputation"
     ACTION_ID_DOMAIN_ENRICH = "domain_enrich"
-    ACTION_ID_DOMAIN_INVESTIGATE = "investigate_domain"
+    ACTION_ID_DOMAIN_INVESTIGATE = "domain_investigate"
     ACTION_ID_PIVOT = "pivot_action"
     ACTION_ID_REVERSE_IP = "reverse_lookup_ip"
     ACTION_ID_REVERSE_EMAIL = "reverse_whois_email"
@@ -261,7 +261,7 @@ class DomainToolsConnector(BaseConnector):
         elif action_id == self.ACTION_ID_DOMAIN_ENRICH:
             ret_val = self._domain_enrich(param)
         elif action_id == self.ACTION_ID_DOMAIN_INVESTIGATE:
-            ret_val = self._investigate_domain(param)
+            ret_val = self._domain_investigate(param)
         elif action_id == self.ACTION_ID_DOMAIN_REPUTATION:
             ret_val = self._domain_reputation(param)
         elif action_id == self.ACTION_ID_PIVOT:
@@ -348,13 +348,13 @@ class DomainToolsConnector(BaseConnector):
 
         return action_result.get_status()
 
-    def _investigate_domain(self, param):
-        self.save_progress("Starting investigate_domain action.")
+    def _domain_investigate(self, param):
+        self.save_progress("Starting domain_investigate action.")
         action_result = self.add_action_result(ActionResult(param))
 
         params = {'domain': self._domain}
         self._do_query('iris_investigate', action_result, query_args=params)
-        self.save_progress("Completed investigate_domain action.")
+        self.save_progress("Completed domain_investigate action.")
 
         return action_result.get_status()
 
