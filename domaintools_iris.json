@@ -1711,50 +1711,61 @@
             },
             {
                 "module": "frozenlist"
+            }
+        ],
+        "wheel": [
+            {
+                "module": "aiosignal",
+                "input_file": "wheels/aiosignal-1.2.0-py3-none-any.whl"
             },
             {
-                "module": "certifi"
+                "module": "async-timeout",
+                "input_file": "wheels/async_timeout-4.0.2-py3-none-any.whl"
             },
             {
-                "module": "aiosignal"
+                "module": "attrs",
+                "input_file": "wheels/attrs-21.4.0-py2.py3-none-any.whl"
             },
             {
-                "module": "async-timeout"
+                "module": "certifi",
+                "input_file": "wheels/certifi-2022.5.18.1-py3-none-any.whl"
             },
             {
-                "module": "attrs"
+                "module": "charset-normalizer",
+                "input_file": "wheels/charset_normalizer-2.0.12-py3-none-any.whl"
             },
             {
-                "module": "certifi"
+                "module": "domaintools-api",
+                "input_file": "wheels/domaintools_api-0.6.0-py2.py3-none-any.whl"
             },
             {
-                "module": "charset-normalizer"
+                "module": "filelock",
+                "input_file": "wheels/filelock-3.7.0-py3-none-any.whl"
             },
             {
-                "module": "domaintools-api"
+                "module": "idna",
+                "input_file": "wheels/idna-3.3-py3-none-any.whl"
             },
             {
-                "module": "filelock"
+                "module": "requests",
+                "input_file": "wheels/requests-2.27.1-py2.py3-none-any.whl"
             },
             {
-                "module": "idna"
+                "module": "requests-file",
+                "input_file": "wheels/requests_file-1.5.1-py2.py3-none-any.whl"
             },
             {
-                "module": "requests"
+                "module": "six",
+                "input_file": "wheels/six-1.16.0-py2.py3-none-any.whl"
             },
             {
-                "module": "requests-file"
+                "module": "tldextract",
+                "input_file": "wheels/tldextract-3.3.0-py3-none-any.whl"
             },
             {
-                "module": "six"
-            },
-            {
-                "module": "tldextract"
-            },
-            {
-                "module": "urllib3"
+                "module": "urllib3",
+                "input_file": "wheels/urllib3-1.26.9-py2.py3-none-any.whl"
             }
         ]
-
     }
 }
