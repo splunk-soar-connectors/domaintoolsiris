@@ -20,8 +20,6 @@ from domaintools import API
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
-TLD_LIST_CACHE_FILE_NAME = "public_suffix_list.dat"
-
 
 # Define the App Class
 class DomainToolsConnector(BaseConnector):
@@ -216,7 +214,7 @@ class DomainToolsConnector(BaseConnector):
 
     def _test_connectivity(self):
         params = {'domain': "domaintools.net"}
-        self.save_progress("Performing test query")
+        self.save_progress("Performing test query, wes test2")
 
         # Progress
         self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, 'domaintools.com')
@@ -300,7 +298,7 @@ class DomainToolsConnector(BaseConnector):
     def _get_domain(self, hostname):
         extract = None
         try:
-            extract = tldextract.TLDExtract(cache_file=TLD_LIST_CACHE_FILE_NAME, suffix_list_urls=None)
+            extract = tldextract.TLDExtract(suffix_list_urls=None)
         except Exception as e:
             raise Exception("tldextract result failed", e)
         cleaned = self._refang(hostname)

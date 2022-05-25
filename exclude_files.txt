@@ -5,3 +5,5 @@ bin
 lib
 pyvenv.cfg
 build.sh
+venv
+phdomaintoolsiris.tgz
