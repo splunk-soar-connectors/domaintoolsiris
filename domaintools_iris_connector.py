@@ -214,7 +214,7 @@ class DomainToolsConnector(BaseConnector):
 
     def _test_connectivity(self):
         params = {'domain': "domaintools.net"}
-        self.save_progress("Performing test query, wes test2")
+        self.save_progress("Performing test query")
 
         # Progress
         self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, 'domaintools.com')

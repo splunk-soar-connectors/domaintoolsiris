@@ -1697,5 +1697,64 @@
             "versions": "EQ(*)"
         }
 
-    ]
+    ],
+    "pip_dependencies": {
+        "pypi": [
+            {
+                "module": "aiohttp"
+            },
+            {
+                "module": "yarl"
+            },
+            {
+                "module": "multidict"
+            },
+            {
+                "module": "frozenlist"
+            },
+            {
+                "module": "certifi"
+            },
+            {
+                "module": "aiosignal"
+            },
+            {
+                "module": "async-timeout"
+            },
+            {
+                "module": "attrs"
+            },
+            {
+                "module": "certifi"
+            },
+            {
+                "module": "charset-normalizer"
+            },
+            {
+                "module": "domaintools-api"
+            },
+            {
+                "module": "filelock"
+            },
+            {
+                "module": "idna"
+            },
+            {
+                "module": "requests"
+            },
+            {
+                "module": "requests-file"
+            },
+            {
+                "module": "six"
+            },
+            {
+                "module": "tldextract"
+            },
+            {
+                "module": "urllib3"
+            }
+        ]
+
+    }
 }
