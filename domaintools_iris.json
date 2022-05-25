@@ -805,7 +805,7 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "lookup domain",
+            "action": "investigate domain",
             "description": "Get all Iris data for a domain",
             "type": "investigate",
             "identifier": "domain_investigate",
