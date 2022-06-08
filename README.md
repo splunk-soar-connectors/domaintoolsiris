@@ -8,7 +8,14 @@ Product Name: DomainTools Iris Investigate
 Product Version Supported (regex): "\.\*"  
 Minimum Product Version: 5\.2\.0  
 
-This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
+This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate.
+
+You will need a DomainTools API username and API key to complete the app setup. DomainTools provides access to obtain API credentials by creating an account for the primary point of contact in your organization. 
+If you wish to evaluate the app and need to obtain new API keys, contact us via email at sales@domaintools.com. 
+If you are an existing DomainTools customer, to ensure your DomainTools API key is appropriately provisioned, please contact your account manager or Enterprise Support . 
+
+For complete App functionality, your DomainTools API key should include access to the following: Iris Enrich API, Iris Investigate API
+
 
 [comment]: # " File: README.md"
 [comment]: # "  Copyright (c) 2019-2022 DomainTools, LLC"
@@ -260,131 +267,70 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.domain | string |  `url`  `domain` 
-action\_result\.data\.\*\.additional\_whois\_email\.\*\.count | numeric | 
-action\_result\.data\.\*\.additional\_whois\_email\.\*\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.city\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.city\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.country\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.country\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.fax\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.fax\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.name\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.name\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.org\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.org\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.phone\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.phone\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.postal\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.postal\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.state\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.state\.value | string | 
-action\_result\.data\.\*\.admin\_contact\.street\.count | numeric | 
-action\_result\.data\.\*\.admin\_contact\.street\.value | string | 
-action\_result\.data\.\*\.adsense\.count | numeric | 
+action\_result\.parameter\.domain | string |  `url`  `domain`
+action\_result\.data\.\*\.additional\_whois\_email\.\*\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.city\.value | string |
+action\_result\.data\.\*\.admin\_contact\.country\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.fax\.value | string |
+action\_result\.data\.\*\.admin\_contact\.name\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.org\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.postal\.value | string |
+action\_result\.data\.\*\.admin\_contact\.state\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.street\.value | string |
 action\_result\.data\.\*\.adsense\.value | string | 
-action\_result\.data\.\*\.alexa | numeric | 
-action\_result\.data\.\*\.billing\_contact\.city\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.city\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.country\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.country\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.fax\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.fax\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.name\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.name\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.org\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.org\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.phone\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.phone\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.postal\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.postal\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.state\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.state\.value | string | 
-action\_result\.data\.\*\.billing\_contact\.street\.count | numeric | 
-action\_result\.data\.\*\.billing\_contact\.street\.value | string | 
-action\_result\.data\.\*\.create\_date\.count | numeric | 
-action\_result\.data\.\*\.create\_date\.value | string | 
-action\_result\.data\.\*\.email\_domain\.\*\.count | numeric | 
-action\_result\.data\.\*\.email\_domain\.\*\.value | string | 
-action\_result\.data\.\*\.expiration\_date\.count | numeric | 
-action\_result\.data\.\*\.expiration\_date\.value | string | 
-action\_result\.data\.\*\.google\_analytics\.count | numeric | 
-action\_result\.data\.\*\.google\_analytics\.value | string | 
-action\_result\.data\.\*\.ip\.\*\.address\.count | numeric | 
-action\_result\.data\.\*\.ip\.\*\.address\.value | string | 
-action\_result\.data\.\*\.ip\.\*\.asn\.\*\.count | numeric | 
-action\_result\.data\.\*\.ip\.\*\.asn\.\*\.value | string | 
-action\_result\.data\.\*\.ip\.\*\.country\_code\.count | numeric | 
-action\_result\.data\.\*\.ip\.\*\.country\_code\.value | string | 
-action\_result\.data\.\*\.ip\.\*\.isp\.count | numeric | 
-action\_result\.data\.\*\.ip\.\*\.isp\.value | string | 
-action\_result\.data\.\*\.mx\.\*\.domain\.count | numeric | 
-action\_result\.data\.\*\.mx\.\*\.domain\.value | string | 
-action\_result\.data\.\*\.mx\.\*\.host\.count | numeric | 
-action\_result\.data\.\*\.mx\.\*\.host\.value | string | 
-action\_result\.data\.\*\.mx\.\*\.ip\.\*\.count | numeric | 
-action\_result\.data\.\*\.mx\.\*\.ip\.\*\.value | string | 
-action\_result\.data\.\*\.name\_server\.\*\.domain\.count | numeric | 
-action\_result\.data\.\*\.name\_server\.\*\.domain\.value | string | 
-action\_result\.data\.\*\.name\_server\.\*\.host\.count | numeric | 
-action\_result\.data\.\*\.name\_server\.\*\.host\.value | string | 
-action\_result\.data\.\*\.name\_server\.\*\.ip\.\*\.count | numeric | 
-action\_result\.data\.\*\.name\_server\.\*\.ip\.\*\.value | string | 
-action\_result\.data\.\*\.redirect\.count | numeric | 
-action\_result\.data\.\*\.redirect\.value | string | 
-action\_result\.data\.\*\.redirect\_domain\.count | numeric | 
-action\_result\.data\.\*\.redirect\_domain\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.city\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.city\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.country\.count | numeric | 
+action\_result\.data\.\*\.alexa | numeric |  
+action\_result\.data\.\*\.billing\_contact\.city\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.country\.value | string |
+action\_result\.data\.\*\.billing\_contact\.fax\.value | string |
+action\_result\.data\.\*\.billing\_contact\.name\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.org\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.postal\.value | string |
+action\_result\.data\.\*\.billing\_contact\.state\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.street\.value | string |
+action\_result\.data\.\*\.create\_date\.value | string |
+action\_result\.data\.\*\.email\_domain\.\*\.value | string |  
+action\_result\.data\.\*\.expiration\_date\.value | string |
+action\_result\.data\.\*\.google\_analytics\.value | string |  
+action\_result\.data\.\*\.ip\.\*\.address\.value | string |
+action\_result\.data\.\*\.ip\.\*\.asn\.\*\.value | string |  
+action\_result\.data\.\*\.ip\.\*\.country\_code\.value | string |
+action\_result\.data\.\*\.ip\.\*\.isp\.value | string |
+action\_result\.data\.\*\.mx\.\*\.domain\.value | string |  
+action\_result\.data\.\*\.mx\.\*\.host\.value | string |
+action\_result\.data\.\*\.mx\.\*\.ip\.\*\.value | string |  
+action\_result\.data\.\*\.name\_server\.\*\.domain\.value | string |  
+action\_result\.data\.\*\.name\_server\.\*\.host\.value | string |  
+action\_result\.data\.\*\.name\_server\.\*\.ip\.\*\.value | string |
+action\_result\.data\.\*\.redirect\.value | string |  
+action\_result\.data\.\*\.redirect\_domain\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.city\.value | string |  
 action\_result\.data\.\*\.registrant\_contact\.country\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.email\.\*\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.fax\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.fax\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.name\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.name\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.org\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.org\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.phone\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.phone\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.postal\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.postal\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.state\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.state\.value | string | 
-action\_result\.data\.\*\.registrant\_contact\.street\.count | numeric | 
-action\_result\.data\.\*\.registrant\_contact\.street\.value | string | 
-action\_result\.data\.\*\.registrant\_name\.count | numeric | 
-action\_result\.data\.\*\.registrant\_name\.value | string | 
-action\_result\.data\.\*\.registrant\_org\.count | numeric | 
-action\_result\.data\.\*\.registrant\_org\.value | string | 
-action\_result\.data\.\*\.registrar\.count | numeric | 
-action\_result\.data\.\*\.registrar\.value | string | 
-action\_result\.data\.\*\.soa\_email\.\*\.count | numeric | 
-action\_result\.data\.\*\.soa\_email\.\*\.value | string | 
-action\_result\.data\.\*\.ssl\_info\.\*\.hash\.count | numeric | 
-action\_result\.data\.\*\.ssl\_info\.\*\.hash\.value | string | 
-action\_result\.data\.\*\.ssl\_info\.\*\.organization\.count | numeric | 
-action\_result\.data\.\*\.ssl\_info\.\*\.organization\.value | string | 
-action\_result\.data\.\*\.ssl\_info\.\*\.subject\.count | numeric | 
+action\_result\.data\.\*\.registrant\_contact\.email\.\*\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.fax\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.name\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.org\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.postal\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.state\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.street\.value | string |
+action\_result\.data\.\*\.registrant\_name\.value | string |
+action\_result\.data\.\*\.registrant\_org\.value | string |
+action\_result\.data\.\*\.registrar\.value | string |  
+action\_result\.data\.\*\.soa\_email\.\*\.value | string |  
+action\_result\.data\.\*\.ssl\_info\.\*\.hash\.value | string |  
+action\_result\.data\.\*\.ssl\_info\.\*\.organization\.value | string |  
 action\_result\.data\.\*\.ssl\_info\.\*\.subject\.value | string | 
-action\_result\.data\.\*\.tags\.\*\.label | string | 
-action\_result\.data\.\*\.technical\_contact\.city\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.city\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.country\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.country\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.fax\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.fax\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.name\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.name\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.org\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.org\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.phone\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.phone\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.postal\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.postal\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.state\.count | numeric | 
-action\_result\.data\.\*\.technical\_contact\.state\.value | string | 
-action\_result\.data\.\*\.technical\_contact\.street\.count | numeric | 
+action\_result\.data\.\*\.tags\.\*\.label | string |
+action\_result\.data\.\*\.technical\_contact\.city\.value | string |  
+action\_result\.data\.\*\.technical\_contact\.country\.value | string |
+action\_result\.data\.\*\.technical\_contact\.fax\.value | string |
+action\_result\.data\.\*\.technical\_contact\.name\.value | string |  
+action\_result\.data\.\*\.technical\_contact\.org\.value | string |
+action\_result\.data\.\*\.technical\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.technical\_contact\.postal\.value | string |
+action\_result\.data\.\*\.technical\_contact\.state\.value | string |  
 action\_result\.data\.\*\.technical\_contact\.street\.value | string | 
 action\_result\.status | string | 
 action\_result\.message | string | 
@@ -393,7 +339,7 @@ summary\.total\_objects | numeric |
 summary\.total\_objects\_successful | numeric | 
 
 ## action: 'lookup domain'
-Get all Iris Investigate data for a domain except counts
+Get all Iris Investigate data for a domain
 
 Type: **investigate**  
 Read only: **True**
