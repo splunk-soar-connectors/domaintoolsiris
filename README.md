@@ -14,7 +14,7 @@ You will need a DomainTools API username and API key to complete the app setup. 
 If you wish to evaluate the app and need to obtain new API keys, contact us via email at sales@domaintools.com. 
 If you are an existing DomainTools customer, to ensure your DomainTools API key is appropriately provisioned, please contact your account manager or Enterprise Support . 
 
-For complete App functionality, your DomainTools API key should include access to the following: Iris Investigate API, Iris Enrich API (optional) 
+Your DomainTools API key should include access to the Iris Investigate API. Beginning with version 1.3, users who also have Iris Enrich API access can leverage it for high-volume domain lookups with fast responses using the new “enrich domain” action. 
 
 
 [comment]: # " File: README.md"
