@@ -1,1 +1,5 @@
 **Unreleased**
+* New “enrich domain” action allows for higher volume automated domain lookups against the Iris Enrich API endpoint
+* Handles parsing of fully qualified domain names (FQDNs) using tldextract library
+* Renames “whois” action to “lookup” to be more consistent with Splunk SOAR terminology
+* Rebuilt significant portions of the app on top of the DomainTools Python API wrapper
