@@ -8,7 +8,7 @@
     "license": "Copyright (c) 2019-2022 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
     "app_version": "1.3.0",
-    "utctime_updated": "2022-01-07T21:37:30.000000Z",
+    "utctime_updated": "2022-06-08T21:37:30.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
@@ -812,7 +812,7 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to query",
+                    "description": "Domain to query using the Iris Investigate API",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -1380,7 +1380,7 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to query",
+                    "description": "Domain to query using the Iris Enrich API (if provisioned)",
                     "data_type": "string",
                     "contains": [
                         "url",
