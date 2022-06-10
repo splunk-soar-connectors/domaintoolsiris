@@ -2,13 +2,20 @@
 # DomainTools Iris Investigate
 
 Publisher: DomainTools  
-Connector Version: 1\.2\.4  
+Connector Version: 1\.3\.0  
 Product Vendor: DomainTools  
 Product Name: DomainTools Iris Investigate  
 Product Version Supported (regex): "\.\*"  
 Minimum Product Version: 5\.2\.0  
 
-This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
+This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate.
+
+You will need a DomainTools API username and API key to complete the app setup. DomainTools provides access to obtain API credentials by creating an account for the primary point of contact in your organization. 
+If you wish to evaluate the app and need to obtain new API keys, contact us via email at sales@domaintools.com. 
+If you are an existing DomainTools customer, to ensure your DomainTools API key is appropriately provisioned, please contact your account manager or Enterprise Support . 
+
+Your DomainTools API key should include access to the Iris Investigate API. Beginning with version 1.3, users who also have Iris Enrich API access can leverage it for high-volume domain lookups with fast responses using the new “enrich domain” action. 
+
 
 [comment]: # " File: README.md"
 [comment]: # "  Copyright (c) 2019-2022 DomainTools, LLC"
@@ -45,7 +52,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [reverse ip](#action-reverse-ip) - Find domains with web hosting IP, NS IP or MX IP  
 [load hash](#action-load-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash  
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate  
-[whois domain](#action-whois-domain) - Get all Iris Investigate data for a domain, including Whois  
+[enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the Iris Enrich API endpoint (if provisioned)
+[lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -245,8 +253,93 @@ action\_result\.summary | string |
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
-## action: 'whois domain'
-Get all Iris Investigate data for a domain, including Whois
+## action: 'enrich domain'
+Get all Iris Investigate data for a domain except counts using the Iris Enrich API endpoint (if provisioned)
+
+Type: **investigate**  
+Read only: **True**
+
+#### Action Parameters
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**domain** |  required  | Domain to query | string |  `url`  `domain` 
+
+#### Action Output
+DATA PATH | TYPE | CONTAINS
+--------- | ---- | --------
+action\_result\.parameter\.domain | string |  `url`  `domain`
+action\_result\.data\.\*\.additional\_whois\_email\.\*\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.city\.value | string |
+action\_result\.data\.\*\.admin\_contact\.country\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.fax\.value | string |
+action\_result\.data\.\*\.admin\_contact\.name\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.org\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.postal\.value | string |
+action\_result\.data\.\*\.admin\_contact\.state\.value | string |  
+action\_result\.data\.\*\.admin\_contact\.street\.value | string |
+action\_result\.data\.\*\.adsense\.value | string | 
+action\_result\.data\.\*\.alexa | numeric |  
+action\_result\.data\.\*\.billing\_contact\.city\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.country\.value | string |
+action\_result\.data\.\*\.billing\_contact\.fax\.value | string |
+action\_result\.data\.\*\.billing\_contact\.name\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.org\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.postal\.value | string |
+action\_result\.data\.\*\.billing\_contact\.state\.value | string |  
+action\_result\.data\.\*\.billing\_contact\.street\.value | string |
+action\_result\.data\.\*\.create\_date\.value | string |
+action\_result\.data\.\*\.email\_domain\.\*\.value | string |  
+action\_result\.data\.\*\.expiration\_date\.value | string |
+action\_result\.data\.\*\.google\_analytics\.value | string |  
+action\_result\.data\.\*\.ip\.\*\.address\.value | string |
+action\_result\.data\.\*\.ip\.\*\.asn\.\*\.value | string |  
+action\_result\.data\.\*\.ip\.\*\.country\_code\.value | string |
+action\_result\.data\.\*\.ip\.\*\.isp\.value | string |
+action\_result\.data\.\*\.mx\.\*\.domain\.value | string |  
+action\_result\.data\.\*\.mx\.\*\.host\.value | string |
+action\_result\.data\.\*\.mx\.\*\.ip\.\*\.value | string |  
+action\_result\.data\.\*\.name\_server\.\*\.domain\.value | string |  
+action\_result\.data\.\*\.name\_server\.\*\.host\.value | string |  
+action\_result\.data\.\*\.name\_server\.\*\.ip\.\*\.value | string |
+action\_result\.data\.\*\.redirect\.value | string |  
+action\_result\.data\.\*\.redirect\_domain\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.city\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.country\.value | string | 
+action\_result\.data\.\*\.registrant\_contact\.email\.\*\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.fax\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.name\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.org\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.postal\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.state\.value | string |  
+action\_result\.data\.\*\.registrant\_contact\.street\.value | string |
+action\_result\.data\.\*\.registrant\_name\.value | string |
+action\_result\.data\.\*\.registrant\_org\.value | string |
+action\_result\.data\.\*\.registrar\.value | string |  
+action\_result\.data\.\*\.soa\_email\.\*\.value | string |  
+action\_result\.data\.\*\.ssl\_info\.\*\.hash\.value | string |  
+action\_result\.data\.\*\.ssl\_info\.\*\.organization\.value | string |  
+action\_result\.data\.\*\.ssl\_info\.\*\.subject\.value | string | 
+action\_result\.data\.\*\.tags\.\*\.label | string |
+action\_result\.data\.\*\.technical\_contact\.city\.value | string |  
+action\_result\.data\.\*\.technical\_contact\.country\.value | string |
+action\_result\.data\.\*\.technical\_contact\.fax\.value | string |
+action\_result\.data\.\*\.technical\_contact\.name\.value | string |  
+action\_result\.data\.\*\.technical\_contact\.org\.value | string |
+action\_result\.data\.\*\.technical\_contact\.phone\.value | string |  
+action\_result\.data\.\*\.technical\_contact\.postal\.value | string |
+action\_result\.data\.\*\.technical\_contact\.state\.value | string |  
+action\_result\.data\.\*\.technical\_contact\.street\.value | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+action\_result\.summary | string | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric | 
+
+## action: 'lookup domain'
+Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)
 
 Type: **investigate**  
 Read only: **True**
@@ -389,4 +482,4 @@ action\_result\.status | string |
 action\_result\.message | string | 
 action\_result\.summary | string | 
 summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric | 
+summary\.total\_objects\_successful | numeric |

@@ -7,8 +7,8 @@
     "type": "information",
     "license": "Copyright (c) 2019-2022 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.2.4",
-    "utctime_updated": "2022-04-23T00:23:21.000000Z",
+    "app_version": "1.3.0",
+    "utctime_updated": "2022-06-08T21:37:30.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
@@ -111,7 +111,7 @@
                     "data_type": "numeric"
                 },
                 {
-                    "data_path": "action_result.summary.is_whitelist",
+                    "data_path": "action_result.summary.zerolisted",
                     "data_type": "boolean",
                     "example_values": [
                         true,
@@ -805,14 +805,14 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "whois domain",
-            "description": "Get all Iris Investigate data for a domain, including Whois",
+            "action": "lookup domain",
+            "description": "Get all Iris data for a domain",
             "type": "investigate",
-            "identifier": "domain_enrich",
+            "identifier": "domain_investigate",
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to query",
+                    "description": "Domain to query using the Iris Investigate API",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -831,6 +831,14 @@
                 "view": "iris_view.display_domain_profile"
             },
             "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
+                },
                 {
                     "data_path": "action_result.parameter.domain",
                     "data_type": "string",
@@ -1340,19 +1348,335 @@
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string"
                 },
                 {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "enrich domain",
+            "description": "Get all Iris data for a domain without counts",
+            "type": "investigate",
+            "identifier": "domain_enrich",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to query using the Iris Enrich API (if provisioned)",
+                    "data_type": "string",
+                    "contains": [
+                        "url",
+                        "domain"
+                    ],
+                    "required": true,
+                    "primary": true,
+                    "order": 0
+                }
+            },
+            "render": {
+                "type": "custom",
+                "width": 10,
+                "height": 10,
+                "title": "Domain Profile",
+                "view": "iris_view.display_domain_profile"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "url",
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.additional_whois_email.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.admin_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.adsense.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.alexa",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billing_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.create_date.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.email_domain.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.expiration_date.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.google_analytics.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.address.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.asn.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.country_code.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ip.*.isp.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx.*.domain.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx.*.host.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx.*.ip.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name_server.*.domain.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name_server.*.host.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name_server.*.ip.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.redirect.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.redirect_domain.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.email.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrant_org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrar.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.soa_email.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.hash.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.organization.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.subject.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tags.*.label",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.city.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.country.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.fax.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.org.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.phone.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.postal.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.state.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technical_contact.street.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
                     "data_type": "string"
                 },
                 {
@@ -1372,28 +1696,75 @@
             ],
             "versions": "EQ(*)"
         }
+
     ],
     "pip_dependencies": {
-        "wheel": [
+        "pypi": [
             {
-                "module": "certifi",
-                "input_file": "wheels/certifi-2021.10.8-py2.py3-none-any.whl"
+                "module": "aiohttp"
             },
             {
-                "module": "chardet",
-                "input_file": "wheels/chardet-3.0.4-py2.py3-none-any.whl"
+                "module": "yarl"
+            },
+            {
+                "module": "multidict"
+            },
+            {
+                "module": "frozenlist"
+            }
+        ],
+        "wheel": [
+            {
+                "module": "aiosignal",
+                "input_file": "wheels/aiosignal-1.2.0-py3-none-any.whl"
+            },
+            {
+                "module": "async-timeout",
+                "input_file": "wheels/async_timeout-4.0.2-py3-none-any.whl"
+            },
+            {
+                "module": "attrs",
+                "input_file": "wheels/attrs-21.4.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "certifi",
+                "input_file": "wheels/certifi-2022.5.18.1-py3-none-any.whl"
+            },
+            {
+                "module": "charset-normalizer",
+                "input_file": "wheels/charset_normalizer-2.0.12-py3-none-any.whl"
+            },
+            {
+                "module": "domaintools-api",
+                "input_file": "wheels/domaintools_api-0.6.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "filelock",
+                "input_file": "wheels/filelock-3.7.0-py3-none-any.whl"
             },
             {
                 "module": "idna",
-                "input_file": "wheels/idna-2.10-py2.py3-none-any.whl"
+                "input_file": "wheels/idna-3.3-py3-none-any.whl"
             },
             {
                 "module": "requests",
-                "input_file": "wheels/requests-2.25.0-py2.py3-none-any.whl"
+                "input_file": "wheels/requests-2.27.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests-file",
+                "input_file": "wheels/requests_file-1.5.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "six",
+                "input_file": "wheels/six-1.16.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "tldextract",
+                "input_file": "wheels/tldextract-3.3.0-py3-none-any.whl"
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
+                "input_file": "wheels/urllib3-1.26.9-py2.py3-none-any.whl"
             }
         ]
     }
