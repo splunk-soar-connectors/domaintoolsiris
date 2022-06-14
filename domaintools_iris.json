@@ -1,7 +1,7 @@
 {
     "appid": "f18b7ef9-0cbd-4dbb-b8ed-ce62e17f0603",
     "name": "DomainTools Iris Investigate",
-    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate.\\n\\nYou will need a DomainTools API username and API key to complete the app setup. DomainTools provides access to obtain API credentials by creating an account for the primary point of contact in your organization. If you wish to evaluate the app and need to obtain new API keys, contact us via email at sales@domaintools.com. If you are an existing DomainTools customer, to ensure your DomainTools API key is appropriately provisioned, please contact your account manager or Enterprise Support.\\n\\nYour DomainTools API key should include access to the Iris Investigate API. Beginning with version 1.3, users who also have Iris Enrich API access can leverage it for high-volume domain lookups with fast responses using the new “enrich domain” action",
+    "description": "This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate",
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
