@@ -806,7 +806,7 @@
         },
         {
             "action": "lookup domain",
-            "description": "Get all Iris data for a domain",
+            "description": "Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)",
             "type": "investigate",
             "identifier": "domain_investigate",
             "read_only": true,
@@ -1374,7 +1374,7 @@
         },
         {
             "action": "enrich domain",
-            "description": "Get all Iris data for a domain without counts",
+            "description": "Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned)",
             "type": "investigate",
             "identifier": "domain_enrich",
             "read_only": true,
