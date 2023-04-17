@@ -1,7 +1,7 @@
 # --
 # File: domaintools_iris_connector.py
 #
-# Copyright (c) 2019-2022 DomainTools, LLC
+# Copyright (c) 2019-2023 DomainTools, LLC
 #
 # --
 
@@ -506,6 +506,15 @@ class DomainToolsConnector(BaseConnector):
 
         if "status" in param and param["status"].lower() != "any":
             params["active"] = param["status"].lower() == "active"
+
+        if "create_date_within" in param:
+            params["create_date_within"] = param["create_date_within"]
+
+        if "first_seen_within" in param:
+            params["first_seen_within"] = param["first_seen_within"]
+
+        if "first_seen_since" in param:
+            params["first_seen_since"] = param["first_seen_since"]
 
         ret_val = self._do_query("iris_investigate", action_result, query_args=params)
 
