@@ -2,7 +2,7 @@
 # DomainTools Iris Investigate
 
 Publisher: DomainTools  
-Connector Version: 1\.3\.0  
+Connector Version: 1\.4\.0  
 Product Vendor: DomainTools  
 Product Name: DomainTools Iris Investigate  
 Product Version Supported (regex): "\.\*"  
@@ -11,7 +11,7 @@ Minimum Product Version: 5\.2\.0
 This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
 
 [comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2019-2022 DomainTools, LLC"
+[comment]: # "  Copyright (c) 2019-2023 DomainTools, LLC"
 [comment]: # ""
 [comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "you may not use this file except in compliance with the License."
@@ -103,14 +103,20 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**create\_date\_within** |  optional  | Only include domains with a whois create date within the specified number of days \(e\.g\. specifying '1' would indicate within the past day\) | string | 
+**first\_seen\_within** |  optional  | Only include domains with a current lifecycle first observed within the specified number of seconds \(e\.g\. specifying '86400' would indicate within the past day\) | string | 
+**first\_seen\_since** |  optional  | Only include domains with a current lifecycle first observed since a specified datetime. \(Example: 2023\-04\-10T00:00:00+00:00\) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
 action\_result\.parameter\.create\_date | string | 
+action\_result\.parameter\.create\_date\_within | string | 
 action\_result\.parameter\.data\_updated\_after | string | 
 action\_result\.parameter\.expiration\_date | string | 
+action\_result\.parameter\.first\_seen\_since | string | 
+action\_result\.parameter\.first\_seen\_within | string | 
 action\_result\.parameter\.pivot\_type | string | 
 action\_result\.parameter\.query\_value | string |  `url`  `domain`  `ip`  `email` 
 action\_result\.parameter\.status | string | 
