@@ -490,10 +490,28 @@
                     "data_type": "string",
                     "order": 4
                 },
+                "create_date_within": {
+                    "description": "Only include domains with a whois create date within the specified number of days (e.g. specifying '1' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 5,
+                    "name": "create_date_within"
+                },
+                "first_seen_within": {
+                    "description": "Only include domains with a current lifecycle first observed within the specified number of seconds (e.g. specifying '86400' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 6,
+                    "name": "first_seen_within"
+                },
+                "first_seen_since": {
+                    "description": "Only include domains with a current lifecycle first observed since a specified datetime. (Example: 2023-04-10T00:00:00+00:00)",
+                    "data_type": "string",
+                    "order": 7,
+                    "name": "first_seen_since"
+                },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "order": 5
+                    "order": 8
                 }
             },
             "render": {
@@ -508,11 +526,23 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.parameter.create_date_within",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.parameter.data_updated_after",
                     "data_type": "string"
                 },
                 {
                     "data_path": "action_result.parameter.expiration_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_within",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_since",
                     "data_type": "string"
                 },
                 {
@@ -619,10 +649,28 @@
                     "data_type": "string",
                     "order": 4
                 },
+                "create_date_within": {
+                    "description": "Only include domains with a whois create date within the specified number of days (e.g. specifying '1' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 5,
+                    "name": "create_date_within"
+                },
+                "first_seen_within": {
+                    "description": "Only include domains with a current lifecycle first observed within the specified number of seconds (e.g. specifying '86400' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 6,
+                    "name": "first_seen_within"
+                },
+                "first_seen_since": {
+                    "description": "Only include domains with a current lifecycle first observed since a specified datetime. (Example: 2023-04-10T00:00:00+00:00)",
+                    "data_type": "string",
+                    "order": 7,
+                    "name": "first_seen_since"
+                },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "order": 5
+                    "order": 8
                 }
             },
             "render": {
@@ -637,11 +685,23 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.parameter.create_date_within",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.parameter.data_updated_after",
                     "data_type": "string"
                 },
                 {
                     "data_path": "action_result.parameter.expiration_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_within",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_since",
                     "data_type": "string"
                 },
                 {
@@ -747,10 +807,28 @@
                     "data_type": "string",
                     "order": 4
                 },
+                "create_date_within": {
+                    "description": "Only include domains with a whois create date within the specified number of days (e.g. specifying '1' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 5,
+                    "name": "create_date_within"
+                },
+                "first_seen_within": {
+                    "description": "Only include domains with a current lifecycle first observed within the specified number of seconds (e.g. specifying '86400' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 6,
+                    "name": "first_seen_within"
+                },
+                "first_seen_since": {
+                    "description": "Only include domains with a current lifecycle first observed since a specified datetime. (Example: 2023-04-10T00:00:00+00:00)",
+                    "data_type": "string",
+                    "order": 7,
+                    "name": "first_seen_since"
+                },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "order": 5
+                    "order": 8
                 }
             },
             "render": {
@@ -762,6 +840,10 @@
             "output": [
                 {
                     "data_path": "action_result.parameter.create_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.create_date_within",
                     "data_type": "string"
                 },
                 {
@@ -779,6 +861,14 @@
                 },
                 {
                     "data_path": "action_result.parameter.expiration_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_within",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_since",
                     "data_type": "string"
                 },
                 {

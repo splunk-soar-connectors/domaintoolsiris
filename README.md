@@ -167,14 +167,20 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**create\_date\_within** |  optional  | Only include domains with a whois create date within the specified number of days \(e\.g\. specifying '1' would indicate within the past day\) | string | 
+**first\_seen\_within** |  optional  | Only include domains with a current lifecycle first observed within the specified number of seconds \(e\.g\. specifying '86400' would indicate within the past day\) | string | 
+**first\_seen\_since** |  optional  | Only include domains with a current lifecycle first observed since a specified datetime. \(Example: 2023\-04\-10T00:00:00+00:00\) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
 action\_result\.parameter\.create\_date | string | 
+action\_result\.parameter\.create\_date\_within | string | 
 action\_result\.parameter\.data\_updated\_after | string | 
 action\_result\.parameter\.expiration\_date | string | 
+action\_result\.parameter\.first\_seen\_since | string | 
+action\_result\.parameter\.first\_seen\_within | string | 
 action\_result\.parameter\.ip | string |  `ip` 
 action\_result\.parameter\.status | string | 
 action\_result\.parameter\.tld | string | 
@@ -200,14 +206,20 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**create\_date\_within** |  optional  | Only include domains with a whois create date within the specified number of days \(e\.g\. specifying '1' would indicate within the past day\) | string | 
+**first\_seen\_within** |  optional  | Only include domains with a current lifecycle first observed within the specified number of seconds \(e\.g\. specifying '86400' would indicate within the past day\) | string | 
+**first\_seen\_since** |  optional  | Only include domains with a current lifecycle first observed since a specified datetime. \(Example: 2023\-04\-10T00:00:00+00:00\) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
 action\_result\.parameter\.create\_date | string | 
+action\_result\.parameter\.create\_date\_within | string | 
 action\_result\.parameter\.data\_updated\_after | string | 
 action\_result\.parameter\.expiration\_date | string | 
+action\_result\.parameter\.first\_seen\_since | string | 
+action\_result\.parameter\.first\_seen\_within | string | 
 action\_result\.parameter\.hash | string | 
 action\_result\.parameter\.status | string | 
 action\_result\.parameter\.tld | string | 
@@ -233,15 +245,21 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 **tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
 **create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**create\_date\_within** |  optional  | Only include domains with a whois create date within the specified number of days \(e\.g\. specifying '1' would indicate within the past day\) | string | 
+**first\_seen\_within** |  optional  | Only include domains with a current lifecycle first observed within the specified number of seconds \(e\.g\. specifying '86400' would indicate within the past day\) | string | 
+**first\_seen\_since** |  optional  | Only include domains with a current lifecycle first observed since a specified datetime. \(Example: 2023\-04\-10T00:00:00+00:00\) | string | 
 **expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
 action\_result\.parameter\.create\_date | string | 
+action\_result\.parameter\.create\_date\_within | string | 
 action\_result\.parameter\.data\_updated\_after | string | 
 action\_result\.parameter\.email | string |  `email` 
 action\_result\.parameter\.expiration\_date | string | 
+action\_result\.parameter\.first\_seen\_since | string | 
+action\_result\.parameter\.first\_seen\_within | string | 
 action\_result\.parameter\.status | string | 
 action\_result\.parameter\.tld | string | 
 action\_result\.data\.\*\.domain | string |  `domain` 
