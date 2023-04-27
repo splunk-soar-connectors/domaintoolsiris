@@ -123,6 +123,12 @@ action\_result\.parameter\.status | string |
 action\_result\.parameter\.tld | string | 
 action\_result\.data\.\*\.domain | string |  `domain` 
 action\_result\.data\.\*\.domain\_risk\.risk\_score | numeric | 
+action\_result\.data\.\*\.first\_seen\.count | numeric 
+action\_result\.data\.\*\.first\_seen\.value | string 
+action\_result\.data\.\*\.server\_type\.count | numeric 
+action\_result\.data\.\*\.server\_type\.value | string 
+action\_result\.data\.\*\.website\_title\.count | numeric 
+action\_result\.data\.\*\.website\_title\.value | string 
 action\_result\.status | string | 
 action\_result\.message | string | 
 action\_result\.summary | string | 
@@ -145,6 +151,12 @@ DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
 action\_result\.parameter\.domain | string |  `url`  `domain` 
 action\_result\.data | string | 
+action\_result\.data\.\*\.first\_seen\.count | numeric 
+action\_result\.data\.\*\.first\_seen\.value | string 
+action\_result\.data\.\*\.server\_type\.count | numeric 
+action\_result\.data\.\*\.server\_type\.value | string 
+action\_result\.data\.\*\.website\_title\.count | numeric 
+action\_result\.data\.\*\.website\_title\.value | string 
 action\_result\.status | string | 
 action\_result\.message | string | 
 action\_result\.summary\.ip\_list\.\*\.count | numeric | 
@@ -186,6 +198,12 @@ action\_result\.parameter\.status | string |
 action\_result\.parameter\.tld | string | 
 action\_result\.data\.\*\.domain | string |  `domain` 
 action\_result\.data\.\*\.domain\_risk\.risk\_score | numeric | 
+action\_result\.data\.\*\.first\_seen\.count | numeric 
+action\_result\.data\.\*\.first\_seen\.value | string 
+action\_result\.data\.\*\.server\_type\.count | numeric 
+action\_result\.data\.\*\.server\_type\.value | string 
+action\_result\.data\.\*\.website\_title\.count | numeric 
+action\_result\.data\.\*\.website\_title\.value | string 
 action\_result\.status | string | 
 action\_result\.message | string | 
 action\_result\.summary | string | 
@@ -225,6 +243,12 @@ action\_result\.parameter\.status | string |
 action\_result\.parameter\.tld | string | 
 action\_result\.data\.\*\.domain | string |  `domain` 
 action\_result\.data\.\*\.domain\_risk\.risk\_score | numeric | 
+action\_result\.data\.\*\.first\_seen\.count | numeric 
+action\_result\.data\.\*\.first\_seen\.value | string 
+action\_result\.data\.\*\.server\_type\.count | numeric 
+action\_result\.data\.\*\.server\_type\.value | string 
+action\_result\.data\.\*\.website\_title\.count | numeric 
+action\_result\.data\.\*\.website\_title\.value | string 
 action\_result\.status | string | 
 action\_result\.message | string | 
 action\_result\.summary | string | 
@@ -264,6 +288,12 @@ action\_result\.parameter\.status | string |
 action\_result\.parameter\.tld | string | 
 action\_result\.data\.\*\.domain | string |  `domain` 
 action\_result\.data\.\*\.domain\_risk\.risk\_score | numeric | 
+action\_result\.data\.\*\.first\_seen\.count | numeric 
+action\_result\.data\.\*\.first\_seen\.value | string 
+action\_result\.data\.\*\.server\_type\.count | numeric 
+action\_result\.data\.\*\.server\_type\.value | string 
+action\_result\.data\.\*\.website\_title\.count | numeric 
+action\_result\.data\.\*\.website\_title\.value | string 
 action\_result\.status | string | 
 action\_result\.message | string | 
 action\_result\.summary | string | 
@@ -333,6 +363,8 @@ action\_result\.data\.\*\.email\_domain\.\*\.count | numeric |
 action\_result\.data\.\*\.email\_domain\.\*\.value | string | 
 action\_result\.data\.\*\.expiration\_date\.count | numeric | 
 action\_result\.data\.\*\.expiration\_date\.value | string | 
+action\_result\.data\.\*\.first\_seen\.count | numeric 
+action\_result\.data\.\*\.first\_seen\.value | string 
 action\_result\.data\.\*\.google\_analytics\.count | numeric | 
 action\_result\.data\.\*\.google\_analytics\.value | string | 
 action\_result\.data\.\*\.ip\.\*\.address\.count | numeric | 
@@ -384,6 +416,8 @@ action\_result\.data\.\*\.registrant\_org\.count | numeric |
 action\_result\.data\.\*\.registrant\_org\.value | string | 
 action\_result\.data\.\*\.registrar\.count | numeric | 
 action\_result\.data\.\*\.registrar\.value | string | 
+action\_result\.data\.\*\.server\_type\.count | numeric 
+action\_result\.data\.\*\.server\_type\.value | string 
 action\_result\.data\.\*\.soa\_email\.\*\.count | numeric | 
 action\_result\.data\.\*\.soa\_email\.\*\.value | string | 
 action\_result\.data\.\*\.ssl\_info\.\*\.hash\.count | numeric | 
@@ -456,6 +490,7 @@ action\_result\.data\.\*\.billing\_contact\.street\.value | string |
 action\_result\.data\.\*\.create\_date\.value | string | 
 action\_result\.data\.\*\.email\_domain\.\*\.value | string | 
 action\_result\.data\.\*\.expiration\_date\.value | string | 
+action\_result\.data\.\*\.first\_seen\.value | string 
 action\_result\.data\.\*\.google\_analytics\.value | string | 
 action\_result\.data\.\*\.ip\.\*\.address\.value | string | 
 action\_result\.data\.\*\.ip\.\*\.asn\.\*\.value | string | 
@@ -482,6 +517,7 @@ action\_result\.data\.\*\.registrant\_contact\.street\.value | string |
 action\_result\.data\.\*\.registrant\_name\.value | string | 
 action\_result\.data\.\*\.registrant\_org\.value | string | 
 action\_result\.data\.\*\.registrar\.value | string | 
+action\_result\.data\.\*\.server\_type\.value | string 
 action\_result\.data\.\*\.soa\_email\.\*\.value | string | 
 action\_result\.data\.\*\.ssl\_info\.\*\.hash\.value | string | 
 action\_result\.data\.\*\.ssl\_info\.\*\.organization\.value | string | 
@@ -496,6 +532,7 @@ action\_result\.data\.\*\.technical\_contact\.phone\.value | string |
 action\_result\.data\.\*\.technical\_contact\.postal\.value | string | 
 action\_result\.data\.\*\.technical\_contact\.state\.value | string | 
 action\_result\.data\.\*\.technical\_contact\.street\.value | string | 
+action\_result\.data\.\*\.website\_title\.value | string 
 action\_result\.summary | string | 
 action\_result\.message | string | 
 summary\.total\_objects | numeric | 
