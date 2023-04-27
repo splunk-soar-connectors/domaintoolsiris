@@ -290,6 +290,30 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.parameter.pivot_type",
                     "data_type": "string"
                 },
@@ -395,6 +419,30 @@
                 },
                 {
                     "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
                     "data_type": "string"
                 },
                 {
@@ -895,6 +943,30 @@
                     "column_name": "Risk Score"
                 },
                 {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
@@ -1159,6 +1231,14 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.google_analytics.count",
                     "data_type": "numeric"
                 },
@@ -1363,6 +1443,14 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.soa_email.*.count",
                     "data_type": "numeric"
                 },
@@ -1473,6 +1561,22 @@
                 {
                     "data_path": "action_result.summary",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -1635,6 +1739,10 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.google_analytics.value",
                     "data_type": "string"
                 },
@@ -1739,6 +1847,10 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.soa_email.*.value",
                     "data_type": "string"
                 },
@@ -1792,6 +1904,10 @@
                 },
                 {
                     "data_path": "action_result.data.*.technical_contact.street.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
                     "data_type": "string"
                 },
                 {
