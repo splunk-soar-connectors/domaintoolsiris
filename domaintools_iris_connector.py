@@ -33,19 +33,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_REVERSE_DOMAIN = "reverse_lookup_domain"
     ACTION_ID_LOAD_HASH = "load_hash"
 
-    DOMAINTOOLS = "api.domaintools.com"
-    API_VERSION = "v1"
-
-    DOMAINTOOLS_ERR_INVALID_URL = "Error connecting to server. Invalid URL."
-    DOMAINTOOLS_ERR_CONNECTION_REFUSED = (
-        "Error connecting to server. Connection refused from the server."
-    )
-    DOMAINTOOLS_ERR_INVALID_SCHEMA = (
-        "Error connecting to server. No connection adapters were found."
-    )
-
     def __init__(self):
-
         # Call the BaseConnectors init first
         super(DomainToolsConnector, self).__init__()
 
@@ -214,13 +202,35 @@ class DomainToolsConnector(BaseConnector):
             domain = query_args["domain"] if "domain" in query_args else False
             service_api = getattr(dt_api, service)
             # Not optimal, there is probably a better way
-            if isinstance(query_args, str):
-                response = service_api(query_args)
-            elif domain:
-                query_args.pop("domain", None)
-                response = service_api(domain, **query_args)
-            else:
-                response = service_api(**query_args)
+
+            # Pagination parameters
+            has_more_results = True
+            position = None
+            results_data = []
+
+            while has_more_results:
+                if isinstance(query_args, str):
+                    response = service_api(query_args, position=position)
+                elif domain:
+                    query_args.pop("domain", None)
+                    response = service_api(domain, **query_args, position=position)
+                else:
+                    response = service_api(**query_args, position=position)
+
+                try:
+                    response_json = response.data()
+                except Exception as e:
+                    return action_result.set_status(
+                        phantom.APP_ERROR,
+                        "Unable to get data() from the DomainTools API response",
+                        e,
+                    )
+
+                if response_json:
+                    response = response_json.get("response", {})
+                    has_more_results = response.get("has_more_results")
+                    position = response.get("position")
+                    results_data += response.get("results")
 
         except Exception as e:
             return action_result.set_status(
@@ -229,16 +239,8 @@ class DomainToolsConnector(BaseConnector):
                 e,
             )
 
-        self.save_progress("Parsing response...")
-
-        try:
-            response_json = response.data()
-        except Exception as e:
-            return action_result.set_status(
-                phantom.APP_ERROR,
-                "Unable to get data() from the DomainTools API response",
-                e,
-            )
+        self.save_progress(f"Parsing {len(results_data)} results...")
+        response_json["response"]["results"] = results_data
 
         try:
             return self._parse_response(action_result, response_json)
@@ -414,7 +416,6 @@ class DomainToolsConnector(BaseConnector):
         return action_result.get_status()
 
     def _domain_reputation(self, param):
-
         action_result = self.add_action_result(ActionResult(param))
         domain_to_query = self._domain
         params = {"domain": domain_to_query}
@@ -525,7 +526,6 @@ class DomainToolsConnector(BaseConnector):
 
 
 if __name__ == "__main__":
-
     import argparse
 
     argparser = argparse.ArgumentParser()
