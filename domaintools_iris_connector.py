@@ -457,10 +457,11 @@ class DomainToolsConnector(BaseConnector):
         return self._pivot_action(param)
 
     def _load_hash(self, param):
+        param_hash = param.get("Iris_Investigate_search_hash") or ""
         data = {
             "pivot_type": "search_hash",
-            "query_value": param["hash"],
-            "hash": param["hash"],
+            "query_value": param_hash,
+            "hash": param_hash,
         }
         param.update(data)
         return self._pivot_action(param)

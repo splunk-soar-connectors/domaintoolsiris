@@ -659,66 +659,17 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "load hash",
+            "action": "load search hash",
             "description": "Load or monitor Iris Investigate search results by Iris Investigate export hash",
             "type": "investigate",
             "identifier": "load_hash",
             "read_only": true,
             "parameters": {
-                "hash": {
-                    "description": "Iris Investigate search hash to load",
+                "Iris_Investigate_search_hash": {
+                    "description": "Current Search Export string (Advanced -> Import/Export Search) from Iris Investigate in this field to import up to 5000 domains",
                     "data_type": "string",
                     "required": true,
                     "order": 0
-                },
-                "status": {
-                    "description": "Return domains of this registration type",
-                    "data_type": "string",
-                    "value_list": [
-                        "Any",
-                        "Active",
-                        "Inactive"
-                    ],
-                    "default": "Any",
-                    "order": 1
-                },
-                "data_updated_after": {
-                    "description": "Iris Investigate records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
-                    "data_type": "string",
-                    "order": 2
-                },
-                "tld": {
-                    "description": "Limit results to only include domains in a specific top-level domain (i.e. \u201ctld=com\u201d or \u201ctld=ru\u201d)",
-                    "data_type": "string",
-                    "order": 3
-                },
-                "create_date": {
-                    "description": "Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
-                    "data_type": "string",
-                    "order": 4
-                },
-                "create_date_within": {
-                    "description": "Only include domains with a whois create date within the specified number of days (e.g. specifying '1' would indicate within the past day)",
-                    "data_type": "string",
-                    "order": 5,
-                    "name": "create_date_within"
-                },
-                "first_seen_within": {
-                    "description": "Only include domains with a current lifecycle first observed within the specified number of seconds (e.g. specifying '86400' would indicate within the past day)",
-                    "data_type": "string",
-                    "order": 6,
-                    "name": "first_seen_within"
-                },
-                "first_seen_since": {
-                    "description": "Only include domains with a current lifecycle first observed since a specified datetime. (Example: 2023-04-10T00:00:00+00:00)",
-                    "data_type": "string",
-                    "order": 7,
-                    "name": "first_seen_since"
-                },
-                "expiration_date": {
-                    "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
-                    "data_type": "string",
-                    "order": 8
                 }
             },
             "render": {
@@ -729,39 +680,7 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.create_date",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.create_date_within",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.data_updated_after",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.expiration_date",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.first_seen_within",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.first_seen_since",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.hash",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.status",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.tld",
+                    "data_path": "action_result.parameter.Iris_Investigate_search_hash",
                     "data_type": "string"
                 },
                 {
