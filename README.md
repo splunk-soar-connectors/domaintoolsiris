@@ -219,12 +219,12 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**Iris\_Ivestigate_search\_hash** |  required  | Iris Investigate search hash to load | string | 
+**search\_hash** |  required  | Iris Investigate search hash to load | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.Iris\_Investigate\_search\_hash | string | 
+action\_result\.parameter\.search\_hash | string | 
 action\_result\.data\.\*\.domain | string |  `domain` 
 action\_result\.data\.\*\.domain\_risk\.risk\_score | numeric | 
 action\_result\.data\.\*\.first\_seen\.count | numeric 

@@ -25,6 +25,9 @@
         },
         {
             "name": "Jairdan Babac"
+        },
+        {
+            "name": "Brian Luza"
         }
     ],
     "configuration": {
@@ -662,10 +665,10 @@
             "action": "load search hash",
             "description": "Load or monitor Iris Investigate search results by Iris Investigate export hash",
             "type": "investigate",
-            "identifier": "load_hash",
+            "identifier": "load_search_hash",
             "read_only": true,
             "parameters": {
-                "Iris_Investigate_search_hash": {
+                "search_hash": {
                     "description": "Current Search Export string (Advanced -> Import/Export Search) from Iris Investigate in this field to import up to 5000 domains",
                     "data_type": "string",
                     "required": true,
@@ -680,7 +683,7 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.Iris_Investigate_search_hash",
+                    "data_path": "action_result.parameter.search_hash",
                     "data_type": "string"
                 },
                 {
