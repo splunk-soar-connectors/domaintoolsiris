@@ -43,7 +43,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [pivot action](#action-pivot-action) - Find domains connected by any supported Iris Investigate search parameter  
 [reverse domain](#action-reverse-domain) - Extract IPs from a single domain response for further pivoting  
 [reverse ip](#action-reverse-ip) - Find domains with web hosting IP, NS IP or MX IP  
-[load hash](#action-load-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash  
+[load search hash](#action-load-search-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash  
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate  
 [lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint \(required\)  
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint \(if provisioned\)  
@@ -210,7 +210,7 @@ action\_result\.summary | string |
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
-## action: 'load hash'
+## action: 'load search hash'
 Load or monitor Iris Investigate search results by Iris Investigate export hash
 
 Type: **investigate**  
@@ -219,28 +219,12 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**hash** |  required  | Iris Investigate search hash to load | string | 
-**status** |  optional  | Return domains of this registration type | string | 
-**data\_updated\_after** |  optional  | Iris Investigate records that were updated on or after midnight on this date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
-**tld** |  optional  | Limit results to only include domains in a specific top\-level domain \(i\.e\. “tld=com” or “tld=ru”\) | string | 
-**create\_date** |  optional  | Only include domains created on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
-**create\_date\_within** |  optional  | Only include domains with a whois create date within the specified number of days \(e\.g\. specifying '1' would indicate within the past day\) | string | 
-**first\_seen\_within** |  optional  | Only include domains with a current lifecycle first observed within the specified number of seconds \(e\.g\. specifying '86400' would indicate within the past day\) | string | 
-**first\_seen\_since** |  optional  | Only include domains with a current lifecycle first observed since a specified datetime. \(Example: 2023\-04\-10T00:00:00+00:00\) | string | 
-**expiration\_date** |  optional  | Only include domains expiring on a specific date, in YYYY\-MM\-DD format or relative options \( 'today', 'yesterday' \) | string | 
+**search\_hash** |  required  | Iris Investigate search hash to load | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.create\_date | string | 
-action\_result\.parameter\.create\_date\_within | string | 
-action\_result\.parameter\.data\_updated\_after | string | 
-action\_result\.parameter\.expiration\_date | string | 
-action\_result\.parameter\.first\_seen\_since | string | 
-action\_result\.parameter\.first\_seen\_within | string | 
-action\_result\.parameter\.hash | string | 
-action\_result\.parameter\.status | string | 
-action\_result\.parameter\.tld | string | 
+action\_result\.parameter\.search\_hash | string | 
 action\_result\.data\.\*\.domain | string |  `domain` 
 action\_result\.data\.\*\.domain\_risk\.risk\_score | numeric | 
 action\_result\.data\.\*\.first\_seen\.count | numeric 
