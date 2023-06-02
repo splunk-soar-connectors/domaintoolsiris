@@ -669,7 +669,7 @@
             "read_only": true,
             "parameters": {
                 "search_hash": {
-                    "description": "Current Search Export string (Advanced -> Import/Export Search) from Iris Investigate in this field to import up to 5000 domains",
+                    "description": "Paste the \"Current Search Export\" string (Advanced -> Import/Export Search) from Iris Investigate in this field to import up to 5000 domains",
                     "data_type": "string",
                     "required": true,
                     "order": 0
