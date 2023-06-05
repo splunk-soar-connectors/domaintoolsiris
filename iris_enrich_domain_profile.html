@@ -1,0 +1,42 @@
+{% extends 'widgets/widget_template.html' %}
+{% load custom_template %}
+
+{% block custom_title_prop %}{% if title_logo %}style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"{% endif %}{% endblock %}
+{% block title1 %}{{ title1 }}{% endblock %}
+{% block title2 %}{{ title2 }}{% endblock %}
+{% block custom_tools %}
+{% endblock %}
+
+<!-- File: iris_enrich_domain_profile.html
+  Copyright (c) 2019-2023 DomainTools, LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. See the License for the specific language governing permissions
+and limitations under the License.
+-->
+{% block widget_content %}
+<table class="phantom-table dataTable no-footer">
+  {% for result in results %}
+    {% if not result.data and not result.sorted_data %}
+      <h4>No data found</h4>
+    {% else %}
+    <div style="font-size:12px;text-transform: uppercase">Domain Profile</div>
+      {% if result.data.domain %}
+          <div style="display:block; text-align:right; text-decoration:underline; margin-right:12px">
+            <a target="_blank" href="https://research.domaintools.com/iris/search/?q={{ result.data.domain }}">Investigate in Iris Investigate</a>
+          </div>
+      {% endif %}
+      {% for key, value in result.sorted_data %}
+        <tr><td style="vertical-align:top">{{ key | title }}:</td><td>{% autoescape off %}{{ value | linebreaks }}{% endautoescape %}</td></tr>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+</table>
+{% endblock %}
