@@ -82,7 +82,7 @@
                 "title": "Domain Reputation",
                 "type": "custom",
                 "height": 10,
-                "view": "iris_view.display_risk_score"
+                "view": "iris_risk_score_view.display_risk_score"
             },
             "output": [
                 {
