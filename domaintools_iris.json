@@ -85,7 +85,7 @@
                 "title": "Domain Reputation",
                 "type": "custom",
                 "height": 10,
-                "view": "iris_view.display_risk_score"
+                "view": "iris_risk_score_view.display_risk_score"
             },
             "output": [
                 {
@@ -945,7 +945,7 @@
                 "width": 10,
                 "height": 10,
                 "title": "Domain Profile",
-                "view": "iris_view.display_domain_profile"
+                "view": "iris_domain_profile_view.display_domain_profile"
             },
             "output": [
                 {
@@ -1545,7 +1545,7 @@
                 "width": 10,
                 "height": 10,
                 "title": "Domain Profile",
-                "view": "iris_view.display_domain_profile"
+                "view": "iris_enrich_domain_view.display_enrich_domain_profile"
             },
             "output": [
                 {

@@ -1,5 +1,5 @@
 # --
-# File: iris_view.py
+# File: iris_risk_score_view.py
 #
 # Copyright (c) 2019-2023 DomainTools, LLC
 #
@@ -7,12 +7,6 @@
 
 import collections
 import copy
-
-
-def unique_list(raw_list):
-    ulist = []
-    [ulist.append(x) for x in raw_list if x not in ulist]
-    return ulist
 
 
 def create_score_span(score):
@@ -25,17 +19,18 @@ def create_score_span(score):
     return "<span style='min-width:30px;margin-bottom:2px;' class='label severity " + severity + "'>" + str(score) + "</span>"
 
 
-def flatten(d, parent_key='', sep=' '):
+def flatten(d, parent_key="", sep=" "):
     items = []
     for k, v in d.items():
-        if k != "count":
-          k = k.replace("_", " ")
-          new_key = parent_key + sep + k if parent_key else k
-          new_key = new_key.replace("_", " ").replace("value", "")
-          if isinstance(v, collections.MutableMapping):
-              items.extend(flatten(v, new_key, sep=sep).items())
-          else:
-              items.append((new_key, v))
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, dict) and "value" in v:
+            items.append((new_key.replace("_", " "), v))
+            continue
+
+        if isinstance(v, collections.MutableMapping):
+            items.extend(flatten(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key.replace("_", " "), v))
 
     return dict(items)
 
@@ -72,53 +67,6 @@ def render_list(list_obj):
             ret_str += str(item)
 
     return ret_str
-
-
-def get_ctx_result(result):
-    ctx_result = {}
-    param = result.get_param()
-    data = result.get_data()
-
-    ctx_result['param'] = param
-
-    if (data):
-        ctx_result['data'] = flatten(data[0] )
-        sorted_keys = sorted(ctx_result['data'], key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
-        ctx_result['sorted_data'] = []
-        for key in sorted_keys:
-          if ctx_result['data'][key] or ctx_result['data'][key] == 0:
-            data_value = ctx_result['data'][key]
-            if type(ctx_result['data'][key]) is list:
-              data_value = render_list(ctx_result['data'][key])
-            key = ' '.join(unique_list(key.split()))
-            ctx_result['sorted_data'].append((key, data_value))
-
-        # handle risk score item stuff
-        if('risk_score' in data[0]['domain_risk']):
-            rs_index = [y[0] for y in ctx_result['sorted_data']].index('domain risk score')
-            rs_item = ctx_result['sorted_data'].pop(rs_index)
-            span = create_score_span(rs_item[1])
-            new_tuple = ("domain risk score", span)
-            ctx_result['sorted_data'].insert(1, new_tuple)
-        else:
-            new_tuple = ("domain risk score", "")
-            ctx_result['sorted_data'].insert(1, new_tuple)
-
-    return ctx_result
-
-
-def display_domain_profile(provides, all_app_runs, context):
-
-    context['results'] = results = []
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-
-            ctx_result = get_ctx_result(result)
-            if (not ctx_result):
-                continue
-            results.append(ctx_result)
-
-    return 'iris_domain_profile.html'
 
 
 def display_risk_score(provides, all_app_runs, context):

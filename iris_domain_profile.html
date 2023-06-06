@@ -27,14 +27,86 @@ and limitations under the License.
     {% if not result.data and not result.sorted_data %}
       <h4>No data found</h4>
     {% else %}
-    <div style="font-size:12px;text-transform: uppercase">Domain Profile</div>
+    <div>
+      <span style="float:left">
+        <div style="font-size:12px;text-transform: uppercase">Domain Profile</div>
+      </span>
+      <span style="float:right">
       {% if result.data.domain %}
           <div style="display:block; text-align:right; text-decoration:underline; margin-right:12px">
             <a target="_blank" href="https://research.domaintools.com/iris/search/?q={{ result.data.domain }}">Investigate in Iris Investigate</a>
           </div>
       {% endif %}
-      {% for key, value in result.sorted_data %}
-        <tr><td style="vertical-align:top">{{ key | title }}:</td><td>{% autoescape off %}{{ value | linebreaks }}{% endautoescape %}</td></tr>
+      </span>
+        </div>
+      <tr>
+        <th style="width:30%">Property</th>
+        <th style="width:50%">Value</th>
+        <th style="width:20%">Connected Domains</th>
+      </tr>
+      {% for key, value, count, is_list in result.sorted_data %}
+        <tr>
+          <td style="vertical-align:top;">{{ key | title }}:</td>
+          {% if is_list %}
+            <td colspan="2">
+              {% for list_of_values in value %}
+                {% if key == "domain risk components" %}
+                  <p style="width: 100%;margin: 0;">
+                      <span style="display: inline-block;vertical-align: top;max-width: 150px;text-align: left; width: 70%;">{{ list_of_values.name | title }}:</span>
+                      <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">{{ list_of_values.risk_score }}</span>
+                  </p>
+                {% elif 'value' in list_of_values %}
+                  <p style="width: 100%;margin: 0;">
+                    <span style="display: inline-block;vertical-align: top;max-width: 300px;text-align: left; width: 90%;">{{ list_of_values.value }}</span>
+                    <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">
+                    {% if list_of_values.count > 1 and list_of_values.count <= 500 %}
+                      <a target="_blank" style="display:block; text-align:left; text-decoration:underline;"href="https://iris.domaintools.com/investigate/search/?q={{ list_of_values.value }}">{{ list_of_values.count }}</a>
+                    {% else %}
+                      {{ list_of_values.count }}
+                    {% endif %}
+                    </span>
+                  </p>
+                {% elif key == "registrar status" %}
+                  <p>{{ list_of_values }}</p>
+                {% else %}
+                  {% for k,v in list_of_values.items %}
+                    {% if 'value' in v %}
+                      <p style="width: 100%;margin: 0;">
+                        <span style="display: inline-block;vertical-align: top;min-width: 80px;text-align: left; width: 20%;"> {{ k }}: </span>
+                        <span style="display: inline-block;vertical-align: top;max-width: 220px;text-align: left; width: 70%;"> {{ v.value }} </span>
+                        <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">
+                          {% if v.count > 1 and v.count <= 500 %}
+                            <a target="_blank" style="display:block; text-align:left; text-decoration:underline;"href="https://iris.domaintools.com/investigate/search/?q={{ v.value }}">{{ v.count }}</a>
+                          {% else %}
+                            {{ v.count }}
+                          {% endif %}
+                        </span>
+                      </p>
+                    {% else %}
+                      <p style="width: 100%;margin: 0;">
+                        <span style="display: inline-block;vertical-align: top;max-width: 80px;text-align: left; width: 70%;">{{ k | title }}:</span>
+                        <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 150px;">{{ v }}</span>
+                      </p>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+            {% endfor %}
+            </td>
+          {% else %}
+          <td colspan="2">
+            <p>
+              <span style="display: inline-block;vertical-align: top;max-width: 300px;text-align: left; width: 90%;">{{ value }}</span>
+              <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">
+              {% if count > 1 and count <= 500 %}
+                <a target="_blank" style="display:block; text-align:left; text-decoration:underline;"href="https://iris.domaintools.com/investigate/search/?q={{ value }}">{{ count }}</a>
+              {% else %}
+                {{ count }}
+              {% endif %}
+              </span>
+            </p>
+          </td>
+          {% endif %}
+        </tr>
       {% endfor %}
     {% endif %}
   {% endfor %}
