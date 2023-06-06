@@ -59,7 +59,7 @@ and limitations under the License.
                   <p style="width: 100%;margin: 0;">
                     <span style="display: inline-block;vertical-align: top;max-width: 300px;text-align: left; width: 90%;">{{ list_of_values.value }}</span>
                     <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">
-                    {% if list_of_values.count <= 500 %}
+                    {% if list_of_values.count > 1 and list_of_values.count <= 500 %}
                       <a target="_blank" style="display:block; text-align:left; text-decoration:underline;"href="https://iris.domaintools.com/investigate/search/?q={{ list_of_values.value }}">{{ list_of_values.count }}</a>
                     {% else %}
                       {{ list_of_values.count }}
@@ -75,7 +75,7 @@ and limitations under the License.
                         <span style="display: inline-block;vertical-align: top;min-width: 80px;text-align: left; width: 20%;"> {{ k }}: </span>
                         <span style="display: inline-block;vertical-align: top;max-width: 220px;text-align: left; width: 70%;"> {{ v.value }} </span>
                         <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">
-                          {% if v.count <= 500 %}
+                          {% if v.count > 1 and v.count <= 500 %}
                             <a target="_blank" style="display:block; text-align:left; text-decoration:underline;"href="https://iris.domaintools.com/investigate/search/?q={{ v.value }}">{{ v.count }}</a>
                           {% else %}
                             {{ v.count }}
@@ -97,7 +97,7 @@ and limitations under the License.
             <p>
               <span style="display: inline-block;vertical-align: top;max-width: 300px;text-align: left; width: 90%;">{{ value }}</span>
               <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">
-              {% if count <= 500 %}
+              {% if count > 1 and count <= 500 %}
                 <a target="_blank" style="display:block; text-align:left; text-decoration:underline;"href="https://iris.domaintools.com/investigate/search/?q={{ value }}">{{ count }}</a>
               {% else %}
                 {{ count }}
