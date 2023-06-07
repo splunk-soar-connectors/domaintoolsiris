@@ -43,11 +43,17 @@
             "required": true,
             "order": 1
         },
+        "proxy_url": {
+            "description": "Proxy URL",
+            "data_type": "string",
+            "default": true,
+            "order": 2
+        },
         "ssl": {
             "description": "Use SSL",
             "data_type": "boolean",
             "default": true,
-            "order": 2
+            "order": 3
         }
     },
     "actions": [

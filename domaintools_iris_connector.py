@@ -42,6 +42,7 @@ class DomainToolsConnector(BaseConnector):
         self._username = None
         self._key = None
         self._domain = None
+        self._proxy_url = None
 
     def initialize(self):
         # get the app configuation - super class pulls domaintools_iris.json
@@ -189,7 +190,7 @@ class DomainToolsConnector(BaseConnector):
                 app_partner=self.app_partner,
                 app_name=self.app_name,
                 app_version=self.app_version_number,
-                proxy_url=None,
+                proxy_url=self._proxy_url,
                 verify_ssl=self._ssl,
                 https=self._ssl,
                 always_sign_api_key=True,
@@ -311,6 +312,7 @@ class DomainToolsConnector(BaseConnector):
         self._ssl = config.get("ssl", False)
         self._username = config["username"]
         self._key = config["key"]
+        self._proxy_url = config["proxy_url"]
 
         # If there is a domain attribute, do tldextract
         if param.get("domain"):
