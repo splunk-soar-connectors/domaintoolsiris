@@ -242,11 +242,6 @@ class DomainToolsConnector(BaseConnector):
 
         self.save_progress(f"Parsing {len(results_data)} results...")
         response_json["response"]["results"] = self._convert_risk_scores_to_string(results_data)
-        # response_json["response"]["results"] = sorted(
-        #     results_data,
-        #     key=lambda d: 0 if d.get("domain_risk", {}).get("risk_score") is None else d.get("domain_risk", {}).get("risk_score"),
-        #     reverse=True
-        # )
 
         try:
             return self._parse_response(action_result, response_json)
@@ -263,12 +258,13 @@ class DomainToolsConnector(BaseConnector):
         # the default table view from Splunk SOAR template.
         final_result = []
         for result in results_data:
-            result.get("domain_risk").update({"risk_score": self._convert_null_value_to_empty_string(result.get("domain_risk", {}).get("risk_score"))})
+            result.get("domain_risk").update({"risk_score_string": self._convert_null_value_to_empty_string(result.get("domain_risk", {}).get("risk_score"))})
             final_result.append(result)
 
+        # Make the final result sorted in descending order by default
         return sorted(
             final_result,
-            key=lambda d: 0 if d.get("domain_risk", {}).get("risk_score") == "" else int(d.get("domain_risk", {}).get("risk_score")),
+            key=lambda d: 0 if d.get("domain_risk", {}).get("risk_score_string") == "" else int(d.get("domain_risk", {}).get("risk_score_string")),
             reverse=True
         )
 
@@ -398,23 +394,24 @@ class DomainToolsConnector(BaseConnector):
                     {
                         "ip": a["address"]["value"],
                         "type": "Host IP",
-                        "count": self._convert_null_value_to_empty_string(a["address"]["count"]),
+                        "count": a["address"]["count"],
+                        "count_string": self._convert_null_value_to_empty_string(a["address"]["count"])
                     }
                 )
 
         for a in data[0]["mx"]:
             if "ip" in a:
                 for b in a["ip"]:
-                    ips.append({"ip": b["value"], "type": "MX IP", "count": self._convert_null_value_to_empty_string(b["count"])})
+                    ips.append({"ip": b["value"], "type": "MX IP", "count": b["count"], "count_string": self._convert_null_value_to_empty_string(b["count"])})
 
         for a in data[0]["name_server"]:
             if "ip" in a:
                 for b in a["ip"]:
-                    ips.append({"ip": b["value"], "type": "NS IP", "count": self._convert_null_value_to_empty_string(b["count"])})
+                    ips.append({"ip": b["value"], "type": "NS IP", "count": b["count"], "count_string": self._convert_null_value_to_empty_string(b["count"])})
 
         sorted_ips = sorted(
             ips,
-            key=lambda d: 0 if d.get("count") == "" else int(d.get("count")),
+            key=lambda d: 0 if d.get("count_string") == "" else int(d.get("count_string")),
             reverse=True)
         action_result.update_summary({"ip_list": sorted_ips})
 
