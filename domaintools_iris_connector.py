@@ -258,7 +258,13 @@ class DomainToolsConnector(BaseConnector):
         # the default table view from Splunk SOAR template.
         final_result = []
         for result in results_data:
-            result.get("domain_risk").update({"risk_score_string": self._convert_null_value_to_empty_string(result.get("domain_risk", {}).get("risk_score"))})
+            result.get("domain_risk").update(
+                {
+                    "risk_score_string": self._convert_null_value_to_empty_string(
+                        result.get("domain_risk", {}).get("risk_score")
+                    )
+                }
+            )
             final_result.append(result)
 
         # Make the final result sorted in descending order by default
@@ -417,8 +423,7 @@ class DomainToolsConnector(BaseConnector):
 
         return action_result.get_status()
 
-    @staticmethod
-    def _convert_null_value_to_empty_string(value):
+    def _convert_null_value_to_empty_string(self, value):
         return "" if value is None else str(value)
 
     def _domain_enrich(self, param):
