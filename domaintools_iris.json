@@ -349,7 +349,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 1,
                     "column_name": "Risk Score"
                 },
@@ -462,7 +466,11 @@
                 },
                 {
                     "data_path": "action_result.summary.ip_list.*.count",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.ip_list.*.count_string",
+                    "data_type": "string",
                     "column_order": 2,
                     "column_name": "Connected Domain Count"
                 },
@@ -624,7 +632,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 2,
                     "column_name": "Risk Score"
                 },
@@ -697,7 +709,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 1,
                     "column_name": "Risk Score"
                 },
@@ -860,7 +876,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 2,
                     "column_name": "Risk Score"
                 },

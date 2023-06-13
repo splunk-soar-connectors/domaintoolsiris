@@ -4,12 +4,13 @@ from utils import unique_list
 def display_domain_profile(provides, all_app_runs, context):
 
     context['results'] = results = []
-    for summary, action_results in all_app_runs:
+    for _, action_results in all_app_runs:
         for result in action_results:
 
             ctx_result = get_ctx_result(result)
-            if (not ctx_result):
+            if not ctx_result:
                 continue
+
             results.append(ctx_result)
 
     return 'iris_domain_profile.html'
@@ -20,14 +21,12 @@ def get_ctx_result(result):
     param = result.get_param()
     data = result.get_data()
 
-    ctx_result['param'] = param
-
     if (data):
+        ctx_result['param'] = param
         ctx_result['data'] = extract_data(data[0])
         sorted_keys = sorted(ctx_result['data'], key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
         ctx_result['sorted_data'] = []
         for key in sorted_keys:
-          is_list = False
           if ctx_result['data'][key] or ctx_result['data'][key] == 0:
             data_count = ""
             if type(ctx_result['data'][key]) is dict:
@@ -37,11 +36,10 @@ def get_ctx_result(result):
                     continue
                 data_value = value
                 data_count = count if count and count != 0 else ""
-            elif type(ctx_result['data'][key]) is list:
-                is_list = True
-                data_value = ctx_result['data'][key]
             else:
                 data_value = ctx_result['data'][key]
+
+            is_list = isinstance(ctx_result['data'][key], list)
 
             key = " ".join(unique_list(key.split()))
             ctx_result["sorted_data"].append((key, data_value, data_count, is_list))
