@@ -309,10 +309,10 @@ class DomainToolsConnector(BaseConnector):
         # Get the config
         config = self.get_config()
 
-        self._ssl = config.get("ssl", False)
         self._username = config["username"]
         self._key = config["key"]
-        self._proxy_url = config["proxy_url"]
+        self._ssl = self._get_ssl(config)
+        self._proxy_url = self._get_proxy_url(config)
 
         # If there is a domain attribute, do tldextract
         if param.get("domain"):
@@ -342,6 +342,44 @@ class DomainToolsConnector(BaseConnector):
             ret_val = self._load_search_hash(param)
 
         return ret_val
+
+    def _get_proxy_url(self, config):
+        proxy_url = None
+        if config.get("proxy"):
+            proxy_server = config.get("proxy_server")
+            proxy_port = config.get("proxy_port")
+            proxy_url = f"{proxy_server}:{proxy_port}"
+
+            if not (proxy_server and proxy_port):
+                raise Exception("Must provide both a Proxy Server and Proxy Port.")
+
+            if config.get("proxy_auth"):
+                proxy_username = config.get("proxy_username")
+                proxy_password = config.get("proxy_password")
+
+                if not (proxy_username and proxy_password):
+                    raise Exception("Must provide both a Proxy Username and Proxy Password.")
+
+                split_url = proxy_url.split("://")
+                protocol = "http"
+                if len(split_url) == 2:
+                    protocol = split_url[0]
+                    server_address = split_url[1]
+                else:
+                    server_address = proxy_url
+
+                proxy_url = f"{protocol}://{proxy_username}:{proxy_password}@{server_address}"
+
+        return proxy_url
+
+    def _get_ssl(self, config):
+        custom_ssl_cert_path = config.get("custom_ssl_certificate_path")
+        if config.get("custom_ssl_certificate"):
+            if not custom_ssl_cert_path:
+             raise Exception("Must provide the custom ssl certificate path.")
+            return custom_ssl_cert_path
+
+        return config.get("ssl", False)
 
     def _refang(self, line):
         """Refangs a line of text. See: https://bitbucket.org/johannestaas/defang

@@ -43,17 +43,54 @@
             "required": true,
             "order": 1
         },
-        "proxy_url": {
-            "description": "Proxy URL",
-            "data_type": "string",
-            "default": true,
+        "proxy": {
+            "description": "Use Proxy",
+            "data_type": "boolean",
+            "default": false,
             "order": 2
+        },
+        "proxy_auth": {
+            "description": "Use Proxy Authentication",
+            "data_type": "boolean",
+            "default": false,
+            "order": 3
+        },
+        "proxy_server": {
+            "description": "Proxy Server",
+            "data_type": "string",
+            "order": 4
+        },
+        "proxy_username": {
+            "description": "Proxy Username",
+            "data_type": "string",
+            "order": 5
+        },
+        "proxy_port": {
+            "description": "Proxy Port",
+            "data_type": "numeric",
+            "order": 6
+        },
+        "proxy_password": {
+            "description": "Proxy Password",
+            "data_type": "password",
+            "order": 7
+        },
+        "custom_ssl_certificate": {
+            "description": "Use Custom SSL Certificate",
+            "data_type": "boolean",
+            "default": false,
+            "order": 8
         },
         "ssl": {
             "description": "Use SSL",
             "data_type": "boolean",
             "default": true,
-            "order": 3
+            "order": 9
+        },
+        "custom_ssl_certificate_path": {
+            "description": "Custom SSL Certificate Path",
+            "data_type": "string",
+            "order": 10
         }
     },
     "actions": [
