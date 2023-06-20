@@ -349,9 +349,18 @@ class DomainToolsConnector(BaseConnector):
             proxy_server = config.get("proxy_server")
             proxy_port = config.get("proxy_port")
             proxy_url = f"{proxy_server}:{proxy_port}"
+            server_address = proxy_url
 
             if not (proxy_server and proxy_port):
                 raise Exception("Must provide both a Proxy Server and Proxy Port.")
+
+            protocol = "http"
+            split_url = proxy_url.split("://")
+            if len(split_url) == 2:
+                protocol = split_url[0]
+                server_address = split_url[1]
+            else:
+                proxy_url = f"{protocol}://{server_address}"
 
             if config.get("proxy_auth"):
                 proxy_username = config.get("proxy_username")
@@ -359,14 +368,6 @@ class DomainToolsConnector(BaseConnector):
 
                 if not (proxy_username and proxy_password):
                     raise Exception("Must provide both a Proxy Username and Proxy Password.")
-
-                split_url = proxy_url.split("://")
-                protocol = "http"
-                if len(split_url) == 2:
-                    protocol = split_url[0]
-                    server_address = split_url[1]
-                else:
-                    server_address = proxy_url
 
                 proxy_url = f"{protocol}://{proxy_username}:{proxy_password}@{server_address}"
 
