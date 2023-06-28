@@ -271,7 +271,7 @@ class DomainToolsConnector(BaseConnector):
         # Make the final result sorted in descending order by default
         return sorted(
             final_result,
-            key=lambda d: 0 if d.get("domain_risk", {}).get("risk_score_string") == "" else int(d.get("domain_risk", {}).get("risk_score_string")),
+            key=lambda d: 0 if d.get("domain_risk", {}).get("risk_score_string") == "" else d.get("domain_risk", {}).get("risk_score"),
             reverse=True
         )
 
@@ -458,14 +458,14 @@ class DomainToolsConnector(BaseConnector):
 
         sorted_ips = sorted(
             ips,
-            key=lambda d: 0 if d.get("count_string") == "" else int(d.get("count_string")),
+            key=lambda d: 0 if d.get("count_string") == "" else(d.get("count")),
             reverse=True)
         action_result.update_summary({"ip_list": sorted_ips})
 
         return action_result.get_status()
 
     def _convert_null_value_to_empty_string(self, value):
-        return "" if value is None else str(value)
+        return "" if value is None else f"{value:,}"
 
     def _domain_enrich(self, param):
         self.save_progress("Starting domain_enrich action.")
