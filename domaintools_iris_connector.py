@@ -415,11 +415,12 @@ class DomainToolsConnector(BaseConnector):
     def _get_domain(self, hostnames):
         extract = None
         domains = []
+        try:
+            extract = tldextract.TLDExtract(suffix_list_urls=None)
+        except Exception as e:
+            raise Exception("tldextract result failed", e)
+
         for hostname in hostnames:
-            try:
-                extract = tldextract.TLDExtract(suffix_list_urls=None)
-            except Exception as e:
-                raise Exception("tldextract result failed", e)
             cleaned = self._refang(hostname)
             result = extract(cleaned)
             domains.append("{0}.{1}".format(result.domain, result.suffix))
