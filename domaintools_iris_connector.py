@@ -201,7 +201,7 @@ class DomainToolsConnector(BaseConnector):
             )
 
         try:
-            domain = query_args["domain"] if "domain" in query_args else False
+            domains = query_args.get("domain")
             service_api = getattr(dt_api, service)
             # Not optimal, there is probably a better way
 
@@ -213,9 +213,9 @@ class DomainToolsConnector(BaseConnector):
             while has_more_results:
                 if isinstance(query_args, str):
                     response = service_api(query_args, position=position)
-                elif domain:
+                elif domains:
                     query_args.pop("domain", None)
-                    response = service_api(domain, **query_args, position=position)
+                    response = service_api(domains, **query_args, position=position)
                 else:
                     response = service_api(**query_args, position=position)
 
@@ -316,10 +316,12 @@ class DomainToolsConnector(BaseConnector):
 
         # If there is a domain attribute, do tldextract
         if param.get("domain"):
-            self._domain = self._get_domain(param.get("domain"))
+            hostnames = param.get("domain").replace(" ", "").strip(",").split(",")
+            self._domain = self._get_domain(hostnames)
         # If pivoting  and the type is domain, set the query_vca
         if param.get("pivot_type") == "domain":
-            self._domain = self._get_domain(param.get("query_value"))
+            hostnames = param.get("query_value").replace(" ", "").strip(",").split(",")
+            self._domain = self._get_domain(hostnames)
 
         # Handle the actions
         if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
@@ -410,15 +412,19 @@ class DomainToolsConnector(BaseConnector):
         return dirty_line
 
     # Borrowed from https://github.com/phantomcyber/phantom-apps/blob/master/Apps/phurlvoid/urlvoid_connector.py
-    def _get_domain(self, hostname):
+    def _get_domain(self, hostnames):
         extract = None
-        try:
-            extract = tldextract.TLDExtract(suffix_list_urls=None)
-        except Exception as e:
-            raise Exception("tldextract result failed", e)
-        cleaned = self._refang(hostname)
-        result = extract(cleaned)
-        return "{0}.{1}".format(result.domain, result.suffix)
+        domains = []
+        for hostname in hostnames:
+            try:
+                extract = tldextract.TLDExtract(suffix_list_urls=None)
+            except Exception as e:
+                raise Exception("tldextract result failed", e)
+            cleaned = self._refang(hostname)
+            result = extract(cleaned)
+            domains.append("{0}.{1}".format(result.domain, result.suffix))
+
+        return domains
 
     def _reverse_lookup_domain(self, param):
         action_result = self.add_action_result(ActionResult(param))
@@ -471,7 +477,7 @@ class DomainToolsConnector(BaseConnector):
         self.save_progress("Starting domain_enrich action.")
         action_result = self.add_action_result(ActionResult(param))
 
-        params = {"domain": self._domain}
+        params = {"domain": ",".join(self._domain)}
         self._do_query("iris_enrich", action_result, query_args=params)
         self.save_progress("Completed domain_enrich action.")
 
