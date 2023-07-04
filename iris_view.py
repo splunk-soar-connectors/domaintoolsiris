@@ -21,29 +21,34 @@ def display_view(provides, all_app_runs, context):
 def get_ctx_result(result):
     ctx_result = {}
     param = result.get_param()
-    data = result.get_data()
-    if (data):
+    data_list = result.get_data()
+    if (data_list):
         ctx_result['param'] = param
-        ctx_result['data'] = extract_data(data[0])
-        sorted_keys = sorted(ctx_result['data'], key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
+        ctx_result['data'] = []
         ctx_result['sorted_data'] = []
+        for data in data_list:
+            extracted_data = extract_data(data)
+            ctx_result['data'].append(extracted_data)
+            sorted_keys = sorted(extracted_data, key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
+            sorted_data = []
 
-        for key in sorted_keys:
-          if ctx_result['data'][key] or ctx_result['data'][key] == 0:
-            data_count = ""
-            if type(ctx_result['data'][key]) is dict:
-                value = ctx_result['data'][key].get("value")
-                count = ctx_result['data'][key].get("count")
-                if value in ("", "None", None):
-                    continue
-                data_value = value
-                data_count = count if count and count != 0 else ""
-            else:
-                data_value = ctx_result['data'][key]
+            for key in sorted_keys:
+                if extracted_data[key] or extracted_data[key] == 0:
+                    data_count = ""
+                    if type(extracted_data[key]) is dict:
+                        value = extracted_data[key].get("value")
+                        count = extracted_data[key].get("count")
+                        if value in ("", "None", None):
+                            continue
+                        data_value = value
+                        data_count = count if count and count != 0 else ""
+                    else:
+                        data_value = extracted_data[key]
 
-            is_list = isinstance(ctx_result['data'][key], list)
-            key = " ".join(unique_list(key.split()))
-            ctx_result["sorted_data"].append((key, data_value, data_count, is_list))
+                    is_list = isinstance(data_value, list)
+                    key = " ".join(unique_list(key.split()))
+                    sorted_data.append((key, data_value, data_count, is_list))
+            ctx_result['sorted_data'].append(sorted_data)
 
     return ctx_result
 
@@ -59,7 +64,7 @@ def extract_data(data, parent_key="", sep=" "):
         if isinstance(v, dict):
             items.extend(extract_data(v, new_key, sep=sep).items())
         else:
-            if isinstance(v, list):
+            if v and isinstance(v, list):
                 new_key = new_key.replace("_", " ")
                 if new_key in ("domain risk components", "tags"):
                     items.append((new_key, remove_underscore(v)))
@@ -77,7 +82,7 @@ def extract_list(value):
     for val in value:
         if isinstance(val, dict):
             for k, v in val.items():
-                if isinstance(v, list) and "value" in v[0]:
+                if v and isinstance(v, list) and "value" in v[0]:
                     val[k] = v[0]
 
         items.append(val)
