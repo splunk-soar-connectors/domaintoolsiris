@@ -41,7 +41,7 @@ class DomainToolsConnector(BaseConnector):
         self._ssl = None
         self._username = None
         self._key = None
-        self._domain = None
+        self._domains = None
         self._proxy_url = None
 
     def initialize(self):
@@ -201,7 +201,7 @@ class DomainToolsConnector(BaseConnector):
             )
 
         try:
-            domains = query_args.get("domain")
+            domains = query_args.get("domains")
             service_api = getattr(dt_api, service)
             # Not optimal, there is probably a better way
 
@@ -214,7 +214,7 @@ class DomainToolsConnector(BaseConnector):
                 if isinstance(query_args, str):
                     response = service_api(query_args, position=position)
                 elif domains:
-                    query_args.pop("domain", None)
+                    query_args.pop("domains", None)
                     response = service_api(domains, **query_args, position=position)
                 else:
                     response = service_api(**query_args, position=position)
@@ -276,7 +276,7 @@ class DomainToolsConnector(BaseConnector):
         )
 
     def _test_connectivity(self):
-        params = {"domain": "domaintools.net"}
+        params = {"domains": "domaintools.net"}
         self.save_progress("Performing test query")
 
         # Progress
@@ -314,14 +314,14 @@ class DomainToolsConnector(BaseConnector):
         self._ssl = self._get_ssl(config)
         self._proxy_url = self._get_proxy_url(config)
 
-        # If there is a domain attribute, do tldextract
-        if param.get("domain"):
-            hostnames = param.get("domain").replace(" ", "").strip(",").split(",")
-            self._domain = self._get_domain(hostnames)
+        # If there is a domains attribute, do tldextract
+        if param.get("domains"):
+            hostnames = param.get("domains").replace(" ", "").strip(",").split(",")
+            self._domains = self._get_domains(hostnames)
         # If pivoting  and the type is domain, set the query_vca
         if param.get("pivot_type") == "domain":
             hostnames = param.get("query_value").replace(" ", "").strip(",").split(",")
-            self._domain = self._get_domain(hostnames)
+            self._domains = self._get_domains(hostnames)
 
         # Handle the actions
         if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
@@ -412,7 +412,7 @@ class DomainToolsConnector(BaseConnector):
         return dirty_line
 
     # Borrowed from https://github.com/phantomcyber/phantom-apps/blob/master/Apps/phurlvoid/urlvoid_connector.py
-    def _get_domain(self, hostnames):
+    def _get_domains(self, hostnames):
         extract = None
         domains = []
         try:
@@ -429,7 +429,7 @@ class DomainToolsConnector(BaseConnector):
 
     def _reverse_lookup_domain(self, param):
         action_result = self.add_action_result(ActionResult(param))
-        params = {"domain": self._domain}
+        params = {"domains": self._domains}
         ret_val = self._do_query("iris_investigate", action_result, query_args=params)
 
         if not ret_val:
@@ -478,7 +478,7 @@ class DomainToolsConnector(BaseConnector):
         self.save_progress("Starting domain_enrich action.")
         action_result = self.add_action_result(ActionResult(param))
 
-        params = {"domain": ",".join(self._domain)}
+        params = {"domains": ",".join(self._domains)}
         self._do_query("iris_enrich", action_result, query_args=params)
         self.save_progress("Completed domain_enrich action.")
 
@@ -488,7 +488,7 @@ class DomainToolsConnector(BaseConnector):
         self.save_progress("Starting domain_investigate action.")
         action_result = self.add_action_result(ActionResult(param))
 
-        params = {"domain": self._domain}
+        params = {"domains": self._domains}
         self._do_query("iris_investigate", action_result, query_args=params)
         self.save_progress("Completed domain_investigate action.")
 
@@ -496,8 +496,8 @@ class DomainToolsConnector(BaseConnector):
 
     def _domain_reputation(self, param):
         action_result = self.add_action_result(ActionResult(param))
-        domain_to_query = self._domain
-        params = {"domain": domain_to_query}
+        domain_to_query = self._domains
+        params = {"domains": domain_to_query}
 
         ret_val = self._do_query("iris_investigate", action_result, query_args=params)
 
@@ -547,9 +547,9 @@ class DomainToolsConnector(BaseConnector):
 
     def _pivot_action(self, param):
         action_result = self.add_action_result(ActionResult(param))
-        query_field = param["pivot_type"]
-        if query_field == "domain":
-            query_value = self._domain
+        query_field = param["pivot_type"] if param["pivot_type"] != "domain" else "domains"
+        if query_field == "domains":
+            query_value = self._domains
         else:
             query_value = param["query_value"]
 

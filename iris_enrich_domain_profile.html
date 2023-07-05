@@ -32,7 +32,7 @@ and limitations under the License.
               <th style="width:30%; color: white;">Property</th>
               <th style="width:70%; color: white;">Value</th>
             </tr>
-            {% for key, value, count, is_list in sorted_data %}
+            {% for key, value, count, is_list, queried_domain in sorted_data %}
               <tr>
                 <td style="vertical-align:top;">{{ key | title }}:</td>
                 {% if is_list %}
