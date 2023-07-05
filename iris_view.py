@@ -32,6 +32,9 @@ def get_ctx_result(result):
             sorted_keys = sorted(extracted_data, key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
             sorted_data = []
 
+            # TODO: This is temporary only. Remove this from the sorted_data once update on pivot links is implemented
+            queried_domain = extracted_data.get("domain")
+
             for key in sorted_keys:
                 if extracted_data[key] or extracted_data[key] == 0:
                     data_count = ""
@@ -47,7 +50,7 @@ def get_ctx_result(result):
 
                     is_list = isinstance(data_value, list)
                     key = " ".join(unique_list(key.split()))
-                    sorted_data.append((key, data_value, data_count, is_list))
+                    sorted_data.append((key, data_value, data_count, is_list, queried_domain))
             ctx_result['sorted_data'].append(sorted_data)
 
     return ctx_result

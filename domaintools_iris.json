@@ -111,8 +111,8 @@
             "identifier": "domain_reputation",
             "read_only": true,
             "parameters": {
-                "domain": {
-                    "description": "Domain to query",
+                "domains": {
+                    "description": "Domain or comma-separated list of domains to query",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -132,7 +132,7 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.domain",
+                    "data_path": "action_result.parameter.domains",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -440,8 +440,8 @@
             "identifier": "reverse_lookup_domain",
             "read_only": true,
             "parameters": {
-                "domain": {
-                    "description": "Domain to query",
+                "domains": {
+                    "description": "Domain or comma-separated list of domains to query",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -460,7 +460,7 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.domain",
+                    "data_path": "action_result.parameter.domains",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -991,8 +991,8 @@
             "identifier": "domain_investigate",
             "read_only": true,
             "parameters": {
-                "domain": {
-                    "description": "Domain to query using the Iris Investigate API",
+                "domains": {
+                    "description": "Domain or comma-separated list of domains to query using the Iris Investigate API",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -1020,7 +1020,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.domain",
+                    "data_path": "action_result.parameter.domains",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -1591,8 +1591,8 @@
             "identifier": "domain_enrich",
             "read_only": true,
             "parameters": {
-                "domain": {
-                    "description": "Domain to query using the Iris Enrich API (if provisioned)",
+                "domains": {
+                    "description": "Domain or comma-separated list of domains to query using the Iris Enrich API (if provisioned)",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -1620,7 +1620,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.domain",
+                    "data_path": "action_result.parameter.domains",
                     "data_type": "string",
                     "contains": [
                         "url",
