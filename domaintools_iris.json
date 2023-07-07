@@ -1930,7 +1930,7 @@
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/anyio-3.6.2-py3-none-any.whl"
+                "input_file": "wheels/anyio-3.7.1-py3-none-any.whl"
             },
             {
                 "module": "certifi",
@@ -1949,8 +1949,12 @@
                 "input_file": "wheels/domaintools_api-1.0.1-py2.py3-none-any.whl"
             },
             {
+                "module": "exceptiongroup",
+                "input_file": "wheels/exceptiongroup-1.1.2-py3-none-any.whl"
+            },
+            {
                 "module": "filelock",
-                "input_file": "wheels/filelock-3.12.0-py3-none-any.whl"
+                "input_file": "wheels/filelock-3.12.2-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -1958,11 +1962,11 @@
             },
             {
                 "module": "httpcore",
-                "input_file": "wheels/httpcore-0.17.0-py3-none-any.whl"
+                "input_file": "wheels/httpcore-0.17.3-py3-none-any.whl"
             },
             {
                 "module": "httpx",
-                "input_file": "wheels/httpx-0.24.0-py3-none-any.whl"
+                "input_file": "wheels/httpx-0.24.1-py3-none-any.whl"
             },
             {
                 "module": "idna",
@@ -1973,24 +1977,16 @@
                 "input_file": "wheels/python_dateutil-2.8.2-py2.py3-none-any.whl"
             },
             {
-                "module": "pytz_deprecation_shim",
-                "input_file": "wheels/pytz_deprecation_shim-0.1.0.post0-py2.py3-none-any.whl"
-            },
-            {
                 "module": "pytz",
                 "input_file": "wheels/pytz-2023.3-py2.py3-none-any.whl"
-            },
-            {
-                "module": "requests",
-                "input_file": "wheels/requests-2.30.0-py3-none-any.whl"
             },
             {
                 "module": "requests-file",
                 "input_file": "wheels/requests_file-1.5.1-py2.py3-none-any.whl"
             },
             {
-                "module": "rfc3986",
-                "input_file": "wheels/rfc3986-1.5.0-py2.py3-none-any.whl"
+                "module": "requests",
+                "input_file": "wheels/requests-2.31.0-py3-none-any.whl"
             },
             {
                 "module": "six",
@@ -2002,11 +1998,7 @@
             },
             {
                 "module": "tldextract",
-                "input_file": "wheels/tldextract-3.4.1-py3-none-any.whl"
-            },
-            {
-                "module": "tzdata",
-                "input_file": "wheels/tzdata-2022.1-py2.py3-none-any.whl"
+                "input_file": "wheels/tldextract-3.4.4-py3-none-any.whl"
             },
             {
                 "module": "tzlocal",
@@ -2014,7 +2006,7 @@
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-2.0.2-py3-none-any.whl"
+                "input_file": "wheels/urllib3-2.0.3-py3-none-any.whl"
             }
         ]
     }
