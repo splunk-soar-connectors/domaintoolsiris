@@ -343,6 +343,7 @@ action\_result\.data\.\*\.billing\_contact\.street\.count | numeric |
 action\_result\.data\.\*\.billing\_contact\.street\.value | string |
 action\_result\.data\.\*\.create\_date\.count | numeric |
 action\_result\.data\.\*\.create\_date\.value | string |
+action\_result\.data\.\*\.domain\_risk\.risk_score | numeric |
 action\_result\.data\.\*\.email\_domain\.\*\.count | numeric |
 action\_result\.data\.\*\.email\_domain\.\*\.value | string |
 action\_result\.data\.\*\.expiration\_date\.count | numeric |
@@ -380,6 +381,7 @@ action\_result\.data\.\*\.registrant\_contact\.city\.value | string |
 action\_result\.data\.\*\.registrant\_contact\.country\.count | numeric |
 action\_result\.data\.\*\.registrant\_contact\.country\.value | string |
 action\_result\.data\.\*\.registrant\_contact\.email\.\*\.value | string |
+action\_result\.data\.\*\.registrant\_contact\.email\.\*\.count | numeric |
 action\_result\.data\.\*\.registrant\_contact\.fax\.count | numeric |
 action\_result\.data\.\*\.registrant\_contact\.fax\.value | string |
 action\_result\.data\.\*\.registrant\_contact\.name\.count | numeric |
@@ -404,13 +406,29 @@ action\_result\.data\.\*\.server\_type\.count | numeric
 action\_result\.data\.\*\.server\_type\.value | string
 action\_result\.data\.\*\.soa\_email\.\*\.count | numeric |
 action\_result\.data\.\*\.soa\_email\.\*\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.alt_names\.\*\.count | numeric |
+action\_result\.data\.\*\.ssl\_info\.\*\.alt_names\.\*\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.common_name\.count | numeric |
+action\_result\.data\.\*\.ssl\_info\.\*\.common_name\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.duration\.count | numeric |
+action\_result\.data\.\*\.ssl\_info\.\*\.duration\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.email\.\*\.count | numeric |
+action\_result\.data\.\*\.ssl\_info\.\*\.email\.\*\.value | string |
 action\_result\.data\.\*\.ssl\_info\.\*\.hash\.count | numeric |
 action\_result\.data\.\*\.ssl\_info\.\*\.hash\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.issuer_common_name\.count | numeric |
+action\_result\.data\.\*\.ssl\_info\.\*\.issuer_common_name\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.not_after\.count | numeric |
+action\_result\.data\.\*\.ssl\_info\.\*\.not_after\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.not_before\.count | numeric |
+action\_result\.data\.\*\.ssl\_info\.\*\.not_before\.value | string |
 action\_result\.data\.\*\.ssl\_info\.\*\.organization\.count | numeric |
 action\_result\.data\.\*\.ssl\_info\.\*\.organization\.value | string |
 action\_result\.data\.\*\.ssl\_info\.\*\.subject\.count | numeric |
 action\_result\.data\.\*\.ssl\_info\.\*\.subject\.value | string |
 action\_result\.data\.\*\.tags\.\*\.label | string |
+action\_result\.data\.\*\.tags\.\*\.scope | string |
+action\_result\.data\.\*\.tags\.\*\.tagged_at | string |
 action\_result\.data\.\*\.technical\_contact\.city\.count | numeric |
 action\_result\.data\.\*\.technical\_contact\.city\.value | string |
 action\_result\.data\.\*\.technical\_contact\.country\.count | numeric |
@@ -429,6 +447,7 @@ action\_result\.data\.\*\.technical\_contact\.state\.count | numeric |
 action\_result\.data\.\*\.technical\_contact\.state\.value | string |
 action\_result\.data\.\*\.technical\_contact\.street\.count | numeric |
 action\_result\.data\.\*\.technical\_contact\.street\.value | string |
+action\_result\.data\.\*\.tld | string |
 action\_result\.summary | string |
 action\_result\.message | string |
 summary\.total\_objects | numeric |
@@ -472,6 +491,7 @@ action\_result\.data\.\*\.billing\_contact\.postal\.value | string |
 action\_result\.data\.\*\.billing\_contact\.state\.value | string |
 action\_result\.data\.\*\.billing\_contact\.street\.value | string |
 action\_result\.data\.\*\.create\_date\.value | string |
+action\_result\.data\.\*\.domain\_risk\.risk_score | numeric |
 action\_result\.data\.\*\.email\_domain\.\*\.value | string |
 action\_result\.data\.\*\.expiration\_date\.value | string |
 action\_result\.data\.\*\.first\_seen\.value | string
@@ -503,10 +523,19 @@ action\_result\.data\.\*\.registrant\_org\.value | string |
 action\_result\.data\.\*\.registrar\.value | string |
 action\_result\.data\.\*\.server\_type\.value | string
 action\_result\.data\.\*\.soa\_email\.\*\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.alt_names\.\*\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.common_name\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.duration\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.email\.\*\.value | string |
 action\_result\.data\.\*\.ssl\_info\.\*\.hash\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.issuer_common_name\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.not_after\.value | string |
+action\_result\.data\.\*\.ssl\_info\.\*\.not_before\.value | string |
 action\_result\.data\.\*\.ssl\_info\.\*\.organization\.value | string |
 action\_result\.data\.\*\.ssl\_info\.\*\.subject\.value | string |
 action\_result\.data\.\*\.tags\.\*\.label | string |
+action\_result\.data\.\*\.tags\.\*\.scope | string |
+action\_result\.data\.\*\.tags\.\*\.tagged_at | string |
 action\_result\.data\.\*\.technical\_contact\.city\.value | string |
 action\_result\.data\.\*\.technical\_contact\.country\.value | string |
 action\_result\.data\.\*\.technical\_contact\.fax\.value | string |
@@ -516,6 +545,7 @@ action\_result\.data\.\*\.technical\_contact\.phone\.value | string |
 action\_result\.data\.\*\.technical\_contact\.postal\.value | string |
 action\_result\.data\.\*\.technical\_contact\.state\.value | string |
 action\_result\.data\.\*\.technical\_contact\.street\.value | string |
+action\_result\.data\.\*\.tld | string |
 action\_result\.data\.\*\.website\_title\.value | string
 action\_result\.summary | string |
 action\_result\.message | string |
