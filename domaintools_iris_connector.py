@@ -315,8 +315,11 @@ class DomainToolsConnector(BaseConnector):
         self._proxy_url = self._get_proxy_url(config)
 
         # If there is a domains attribute, do tldextract
-        if param.get("domains"):
-            hostnames = param.get("domains").replace(" ", "").strip(",").split(",")
+        # Note: Parameter remained to be named `domain` to avoid
+        # modifying the Playbooks currently being used by customers
+        domains = param.get("domain")
+        if domains:
+            hostnames = domains.replace(" ", "").strip(",").split(",")
             self._domains = self._get_domains(hostnames)
         # If pivoting  and the type is domain, set the query_vca
         if param.get("pivot_type") == "domain":
