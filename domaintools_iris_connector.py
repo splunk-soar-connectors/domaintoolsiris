@@ -32,7 +32,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_REVERSE_IP = "reverse_lookup_ip"
     ACTION_ID_REVERSE_EMAIL = "reverse_whois_email"
     ACTION_ID_REVERSE_DOMAIN = "reverse_lookup_domain"
-    ACTION_ID_LOAD_SEARCH_HASH = "load_search_hash"
+    ACTION_ID_LOAD_HASH = "load_hash"
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -343,8 +343,8 @@ class DomainToolsConnector(BaseConnector):
             ret_val = self._reverse_whois_email(param)
         elif action_id == self.ACTION_ID_REVERSE_DOMAIN:
             ret_val = self._reverse_lookup_domain(param)
-        elif action_id == self.ACTION_ID_LOAD_SEARCH_HASH:
-            ret_val = self._load_search_hash(param)
+        elif action_id == self.ACTION_ID_LOAD_HASH:
+            ret_val = self._load_hash(param)
 
         return ret_val
 
@@ -538,7 +538,7 @@ class DomainToolsConnector(BaseConnector):
         param.update(updates)
         return self._pivot_action(param)
 
-    def _load_search_hash(self, param):
+    def _load_hash(self, param):
         param_hash = param.get("search_hash") or ""
         data = {
             "pivot_type": "search_hash",
