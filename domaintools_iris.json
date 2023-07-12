@@ -5,9 +5,9 @@
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019-2022 DomainTools, LLC",
+    "license": "Copyright (c) 2019-2023 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.3.0",
+    "app_version": "1.4.0",
     "utctime_updated": "2022-06-08T21:37:30.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
@@ -22,6 +22,12 @@
         },
         {
             "name": "Chuck Woodraska"
+        },
+        {
+            "name": "Jairdan Babac"
+        },
+        {
+            "name": "Brian Luza"
         }
     ],
     "configuration": {
@@ -37,11 +43,54 @@
             "required": true,
             "order": 1
         },
+        "proxy": {
+            "description": "Use Proxy",
+            "data_type": "boolean",
+            "default": false,
+            "order": 2
+        },
+        "proxy_auth": {
+            "description": "Use Proxy Authentication",
+            "data_type": "boolean",
+            "default": false,
+            "order": 3
+        },
+        "proxy_server": {
+            "description": "Proxy Server",
+            "data_type": "string",
+            "order": 4
+        },
+        "proxy_username": {
+            "description": "Proxy Username",
+            "data_type": "string",
+            "order": 5
+        },
+        "proxy_port": {
+            "description": "Proxy Port",
+            "data_type": "numeric",
+            "order": 6
+        },
+        "proxy_password": {
+            "description": "Proxy Password",
+            "data_type": "password",
+            "order": 7
+        },
+        "custom_ssl_certificate": {
+            "description": "Use Custom SSL Certificate",
+            "data_type": "boolean",
+            "default": false,
+            "order": 8
+        },
         "ssl": {
             "description": "Use SSL",
             "data_type": "boolean",
             "default": true,
-            "order": 2
+            "order": 9
+        },
+        "custom_ssl_certificate_path": {
+            "description": "Custom SSL Certificate Path",
+            "data_type": "string",
+            "order": 10
         }
     },
     "actions": [
@@ -63,7 +112,7 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to query",
+                    "description": "Domain or comma-separated list of domains to query",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -79,7 +128,7 @@
                 "title": "Domain Reputation",
                 "type": "custom",
                 "height": 10,
-                "view": "iris_view.display_risk_score"
+                "view": "iris_view.display_view"
             },
             "output": [
                 {
@@ -231,10 +280,28 @@
                     "data_type": "string",
                     "order": 5
                 },
+                "create_date_within": {
+                    "description": "Only include domains with a whois create date within the specified number of days (e.g. specifying '1' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 6,
+                    "name": "create_date_within"
+                },
+                "first_seen_within": {
+                    "description": "Only include domains with a current lifecycle first observed within the specified number of seconds (e.g. specifying '86400' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 7,
+                    "name": "first_seen_within"
+                },
+                "first_seen_since": {
+                    "description": "Only include domains with a current lifecycle first observed since a specified datetime. (Example: 2023-04-10T00:00:00+00:00)",
+                    "data_type": "string",
+                    "order": 8,
+                    "name": "first_seen_since"
+                },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "order": 6
+                    "order": 9
                 }
             },
             "render": {
@@ -249,11 +316,47 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.parameter.create_date_within",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.parameter.data_updated_after",
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.parameter.first_seen_within",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_since",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.parameter.expiration_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
                     "data_type": "string"
                 },
                 {
@@ -289,7 +392,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 1,
                     "column_name": "Risk Score"
                 },
@@ -334,7 +441,7 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to query",
+                    "description": "Domain or comma-separated list of domains to query",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -365,6 +472,30 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
@@ -378,7 +509,11 @@
                 },
                 {
                     "data_path": "action_result.summary.ip_list.*.count",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.ip_list.*.count_string",
+                    "data_type": "string",
                     "column_order": 2,
                     "column_name": "Connected Domain Count"
                 },
@@ -457,10 +592,28 @@
                     "data_type": "string",
                     "order": 4
                 },
+                "create_date_within": {
+                    "description": "Only include domains with a whois create date within the specified number of days (e.g. specifying '1' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 5,
+                    "name": "create_date_within"
+                },
+                "first_seen_within": {
+                    "description": "Only include domains with a current lifecycle first observed within the specified number of seconds (e.g. specifying '86400' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 6,
+                    "name": "first_seen_within"
+                },
+                "first_seen_since": {
+                    "description": "Only include domains with a current lifecycle first observed since a specified datetime. (Example: 2023-04-10T00:00:00+00:00)",
+                    "data_type": "string",
+                    "order": 7,
+                    "name": "first_seen_since"
+                },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "order": 5
+                    "order": 8
                 }
             },
             "render": {
@@ -475,11 +628,23 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.parameter.create_date_within",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.parameter.data_updated_after",
                     "data_type": "string"
                 },
                 {
                     "data_path": "action_result.parameter.expiration_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_within",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_since",
                     "data_type": "string"
                 },
                 {
@@ -510,7 +675,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 2,
                     "column_name": "Risk Score"
                 },
@@ -548,48 +717,17 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "load hash",
+            "action": "load search hash",
             "description": "Load or monitor Iris Investigate search results by Iris Investigate export hash",
             "type": "investigate",
-            "identifier": "load_hash",
+            "identifier": "load_search_hash",
             "read_only": true,
             "parameters": {
-                "hash": {
-                    "description": "Iris Investigate search hash to load",
+                "search_hash": {
+                    "description": "Paste the \"Current Search Export\" string (Advanced -> Import/Export Search) from Iris Investigate in this field to import up to 5000 domains",
                     "data_type": "string",
                     "required": true,
                     "order": 0
-                },
-                "status": {
-                    "description": "Return domains of this registration type",
-                    "data_type": "string",
-                    "value_list": [
-                        "Any",
-                        "Active",
-                        "Inactive"
-                    ],
-                    "default": "Any",
-                    "order": 1
-                },
-                "data_updated_after": {
-                    "description": "Iris Investigate records that were updated on or after midnight on this date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
-                    "data_type": "string",
-                    "order": 2
-                },
-                "tld": {
-                    "description": "Limit results to only include domains in a specific top-level domain (i.e. \u201ctld=com\u201d or \u201ctld=ru\u201d)",
-                    "data_type": "string",
-                    "order": 3
-                },
-                "create_date": {
-                    "description": "Only include domains created on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
-                    "data_type": "string",
-                    "order": 4
-                },
-                "expiration_date": {
-                    "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
-                    "data_type": "string",
-                    "order": 5
                 }
             },
             "render": {
@@ -600,27 +738,7 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.create_date",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.data_updated_after",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.expiration_date",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.hash",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.status",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.tld",
+                    "data_path": "action_result.parameter.search_hash",
                     "data_type": "string"
                 },
                 {
@@ -634,7 +752,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 1,
                     "column_name": "Risk Score"
                 },
@@ -714,10 +836,28 @@
                     "data_type": "string",
                     "order": 4
                 },
+                "create_date_within": {
+                    "description": "Only include domains with a whois create date within the specified number of days (e.g. specifying '1' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 5,
+                    "name": "create_date_within"
+                },
+                "first_seen_within": {
+                    "description": "Only include domains with a current lifecycle first observed within the specified number of seconds (e.g. specifying '86400' would indicate within the past day)",
+                    "data_type": "string",
+                    "order": 6,
+                    "name": "first_seen_within"
+                },
+                "first_seen_since": {
+                    "description": "Only include domains with a current lifecycle first observed since a specified datetime. (Example: 2023-04-10T00:00:00+00:00)",
+                    "data_type": "string",
+                    "order": 7,
+                    "name": "first_seen_since"
+                },
                 "expiration_date": {
                     "description": "Only include domains expiring on a specific date, in YYYY-MM-DD format or relative options ( 'today', 'yesterday' )",
                     "data_type": "string",
-                    "order": 5
+                    "order": 8
                 }
             },
             "render": {
@@ -729,6 +869,10 @@
             "output": [
                 {
                     "data_path": "action_result.parameter.create_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.create_date_within",
                     "data_type": "string"
                 },
                 {
@@ -746,6 +890,14 @@
                 },
                 {
                     "data_path": "action_result.parameter.expiration_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_within",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.first_seen_since",
                     "data_type": "string"
                 },
                 {
@@ -767,9 +919,37 @@
                 },
                 {
                     "data_path": "action_result.data.*.domain_risk.risk_score",
-                    "data_type": "numeric",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_risk.risk_score_string",
+                    "data_type": "string",
                     "column_order": 2,
                     "column_name": "Risk Score"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.status",
@@ -812,7 +992,7 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to query using the Iris Investigate API",
+                    "description": "Domain or comma-separated list of domains to query using the Iris Investigate API",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -828,7 +1008,7 @@
                 "width": 10,
                 "height": 10,
                 "title": "Domain Profile",
-                "view": "iris_view.display_domain_profile"
+                "view": "iris_view.display_view"
             },
             "output": [
                 {
@@ -1020,6 +1200,10 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.domain_risk.risk_score",
+                    "data_type": "numeric"
+                },
+                {
                     "data_path": "action_result.data.*.email_domain.*.count",
                     "data_type": "numeric"
                 },
@@ -1033,6 +1217,14 @@
                 },
                 {
                     "data_path": "action_result.data.*.expiration_date.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
                     "data_type": "string"
                 },
                 {
@@ -1160,6 +1352,10 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.registrant_contact.email.*.count",
+                    "data_type": "numeric"
+                },
+                {
                     "data_path": "action_result.data.*.registrant_contact.fax.count",
                     "data_type": "numeric"
                 },
@@ -1240,6 +1436,14 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.server_type.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.soa_email.*.count",
                     "data_type": "numeric"
                 },
@@ -1248,11 +1452,67 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.ssl_info.*.alt_names.*.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.alt_names.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.common_name.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.common_name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.duration.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.duration.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.email.*.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.email.*.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.ssl_info.*.hash.count",
                     "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.data.*.ssl_info.*.hash.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.issuer_common_name.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.issuer_common_name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.not_after.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.not_after.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.not_before.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.not_before.value",
                     "data_type": "string"
                 },
                 {
@@ -1273,6 +1533,14 @@
                 },
                 {
                     "data_path": "action_result.data.*.tags.*.label",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tags.*.scope",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tags.*.tagged_at",
                     "data_type": "string"
                 },
                 {
@@ -1348,8 +1616,28 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.tld",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.summary",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -1380,7 +1668,7 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Domain to query using the Iris Enrich API (if provisioned)",
+                    "description": "Domain or comma-separated list of domains to query using the Iris Enrich API (if provisioned)",
                     "data_type": "string",
                     "contains": [
                         "url",
@@ -1396,7 +1684,7 @@
                 "width": 10,
                 "height": 10,
                 "title": "Domain Profile",
-                "view": "iris_view.display_domain_profile"
+                "view": "iris_view.display_view"
             },
             "output": [
                 {
@@ -1504,11 +1792,19 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.domain_risk.risk_score",
+                    "data_type": "numeric"
+                },
+                {
                     "data_path": "action_result.data.*.email_domain.*.value",
                     "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.expiration_date.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.first_seen.value",
                     "data_type": "string"
                 },
                 {
@@ -1616,11 +1912,43 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.server_type.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.soa_email.*.value",
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.ssl_info.*.alt_names.*.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.common_name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.duration.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.email.*.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.ssl_info.*.hash.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.issuer_common_name.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.not_after.value",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.ssl_info.*.not_before.value",
                     "data_type": "string"
                 },
                 {
@@ -1633,6 +1961,14 @@
                 },
                 {
                     "data_path": "action_result.data.*.tags.*.label",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tags.*.scope",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tags.*.tagged_at",
                     "data_type": "string"
                 },
                 {
@@ -1672,6 +2008,14 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.tld",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.website_title.value",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.summary",
                     "data_type": "string"
                 },
@@ -1696,75 +2040,93 @@
             ],
             "versions": "EQ(*)"
         }
-
     ],
     "pip39_dependencies": {
         "pypi": [
             {
-                "module": "aiohttp"
-            },
-            {
-                "module": "yarl"
-            },
-            {
-                "module": "multidict"
-            },
-            {
-                "module": "frozenlist"
+                "module": "regex"
             }
         ],
         "wheel": [
             {
-                "module": "aiosignal",
-                "input_file": "wheels/aiosignal-1.2.0-py3-none-any.whl"
-            },
-            {
-                "module": "async-timeout",
-                "input_file": "wheels/async_timeout-4.0.2-py3-none-any.whl"
-            },
-            {
-                "module": "attrs",
-                "input_file": "wheels/attrs-21.4.0-py2.py3-none-any.whl"
+                "module": "anyio",
+                "input_file": "wheels/anyio-3.7.1-py3-none-any.whl"
             },
             {
                 "module": "certifi",
-                "input_file": "wheels/certifi-2022.5.18.1-py3-none-any.whl"
+                "input_file": "wheels/certifi-2023.5.7-py3-none-any.whl"
             },
             {
                 "module": "charset-normalizer",
-                "input_file": "wheels/charset_normalizer-2.0.12-py3-none-any.whl"
+                "input_file": "wheels/charset_normalizer-3.1.0-py3-none-any.whl"
+            },
+            {
+                "module": "dateparser",
+                "input_file": "wheels/dateparser-1.1.8-py2.py3-none-any.whl"
             },
             {
                 "module": "domaintools-api",
-                "input_file": "wheels/domaintools_api-0.6.0-py2.py3-none-any.whl"
+                "input_file": "wheels/domaintools_api-1.0.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "exceptiongroup",
+                "input_file": "wheels/exceptiongroup-1.1.2-py3-none-any.whl"
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/filelock-3.7.0-py3-none-any.whl"
+                "input_file": "wheels/filelock-3.12.2-py3-none-any.whl"
+            },
+            {
+                "module": "h11",
+                "input_file": "wheels/h11-0.14.0-py3-none-any.whl"
+            },
+            {
+                "module": "httpcore",
+                "input_file": "wheels/httpcore-0.17.3-py3-none-any.whl"
+            },
+            {
+                "module": "httpx",
+                "input_file": "wheels/httpx-0.24.1-py3-none-any.whl"
             },
             {
                 "module": "idna",
-                "input_file": "wheels/idna-3.3-py3-none-any.whl"
+                "input_file": "wheels/idna-3.4-py3-none-any.whl"
             },
             {
-                "module": "requests",
-                "input_file": "wheels/requests-2.27.1-py2.py3-none-any.whl"
+                "module": "python_dateutil",
+                "input_file": "wheels/python_dateutil-2.8.2-py2.py3-none-any.whl"
+            },
+            {
+                "module": "pytz",
+                "input_file": "wheels/pytz-2023.3-py2.py3-none-any.whl"
             },
             {
                 "module": "requests-file",
                 "input_file": "wheels/requests_file-1.5.1-py2.py3-none-any.whl"
             },
             {
+                "module": "requests",
+                "input_file": "wheels/requests-2.31.0-py3-none-any.whl"
+            },
+            {
                 "module": "six",
                 "input_file": "wheels/six-1.16.0-py2.py3-none-any.whl"
             },
             {
+                "module": "sniffio",
+                "input_file": "wheels/sniffio-1.3.0-py3-none-any.whl"
+            },
+            {
                 "module": "tldextract",
-                "input_file": "wheels/tldextract-3.3.0-py3-none-any.whl"
+                "input_file": "wheels/tldextract-3.4.4-py3-none-any.whl"
+            },
+            {
+                "module": "tzlocal",
+                "input_file": "wheels/tzlocal-5.0.1-py3-none-any.whl"
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-1.26.9-py2.py3-none-any.whl"
+                "input_file": "wheels/urllib3-2.0.3-py3-none-any.whl"
             }
         ]
     }
