@@ -8,7 +8,6 @@
 import codecs
 import json
 import re
-
 # Imports local to this App
 import sys
 from datetime import datetime, timedelta
@@ -17,7 +16,6 @@ from datetime import datetime, timedelta
 import phantom.app as phantom
 import requests
 import tldextract
-
 from domaintools import API
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
@@ -459,12 +457,26 @@ class DomainToolsConnector(BaseConnector):
         for a in data[0]["mx"]:
             if "ip" in a:
                 for b in a["ip"]:
-                    ips.append({"ip": b["value"], "type": "MX IP", "count": b["count"], "count_string": self._convert_null_value_to_empty_string(b["count"])})
+                    ips.append(
+                        {
+                            "ip": b["value"],
+                            "type": "MX IP",
+                            "count": b["count"],
+                            "count_string": self._convert_null_value_to_empty_string(b["count"])
+                        }
+                    )
 
         for a in data[0]["name_server"]:
             if "ip" in a:
                 for b in a["ip"]:
-                    ips.append({"ip": b["value"], "type": "NS IP", "count": b["count"], "count_string": self._convert_null_value_to_empty_string(b["count"])})
+                    ips.append(
+                        {
+                            "ip": b["value"],
+                            "type": "NS IP",
+                            "count": b["count"],
+                            "count_string": self._convert_null_value_to_empty_string(b["count"])
+                        }
+                    )
 
         sorted_ips = sorted(
             ips,
