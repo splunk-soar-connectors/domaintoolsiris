@@ -43,7 +43,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [pivot action](#action-pivot-action) - Find domains connected by any supported Iris Investigate search parameter
 [reverse domain](#action-reverse-domain) - Extract IPs from a single domain response for further pivoting
 [reverse ip](#action-reverse-ip) - Find domains with web hosting IP, NS IP or MX IP
-[load search hash](#action-load-search-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash
+[load hash](#action-load-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate
 [lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint \(required\)
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint \(if provisioned\)
@@ -210,7 +210,7 @@ action\_result\.summary | string |
 summary\.total\_objects | numeric |
 summary\.total\_objects\_successful | numeric |
 
-## action: 'load search hash'
+## action: 'load hash'
 Load or monitor Iris Investigate search results by Iris Investigate export hash
 
 Type: **investigate**
