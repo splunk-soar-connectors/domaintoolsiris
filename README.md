@@ -1,12 +1,12 @@
 [comment]: # "Auto-generated SOAR connector documentation"
 # DomainTools Iris Investigate
 
-Publisher: DomainTools
-Connector Version: 1\.4\.0
-Product Vendor: DomainTools
-Product Name: DomainTools Iris Investigate
-Product Version Supported (regex): "\.\*"
-Minimum Product Version: 5\.2\.0
+Publisher: DomainTools  
+Connector Version: 1\.4\.0  
+Product Vendor: DomainTools  
+Product Name: DomainTools Iris Investigate  
+Product Version Supported (regex): "\.\*"  
+Minimum Product Version: 5\.5\.0  
 
 This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
 
