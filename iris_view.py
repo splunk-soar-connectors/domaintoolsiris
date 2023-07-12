@@ -1,172 +1,115 @@
-# --
-# File: iris_view.py
-#
-# Copyright (c) 2019-2022 DomainTools, LLC
-#
-# --
-
-import collections
-import copy
+ACTION_VIEW_TEMPLATES_DICT = {
+    "domain reputation": "iris_risk_score.html",
+    "enrich domain": "iris_enrich_domain_profile.html",
+    "lookup domain": "iris_domain_profile.html",
+}
 
 
-def unique_list(raw_list):
-    ulist = []
-    [ulist.append(x) for x in raw_list if x not in ulist]
-    return ulist
+def display_view(provides, all_app_runs, context):
+    context['results'] = results = []
+    for _, action_results in all_app_runs:
+        for result in action_results:
+            ctx_result = get_ctx_result(result)
+            if not ctx_result:
+                continue
 
+            results.append(ctx_result)
 
-def create_score_span(score):
-    i_score = int(score)
-    severity = ""
-    if i_score >= 90:
-        severity = "high"
-    elif i_score >= 70:
-        severity = "medium"
-    return "<span style='min-width:30px;margin-bottom:2px;' class='label severity " + severity + "'>" + str(score) + "</span>"
-
-
-def flatten(d, parent_key='', sep=' '):
-    items = []
-    for k, v in d.items():
-        if k != "count":
-          k = k.replace("_", " ")
-          new_key = parent_key + sep + k if parent_key else k
-          new_key = new_key.replace("_", " ").replace("value", "")
-          if isinstance(v, collections.MutableMapping):
-              items.extend(flatten(v, new_key, sep=sep).items())
-          else:
-              items.append((new_key, v))
-
-    return dict(items)
-
-
-def render_list(list_obj):
-    ret_str = ""
-
-    if type(list_obj) is not dict and type(list_obj) is not list:
-        return str(list_obj).title()
-    if type(list_obj) == list and len(list_obj) == 1 and len(list_obj[0]) == 1 and list_obj[0]["value"]:
-        return str(list_obj[0]["value"])
-
-    for item in list_obj:
-        if type(item) is dict:
-            if "name" in item and 'risk_score' in item:
-              title_str = item['name'].replace('_', ' ').strip()
-              if item['name'] != "zerolist":
-                ret_str += "<span style='display:inline-block;min-width:140px;vertical-align:top;'>" \
-                           + title_str.title() + ":</span> " + create_score_span(item['risk_score']) + "\n"
-              else:
-                ret_str += "Zerolist\n"
-            else:
-              flattened = flatten(item)
-              for k in flattened:
-                title_str = k.replace('value', '').strip()
-                if title_str:
-                    title_str = "<span style='display:inline-block;min-width:85px;vertical-align:top;'>"\
-                                + title_str.title() + ":</span>"
-                ret_str += title_str + render_list(flattened[k]) + "\n"
-        elif type(item) is list:
-            for list_item in item:
-              ret_str += render_list(list_item)
-        else:
-            ret_str += str(item)
-
-    return ret_str
+    return ACTION_VIEW_TEMPLATES_DICT.get(provides)
 
 
 def get_ctx_result(result):
     ctx_result = {}
     param = result.get_param()
-    data = result.get_data()
-
-    ctx_result['param'] = param
-
-    if (data):
-        ctx_result['data'] = flatten(data[0] )
-        sorted_keys = sorted(ctx_result['data'], key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
+    data_list = result.get_data()
+    if (data_list):
+        ctx_result['param'] = param
+        ctx_result['data'] = []
         ctx_result['sorted_data'] = []
-        for key in sorted_keys:
-          if ctx_result['data'][key] or ctx_result['data'][key] == 0:
-            data_value = ctx_result['data'][key]
-            if type(ctx_result['data'][key]) is list:
-              data_value = render_list(ctx_result['data'][key])
-            key = ' '.join(unique_list(key.split()))
-            ctx_result['sorted_data'].append((key, data_value))
+        for data in data_list:
+            extracted_data = extract_data(data)
+            ctx_result['data'].append(extracted_data)
+            sorted_keys = sorted(extracted_data, key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
+            sorted_data = []
 
-        # handle risk score item stuff
-        if('risk_score' in data[0]['domain_risk']):
-            rs_index = [y[0] for y in ctx_result['sorted_data']].index('domain risk score')
-            rs_item = ctx_result['sorted_data'].pop(rs_index)
-            span = create_score_span(rs_item[1])
-            new_tuple = ("domain risk score", span)
-            ctx_result['sorted_data'].insert(1, new_tuple)
-        else:
-            new_tuple = ("domain risk score", "")
-            ctx_result['sorted_data'].insert(1, new_tuple)
+            # TODO: This is temporary only. Remove this from the sorted_data once update on pivot links is implemented
+            queried_domain = extracted_data.get("domain")
+
+            for key in sorted_keys:
+                if extracted_data[key] or extracted_data[key] == 0:
+                    data_count = ""
+                    if type(extracted_data[key]) is dict:
+                        value = extracted_data[key].get("value")
+                        count = extracted_data[key].get("count")
+                        if value in ("", "None", None):
+                            continue
+                        data_value = value
+                        data_count = count if count and count != 0 else ""
+                    else:
+                        data_value = extracted_data[key]
+
+                    is_list = isinstance(data_value, list)
+                    key = " ".join(unique_list(key.split()))
+                    sorted_data.append((key, data_value, data_count, is_list, queried_domain))
+            ctx_result['sorted_data'].append(sorted_data)
 
     return ctx_result
 
 
-def display_domain_profile(provides, all_app_runs, context):
+def extract_data(data, parent_key="", sep=" "):
+    items = []
+    for k, v in data.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, dict) and "value" in v:
+            items.append((new_key.replace("_", " "), v))
+            continue
 
-    context['results'] = results = []
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-
-            ctx_result = get_ctx_result(result)
-            if (not ctx_result):
+        if isinstance(v, dict):
+            items.extend(extract_data(v, new_key, sep=sep).items())
+        else:
+            if v and isinstance(v, list):
+                new_key = new_key.replace("_", " ")
+                if new_key in ("domain risk components", "tags"):
+                    items.append((new_key, remove_underscore(v)))
+                else:
+                    items.append((new_key.replace("_", " "), extract_list(v)))
                 continue
-            results.append(ctx_result)
 
-    return 'iris_domain_profile.html'
+            items.append((new_key.replace("_", " "), v))
 
-
-def display_risk_score(provides, all_app_runs, context):
-
-    context['results'] = results = []
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-
-            ctx_result = {}
-            param = result.get_param()
-            data = result.get_data()
-
-            if param:
-                ctx_result['param'] = param
-            data = result.get_data()
-
-            if data:
-                ctx_result = {'data': data[0]}
-                risk_scores = ctx_result['data'].get('domain_risk', {}).get('components')
-                # Add proximity score to blocklisted domains, see comment below
-                if risk_scores:
-                    ctx_result['data']["domain_risk"]['components'] = add_proximity_to_blocklisted_domain(risk_scores)
-
-                sorted_data = []
-                sorted_data.append(('domain risk score', create_score_span(
-                    ctx_result['data'].get('domain_risk', {}).get('risk_score'))))
-                sorted_data.append(('domain risk components', render_list(
-                    ctx_result['data'].get('domain_risk', {}).get('components', []))))
-                ctx_result['sorted_data'] = sorted_data
-
-            results.append(ctx_result)
-
-    return 'iris_risk_score.html'
+    return dict(items)
 
 
-# Clients want proximity score to show for blocklisted domains. The API removes proximity when it is
-# 100 and changes it to blocklist. This is not an optimal solution and should probably be thought out
-# to understand the clients needs and goals, then have the backend team work on getting the contract
-# the way the clients need it to be. We are doing the same thing in the splunk app.
-def add_proximity_to_blocklisted_domain(risk_scores):
-    blocklisted = next((item for item in risk_scores if item['name'] == 'blocklist'), None)
-    # We only want to do this if the domain is blocklisted
-    if blocklisted:
-        # Make sure proximity isn't there, this prevents duplicate proximity scores if the Iris Investigate API adds it
-        proximity = next((item for item in risk_scores if item['name'] == 'proximity'), None)
-        if proximity is None:
-            blocklist = copy.deepcopy(blocklisted)
-            blocklist['name'] = 'proximity'
-            risk_scores.insert(1, blocklist)
+def extract_list(value):
+    items = []
+    for val in value:
+        if isinstance(val, dict):
+            for k, v in val.items():
+                if v and isinstance(v, list) and "value" in v[0]:
+                    val[k] = v[0]
 
-    return risk_scores
+        items.append(val)
+
+    return items
+
+
+def remove_underscore(value):
+    items = []
+    for components in value:
+        comp_dict = {}
+        for k, v in components.items():
+            if isinstance(v, str):
+                v = v.replace("_", " ")
+            if k != "risk_score":
+                k = k.replace("_", " ")
+            comp_dict[k] = v
+        items.append(comp_dict)
+
+    return items
+
+
+def unique_list(raw_list):
+    ulist = []
+    [ulist.append(element) for element in raw_list if element not in ulist]
+
+    return ulist
