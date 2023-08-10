@@ -566,7 +566,7 @@ class DomainToolsConnector(BaseConnector):
         if query_field == "domains":
             query_value = self._domains
         else:
-            query_value = param["query_value"]
+            query_value = param["query_value"].replace(" ", "")
 
         params = {query_field: query_value}
 

@@ -7,7 +7,7 @@
     "type": "information",
     "license": "Copyright (c) 2019-2023 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.4.1",
+    "app_version": "1.4.2",
     "utctime_updated": "2023-07-14T15:44:30.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
@@ -249,7 +249,9 @@
                         "google_analytics",
                         "adsense",
                         "asn",
-                        "isp_name"
+                        "isp_name",
+                        "tagged_with_any",
+                        "tagged_with_all"
                     ],
                     "required": true,
                     "order": 0
@@ -2126,7 +2128,7 @@
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-2.0.3-py3-none-any.whl"
+                "input_file": "wheels/urllib3-1.26.16-py2.py3-none-any.whl"
             }
         ]
     }
