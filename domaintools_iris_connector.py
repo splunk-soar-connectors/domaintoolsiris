@@ -8,18 +8,19 @@
 import codecs
 import json
 import re
-
-# Imports local to this App
 import sys
 from datetime import datetime, timedelta
 
-# Splunk SOAR App imports
-import phantom.app as phantom
-import requests
-import tldextract
+# 3rd party imports
 from domaintools import API
+
+import phantom.app as phantom
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
+
+import requests
+
+import tldextract
 
 
 # Define the App Class
@@ -57,7 +58,7 @@ class DomainToolsConnector(BaseConnector):
         # Fetching the Python major version
         try:
             self._python_version = int(sys.version_info[0])
-        except:
+        except Exception:
             return self.set_status(
                 phantom.APP_ERROR,
                 "Error occurred while getting the Splunk SOAR server's Python major version",
