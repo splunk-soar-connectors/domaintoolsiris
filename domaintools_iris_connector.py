@@ -744,7 +744,8 @@ class DomainToolsConnector(BaseConnector):
             return False, msg
 
         if container_label not in playbook.get("labels") or []:
-            msg = f"'{container_label}' label should be in {playbook_name} playbook's label. Current playbook labels are: {playbook.get('labels')}"
+            msg = f"'{container_label}' label should be in {playbook_name} playbook's label. \
+            Current playbook labels are: {playbook.get('labels')}"
             self.debug_print(msg)
             return False, msg
 
