@@ -11,16 +11,13 @@ import re
 import sys
 from datetime import datetime, timedelta
 
+import phantom.app as phantom
+import requests
+import tldextract
 # 3rd party imports
 from domaintools import API
-
-import phantom.app as phantom
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
-
-import requests
-
-import tldextract
 
 
 # Define the App Class
