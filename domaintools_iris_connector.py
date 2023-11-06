@@ -8,14 +8,13 @@
 import codecs
 import json
 import re
-# Imports local to this App
 import sys
 from datetime import datetime, timedelta
 
-# Splunk SOAR App imports
 import phantom.app as phantom
 import requests
 import tldextract
+# 3rd party imports
 from domaintools import API
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
@@ -31,6 +30,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_REVERSE_EMAIL = "reverse_whois_email"
     ACTION_ID_REVERSE_DOMAIN = "reverse_lookup_domain"
     ACTION_ID_LOAD_HASH = "load_hash"
+    ACTION_ID_ON_POLL = "on_poll"
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -41,6 +41,7 @@ class DomainToolsConnector(BaseConnector):
         self._key = None
         self._domains = None
         self._proxy_url = None
+        self._scheduled_playbooks_list_name = "domaintools_scheduled_playbooks"
 
     def initialize(self):
         # get the app configuation - super class pulls domaintools_iris.json
@@ -49,11 +50,12 @@ class DomainToolsConnector(BaseConnector):
         self.app_version_number = app_json_configuration.get("app_version", "")
         self.app_name = app_json_configuration.get("name", "")
         self.app_partner = "splunk_soar"
+        self._rest_url = self._build_rest_url()
 
         # Fetching the Python major version
         try:
             self._python_version = int(sys.version_info[0])
-        except:
+        except Exception:
             return self.set_status(
                 phantom.APP_ERROR,
                 "Error occurred while getting the Splunk SOAR server's Python major version",
@@ -240,7 +242,9 @@ class DomainToolsConnector(BaseConnector):
             )
 
         self.save_progress(f"Parsing {len(results_data)} results...")
-        response_json["response"]["results"] = self._convert_risk_scores_to_string(results_data)
+        response_json["response"]["results"] = self._convert_risk_scores_to_string(
+            results_data
+        )
 
         try:
             return self._parse_response(action_result, response_json)
@@ -269,8 +273,10 @@ class DomainToolsConnector(BaseConnector):
         # Make the final result sorted in descending order by default
         return sorted(
             final_result,
-            key=lambda d: 0 if d.get("domain_risk", {}).get("risk_score_string") == "" else d.get("domain_risk", {}).get("risk_score"),
-            reverse=True
+            key=lambda d: 0
+            if d.get("domain_risk", {}).get("risk_score_string") == ""
+            else d.get("domain_risk", {}).get("risk_score"),
+            reverse=True,
         )
 
     def _test_connectivity(self):
@@ -343,6 +349,8 @@ class DomainToolsConnector(BaseConnector):
             ret_val = self._reverse_lookup_domain(param)
         elif action_id == self.ACTION_ID_LOAD_HASH:
             ret_val = self._load_hash(param)
+        elif action_id == self.ACTION_ID_ON_POLL:
+            ret_val == self._on_poll(param)
 
         return ret_val
 
@@ -370,9 +378,13 @@ class DomainToolsConnector(BaseConnector):
                 proxy_password = config.get("proxy_password")
 
                 if not (proxy_username and proxy_password):
-                    raise Exception("Must provide both a Proxy Username and Proxy Password.")
+                    raise Exception(
+                        "Must provide both a Proxy Username and Proxy Password."
+                    )
 
-                proxy_url = f"{protocol}://{proxy_username}:{proxy_password}@{server_address}"
+                proxy_url = (
+                    f"{protocol}://{proxy_username}:{proxy_password}@{server_address}"
+                )
 
         return proxy_url
 
@@ -380,7 +392,7 @@ class DomainToolsConnector(BaseConnector):
         custom_ssl_cert_path = config.get("custom_ssl_certificate_path")
         if config.get("custom_ssl_certificate"):
             if not custom_ssl_cert_path:
-             raise Exception("Must provide the custom ssl certificate path.")
+                raise Exception("Must provide the custom ssl certificate path.")
             return custom_ssl_cert_path
 
         return config.get("ssl", False)
@@ -450,7 +462,9 @@ class DomainToolsConnector(BaseConnector):
                         "ip": a["address"]["value"],
                         "type": "Host IP",
                         "count": a["address"]["count"],
-                        "count_string": self._convert_null_value_to_empty_string(a["address"]["count"])
+                        "count_string": self._convert_null_value_to_empty_string(
+                            a["address"]["count"]
+                        ),
                     }
                 )
 
@@ -462,7 +476,9 @@ class DomainToolsConnector(BaseConnector):
                             "ip": b["value"],
                             "type": "MX IP",
                             "count": b["count"],
-                            "count_string": self._convert_null_value_to_empty_string(b["count"])
+                            "count_string": self._convert_null_value_to_empty_string(
+                                b["count"]
+                            ),
                         }
                     )
 
@@ -474,14 +490,17 @@ class DomainToolsConnector(BaseConnector):
                             "ip": b["value"],
                             "type": "NS IP",
                             "count": b["count"],
-                            "count_string": self._convert_null_value_to_empty_string(b["count"])
+                            "count_string": self._convert_null_value_to_empty_string(
+                                b["count"]
+                            ),
                         }
                     )
 
         sorted_ips = sorted(
             ips,
-            key=lambda d: 0 if d.get("count_string") == "" else(d.get("count")),
-            reverse=True)
+            key=lambda d: 0 if d.get("count_string") == "" else (d.get("count")),
+            reverse=True,
+        )
         action_result.update_summary({"ip_list": sorted_ips})
 
         return action_result.get_status()
@@ -562,7 +581,9 @@ class DomainToolsConnector(BaseConnector):
 
     def _pivot_action(self, param):
         action_result = self.add_action_result(ActionResult(param))
-        query_field = param["pivot_type"] if param["pivot_type"] != "domain" else "domains"
+        query_field = (
+            param["pivot_type"] if param["pivot_type"] != "domain" else "domains"
+        )
         if query_field == "domains":
             query_value = self._domains
         else:
@@ -618,6 +639,178 @@ class DomainToolsConnector(BaseConnector):
             return action_result.get_data()
 
         return action_result.get_status()
+
+    def _build_rest_url(self):
+        self.debug_print(self.get_config())
+        http_port = self.get_config().get("http_port")
+        if http_port:
+            return f"https://127.0.0.1:{http_port}/rest/"
+
+        return "https://127.0.0.1:8443/rest/"
+
+    def _get_scheduled_playbooks(self):
+        response = phantom.requests.get(
+            f"{self._rest_url}decided_list/{self._scheduled_playbooks_list_name}",
+            verify=False,
+        )
+
+        response.raise_for_status()
+        results = response.json()
+        if content := results.get("content"):
+            header, data = content[0], content[1:]
+            return header, data
+
+        self.debug_print(f"{self._scheduled_playbooks_list_name} not found.")
+        return [], []
+
+    def _get_monitoring_container(self):
+        self.debug_print("Getting monitoring container")
+        config = self.get_config()
+        container_id = config.get("monitoring_container_id") or None
+        if not container_id:
+            return (
+                None,
+                "No container set in `monitoring_container_id` settings. Please input a valid container",
+            )
+
+        response = phantom.requests.get(
+            f"{self._rest_url}container/{container_id}", verify=False
+        )
+        response.raise_for_status()
+        container = response.json()
+        ingest_label_name = config.get("ingest", {}).get("container_label", "")
+        if container.get("label", "") != ingest_label_name:
+            return (
+                None,
+                f"Monitoring container should have the label {ingest_label_name} to ingest.",
+            )
+
+        return container, ""
+
+    def _check_interval(self, interval: int, last_run: str) -> bool:
+        date_format = "%Y-%m-%d %H:%M:%S"
+        interval = int(interval)
+        if not last_run:
+            return True
+
+        now = datetime.now()
+        last_run = datetime.strptime(last_run, date_format)
+        diff = (now - last_run).seconds / 60
+
+        return True if diff >= interval else False
+
+    def _run_playbook(self, data: str):
+        self.debug_print(f"Running playbook: {data.get('playbook_id')}")
+        response = phantom.requests.post(
+            f"{self._rest_url}playbook_run/", data=json.dumps(data), verify=False
+        )
+        response.raise_for_status()
+        if response.json().get("recieved"):
+            return True
+
+        return False
+
+    def _update_scheduled_playbook_list(self, contents):
+        self.debug_print("Updating scheduled playbook list")
+        response = phantom.requests.post(
+            f"{self._rest_url}decided_list/{self._scheduled_playbooks_list_name}",
+            data=json.dumps(contents),
+            verify=False,
+        )
+        response.raise_for_status()
+        if response.json().get("success"):
+            return True
+        return False
+
+    def _is_playbok_exists(self, playbook_name: str) -> bool:
+        repo, pb_name = playbook_name.split("/")
+        response = phantom.requests.get(
+            f"{self._rest_url}playbook?_filter_name='{pb_name}'",
+            verify=False,
+        )
+        response.raise_for_status()
+        count = response.json()["count"]
+        is_exists = True if count >= 1 else False
+        return is_exists, response.json()["data"][0]
+
+    def _is_playbook_valid(self, playbook_name: str, container_label: str):
+        is_exists, playbook = self._is_playbok_exists(playbook_name)
+        msg = ""
+        if not is_exists:
+            msg = f"'{playbook_name}' playbook does not exist."
+            self.debug_print(msg)
+            return False, msg
+
+        if container_label not in playbook.get("labels") or []:
+            msg = f"'{container_label}' label should be in {playbook_name} playbook's label. \
+            Current playbook labels are: {playbook.get('labels')}"
+            self.debug_print(msg)
+            return False, msg
+
+        return True, msg
+
+    def _on_poll(self, param):
+        self.debug_print("on_poll called")
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        headers, scheduled_playbooks = self._get_scheduled_playbooks()
+        if not scheduled_playbooks:
+            return action_result.set_status(
+                phantom.APP_ERROR, "No scheduled playbooks found."
+            )
+
+        container, msg = self._get_monitoring_container()
+        if not container:
+            return action_result.set_status(phantom.APP_ERROR, msg)
+
+        new_content = [headers]
+        for pb in scheduled_playbooks:
+            name, interval, last_run, last_run_status, remarks = pb
+            # check if playbook is valid
+            is_valid_playbook, msg = self._is_playbook_valid(name, container["label"])
+            if not is_valid_playbook:
+                remarks = msg
+                new_content.append(
+                    [
+                        name,
+                        interval,
+                        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "failed",
+                        remarks,
+                    ]
+                )
+                continue
+            # check if it's time to run
+            is_runnable = self._check_interval(interval, last_run)
+            self.debug_print(f"Playbook {name} runnable status: {is_runnable}")
+            if is_runnable:
+                remarks = ""
+                # run playbook
+                data = {
+                    "container_id": container["id"],
+                    "playbook_id": name,
+                    "scope": "all",
+                    "run": True,
+                }
+                sucess_call = self._run_playbook(data)
+                last_run = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                last_run_status = "success" if sucess_call else "failed"
+                if not sucess_call:
+                    remarks = f"Something went wrong when running {name}."
+            # append new values
+            new_content.append([name, interval, last_run, last_run_status, remarks])
+
+        self.debug_print(
+            f"New {self._scheduled_playbooks_list_name} Content: {new_content}"
+        )
+        # update the scheduled playbook list
+        update_list_status = self._update_scheduled_playbook_list(
+            {"content": new_content}
+        )
+        self.debug_print(f"Updated List Status: {update_list_status}")
+        if update_list_status:
+            return action_result.set_status(phantom.APP_SUCCESS, "Completed.")
+        return action_result.set_status(phantom.APP_ERROR, "Something went wrong.")
 
 
 if __name__ == "__main__":

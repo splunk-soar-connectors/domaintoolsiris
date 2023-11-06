@@ -44,6 +44,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **custom_ssl_certificate** |  optional  | boolean | Use Custom SSL Certificate
 **ssl** |  optional  | boolean | Use SSL
 **custom_ssl_certificate_path** |  optional  | string | Custom SSL Certificate Path
+**monitoring_container_id** |  optional  | string | Monitoring Container ID
+**http_port** |  optional  | string | HTTP Port
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity  
@@ -55,6 +57,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate  
 [lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)  
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned)  
+[on poll](#action-on-poll) - Callback action for the on_poll ingest functionality.  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -554,4 +557,16 @@ action_result.data.\*.website_title.value | string |  |
 action_result.summary | string |  |  
 action_result.message | string |  |  
 summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
+
+## action: 'on poll'
+Callback action for the on_poll ingest functionality.
+
+Type: **ingest**  
+Read only: **True**
+
+#### Action Parameters
+No parameters are required for this action
+
+#### Action Output
+No Output
