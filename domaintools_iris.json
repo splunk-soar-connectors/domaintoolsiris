@@ -92,8 +92,8 @@
             "data_type": "string",
             "order": 10
         },
-        "monitoring_container_id": {
-            "description": "Monitoring Container ID",
+        "monitoring_event_id": {
+            "description": "Monitoring Event ID",
             "data_type": "string",
             "order": 11
         },

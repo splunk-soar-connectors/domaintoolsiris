@@ -663,14 +663,14 @@ class DomainToolsConnector(BaseConnector):
         self.debug_print(f"{self._scheduled_playbooks_list_name} not found.")
         return [], []
 
-    def _get_monitoring_container(self):
-        self.debug_print("Getting monitoring container")
+    def _get_monitoring_event(self):
+        self.debug_print("Getting monitoring event")
         config = self.get_config()
-        container_id = config.get("monitoring_container_id") or None
+        container_id = config.get("monitoring_event_id") or None
         if not container_id:
             return (
                 None,
-                "No container set in `monitoring_container_id` settings. Please input a valid container",
+                "No container set in `monitoring_event_id` settings. Please input a valid container",
             )
 
         response = phantom.requests.get(
@@ -759,7 +759,7 @@ class DomainToolsConnector(BaseConnector):
                 phantom.APP_ERROR, "No scheduled playbooks found."
             )
 
-        container, msg = self._get_monitoring_container()
+        container, msg = self._get_monitoring_event()
         if not container:
             return action_result.set_status(phantom.APP_ERROR, msg)
 
