@@ -98,7 +98,7 @@
             "order": 11
         },
         "http_port": {
-            "description": "Splunk SOAR HTTPS port if your instance uses one other than 8443",
+            "description": "Splunk SOAR HTTPS port (default: 8443)",
             "data_type": "string",
             "default": "8443",
             "order": 12
