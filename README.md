@@ -33,7 +33,7 @@ This feature allows user to schedule a playbook using a custom list (`domaintool
 This feature depends on the 2 asset configuration field that are **required** when using this feature.
 | **Name** | **Description** | **Default Value** | **Required** |
 | --- | --- | --- | --- |
-| Monitoring Container ID | The monitoring container ID that the scheduled playbooks will run into.  | None |Required |
+| Monitoring Event ID | The monitoring event ID that the scheduled playbooks will run into.  | None |Required |
 | Splunk SOAR HTTPS port (default: 8443) | Splunk SOAR HTTP port if your instance uses one other than 8443 | 8443 | Optional |
 
 ### Dependencies
@@ -47,8 +47,8 @@ A template was provided alongside the app named `domaintools_scheduled_playbooks
 
 ### How to use monitoring/scheduling feature in DomainTools Iris Investigate App
 1. In Asset Configuration page, go to Ingest Settings > Label to apply to objects from this source >  Select your desired label to use for ingesting. **Recommended:** Use a custom label instead, rather using a predefined label like `events`.
-2. Still in Asset Configuration, go to Asset Settings > Fill up selected Monitoring Container ID > Change Splunk SOAR HTTP Port if needed. <br>
-**Note:** Make sure the label of the container you inputted should have the label that you selected in *Step 1*.
+2. Still in Asset Configuration, go to Asset Settings > Fill up selected Monitoring Event ID > Change Splunk SOAR HTTP Port if needed. <br>
+**Note:** Make sure the label of the event you inputted should have the label that you selected in *Step 1*.
 4. Input your desired playbook to schedule in `domaintools_scheduled_playbooks` custom list. <br>
 **Note:** Make sure the label of the playbook you inputted should have the label that you selected in *Step 1*.
 5. Lastly, in Asset Configuration, go to Ingest Settings > Select a polling interval or schedule to configure polling on this asset > Select `Interval` > Put your desired minutes of interval. **Recommended:** every min (Smaller intervals will result in more accurate schedules)
@@ -72,7 +72,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **custom_ssl_certificate** |  optional  | boolean | Use Custom SSL Certificate
 **ssl** |  optional  | boolean | Use SSL
 **custom_ssl_certificate_path** |  optional  | string | Custom SSL Certificate Path
-**monitoring_container_id** |  optional  | string | Monitoring Container ID
+**monitoring_event_id** |  optional  | string | Monitoring Event ID
 **http_port** |  optional  | string | Splunk SOAR HTTPS port (default: 8443)
 
 ### Supported Actions  
