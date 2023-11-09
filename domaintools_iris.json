@@ -7,7 +7,7 @@
     "type": "information",
     "license": "Copyright (c) 2019-2023 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.4.2",
+    "app_version": "1.5.0",
     "utctime_updated": "2023-10-25T15:44:30.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
@@ -98,7 +98,7 @@
             "order": 11
         },
         "http_port": {
-            "description": "HTTP Port",
+            "description": "Splunk SOAR HTTPS port if your instance uses one other than 8443",
             "data_type": "string",
             "default": "8443",
             "order": 12
@@ -2055,7 +2055,7 @@
         },
         {
             "action": "on poll",
-            "description": "Callback action for the on_poll ingest functionality.",
+            "description": "Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules",
             "type": "ingest",
             "identifier": "on_poll",
             "read_only": true,
