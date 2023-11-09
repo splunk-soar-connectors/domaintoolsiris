@@ -2,7 +2,7 @@
 # DomainTools Iris Investigate
 
 Publisher: DomainTools  
-Connector Version: 1.4.2  
+Connector Version: 1.5.0  
 Product Vendor: DomainTools  
 Product Name: DomainTools Iris Investigate  
 Product Version Supported (regex): ".\*"  
@@ -24,9 +24,36 @@ This app supports investigative actions to profile domain names, get risk scores
 [comment]: # "either express or implied. See the License for the specific language governing permissions"
 [comment]: # "and limitations under the License."
 [comment]: # ""
-**Note:** For the playbooks on the domain tools data, visit
-[this](https://github.com/DomainTools/playbooks/tree/master/Splunk%20Phantom) Github repository.
 
+[comment]: # "Monitoring/Scheduling Playbook(s) feature"
+## DomainTools Iris Investigate Scheduling/Monitoring  Playbook Feature
+This feature allows user to schedule a playbook using a custom list (`domaintools_scheduled_playbooks`) in an interval manner(mins).
+
+### Configuration
+This feature depends on the 2 asset configuration field that are **required** when using this feature.
+| **Name** | **Description** | **Default Value** | **Required** |
+| --- | --- | --- | --- |
+| Monitoring Container ID | The monitoring container ID that the scheduled playbooks will run into.  | None |Required |
+| HTTP Port | Splunk SOAR HTTP port if your instance uses one other than 8443 | 8443 | Optional |
+
+### Dependencies
+This feature uses a custom list named `domaintools_scheduled_playbooks`. <br>
+A template was provided alongside the app named `domaintools_scheduled_playbooks.csv` which you can import on your splunk SOAR instance. <br>
+**Note:** The values of this list has 5 columns header and should not be altered or the scheduling feature will break. <br>
+**Sample domaintools_scheduled_playbooks table:**
+| **repo/playbook_name** | **interval (mins)** | **last_run (server time)** | **last_run_status** | **remarks** |
+| --- | --- | --- | --- | --- |
+| `local/My Sample Playbook`| 1440 (default) | | | |
+
+### How to use monitoring/scheduling feature in DomainTools Iris Investigate App
+1. In Asset Configuration, go to Asset Settings > Fill up selected Monitoring Container ID > Change Splunk SOAR HTTP Port if needed.
+2. Still in Asset Configuration page, go to Ingest Settings > Label to apply to objects from this source >  Select your desired label to use for ingesting. **Recommended:** Use a custom label instead, rather using a predefined label like `events`.
+4. Input your desired playbook to schedule in `domaintools_scheduled_playbooks` custom list. <br>
+**Note:** Make sure the label of the playbook you inputted should have the label that you selected in *Step 2*.
+5. Lastly, in Asset Configuration, go to Ingest Settings > Select a polling interval or schedule to configure polling on this asset > Select `Interval` > Put your desired minutes of interval. **Recommended:** every min (Smaller intervals will result in more accurate schedules)
+
+**Note:** For the playbooks of DomainTools, visit
+[this](https://github.com/DomainTools/playbooks/tree/main/Splunk%20SOAR) Github repository.
 
 ### Configuration Variables
 The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a DomainTools Iris Investigate asset in SOAR.
@@ -45,7 +72,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **ssl** |  optional  | boolean | Use SSL
 **custom_ssl_certificate_path** |  optional  | string | Custom SSL Certificate Path
 **monitoring_container_id** |  optional  | string | Monitoring Container ID
-**http_port** |  optional  | string | HTTP Port
+**http_port** |  optional  | string | Splunk SOAR HTTPS port if your instance uses one other than 8443
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity  
@@ -57,7 +84,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate  
 [lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)  
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned)  
-[on poll](#action-on-poll) - Callback action for the on_poll ingest functionality.  
+[on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -560,7 +587,7 @@ summary.total_objects | numeric |  |   1
 summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'on poll'
-Callback action for the on_poll ingest functionality.
+Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules
 
 Type: **ingest**  
 Read only: **True**
