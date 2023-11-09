@@ -34,7 +34,7 @@ This feature depends on the 2 asset configuration field that are **required** wh
 | **Name** | **Description** | **Default Value** | **Required** |
 | --- | --- | --- | --- |
 | Monitoring Container ID | The monitoring container ID that the scheduled playbooks will run into.  | None |Required |
-| HTTP Port | Splunk SOAR HTTP port if your instance uses one other than 8443 | 8443 | Optional |
+| Splunk SOAR HTTPS port (default: 8443) | Splunk SOAR HTTP port if your instance uses one other than 8443 | 8443 | Optional |
 
 ### Dependencies
 This feature uses a custom list named `domaintools_scheduled_playbooks`. <br>
@@ -46,10 +46,11 @@ A template was provided alongside the app named `domaintools_scheduled_playbooks
 | `local/My Sample Playbook`| 1440 (default) | | | |
 
 ### How to use monitoring/scheduling feature in DomainTools Iris Investigate App
-1. In Asset Configuration, go to Asset Settings > Fill up selected Monitoring Container ID > Change Splunk SOAR HTTP Port if needed.
-2. Still in Asset Configuration page, go to Ingest Settings > Label to apply to objects from this source >  Select your desired label to use for ingesting. **Recommended:** Use a custom label instead, rather using a predefined label like `events`.
+1. In Asset Configuration page, go to Ingest Settings > Label to apply to objects from this source >  Select your desired label to use for ingesting. **Recommended:** Use a custom label instead, rather using a predefined label like `events`.
+2. Still in Asset Configuration, go to Asset Settings > Fill up selected Monitoring Container ID > Change Splunk SOAR HTTP Port if needed. <br>
+**Note:** Make sure the label of the container you inputted should have the label that you selected in *Step 1*.
 4. Input your desired playbook to schedule in `domaintools_scheduled_playbooks` custom list. <br>
-**Note:** Make sure the label of the playbook you inputted should have the label that you selected in *Step 2*.
+**Note:** Make sure the label of the playbook you inputted should have the label that you selected in *Step 1*.
 5. Lastly, in Asset Configuration, go to Ingest Settings > Select a polling interval or schedule to configure polling on this asset > Select `Interval` > Put your desired minutes of interval. **Recommended:** every min (Smaller intervals will result in more accurate schedules)
 
 **Note:** For the playbooks of DomainTools, visit
@@ -72,7 +73,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **ssl** |  optional  | boolean | Use SSL
 **custom_ssl_certificate_path** |  optional  | string | Custom SSL Certificate Path
 **monitoring_container_id** |  optional  | string | Monitoring Container ID
-**http_port** |  optional  | string | Splunk SOAR HTTPS port if your instance uses one other than 8443
+**http_port** |  optional  | string | Splunk SOAR HTTPS port (default: 8443)
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity  
