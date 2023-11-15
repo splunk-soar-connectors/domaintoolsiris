@@ -14,7 +14,6 @@ from datetime import datetime, timedelta
 import phantom.app as phantom
 import requests
 import tldextract
-
 # 3rd party imports
 from domaintools import API
 from phantom.action_result import ActionResult
