@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 import phantom.app as phantom
 import requests
 import tldextract
+
 # 3rd party imports
 from domaintools import API
 from phantom.action_result import ActionResult
@@ -724,14 +725,19 @@ class DomainToolsConnector(BaseConnector):
 
     def _is_playbok_exists(self, playbook_name: str) -> bool:
         repo, pb_name = playbook_name.split("/")
+        is_exists = False
+        playbook = None
         response = phantom.requests.get(
             f"{self._rest_url}playbook?_filter_name='{pb_name}'",
             verify=False,
         )
         response.raise_for_status()
         count = response.json()["count"]
-        is_exists = True if count >= 1 else False
-        return is_exists, response.json()["data"][0]
+        if count >= 1:
+            is_exists = True
+            playbook = response.json()["data"][0]
+
+        return is_exists, playbook
 
     def _is_playbook_valid(self, playbook_name: str, container_label: str):
         is_exists, playbook = self._is_playbok_exists(playbook_name)
