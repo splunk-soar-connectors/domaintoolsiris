@@ -695,7 +695,7 @@ class DomainToolsConnector(BaseConnector):
 
         now = datetime.now()
         last_run = datetime.strptime(last_run, date_format)
-        diff = (now - last_run).seconds / 60
+        diff = round((now - last_run).total_seconds() / 60)
 
         return True if diff >= interval else False
 
