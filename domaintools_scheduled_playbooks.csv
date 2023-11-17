@@ -1,3 +1,0 @@
-repo/playbook_name,interval (mins),last_run (server time),last_run_status,remarks
-local/DomainTools Monitor Domain Risk Score,1440,,,
-,,,,
