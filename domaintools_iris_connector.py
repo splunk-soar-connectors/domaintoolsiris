@@ -31,6 +31,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_REVERSE_DOMAIN = "reverse_lookup_domain"
     ACTION_ID_LOAD_HASH = "load_hash"
     ACTION_ID_ON_POLL = "on_poll"
+    ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_scheduled_playbooks"
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -350,7 +351,9 @@ class DomainToolsConnector(BaseConnector):
         elif action_id == self.ACTION_ID_LOAD_HASH:
             ret_val = self._load_hash(param)
         elif action_id == self.ACTION_ID_ON_POLL:
-            ret_val == self._on_poll(param)
+            ret_val = self._on_poll(param)
+        elif action_id == self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK:
+            ret_val = self._configure_scheduled_playbooks(param)
 
         return ret_val
 
@@ -710,6 +713,34 @@ class DomainToolsConnector(BaseConnector):
 
         return False
 
+    def _create_scheduled_playbook_list(self):
+        self.debug_print(
+            f"Creating scheduled playbook list: {self._scheduled_playbooks_list_name}"
+        )
+        request_body = {
+            "content": [
+                [
+                    "repo/playbook_name",
+                    "interval (mins)",
+                    "last_run (server time)",
+                    "last_run_status",
+                    "remarks",
+                ],
+                ["local/DomainTools Monitor Domain Risk Score", "1440", "", "", ""],
+            ],
+            "name": self._scheduled_playbooks_list_name,
+        }
+        response = phantom.requests.post(
+            f"{self._rest_url}decided_list/",
+            data=json.dumps(request_body),
+            verify=False,
+        )
+
+        json_response = response.json()
+        if json_response.get("id"):
+            return json_response, True
+        return json_response, False
+
     def _update_scheduled_playbook_list(self, contents):
         self.debug_print("Updating scheduled playbook list")
         response = phantom.requests.post(
@@ -816,6 +847,22 @@ class DomainToolsConnector(BaseConnector):
         if update_list_status:
             return action_result.set_status(phantom.APP_SUCCESS, "Completed.")
         return action_result.set_status(phantom.APP_ERROR, "Something went wrong.")
+
+    def _configure_scheduled_playbooks(self, param):
+        self.debug_print("configure_scheduled_playbooks action called")
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        res, is_created = self._create_scheduled_playbook_list()
+
+        if is_created:
+            return action_result.set_status(
+                phantom.APP_SUCCESS,
+                f"{self._scheduled_playbooks_list_name} list is sucessfully created.",
+            )
+        return action_result.set_status(
+            phantom.APP_ERROR,
+            f"{self._scheduled_playbooks_list_name}-{res.get('message')}",
+        )
 
 
 if __name__ == "__main__":
