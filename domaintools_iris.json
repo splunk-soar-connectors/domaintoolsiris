@@ -92,11 +92,6 @@
             "data_type": "string",
             "order": 10
         },
-        "monitoring_event_id": {
-            "description": "Monitoring Event ID",
-            "data_type": "string",
-            "order": 11
-        },
         "http_port": {
             "description": "Splunk SOAR HTTPS port (default: 8443)",
             "data_type": "string",

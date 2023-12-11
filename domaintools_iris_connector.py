@@ -666,18 +666,19 @@ class DomainToolsConnector(BaseConnector):
         self.debug_print(f"{self._scheduled_playbooks_list_name} not found.")
         return [], []
 
-    def _get_monitoring_event(self):
-        self.debug_print("Getting monitoring event")
+    def _get_playbook_monitoring_container(self, event_id, playbook_name):
+        self.debug_print(
+            f"Getting playbook corresponding container with ID of {event_id}"
+        )
         config = self.get_config()
-        container_id = config.get("monitoring_event_id") or None
-        if not container_id:
+        if not event_id:
             return (
-                None,
-                "No container set in `monitoring_event_id` settings. Please input a valid container",
+                {},
+                f"No event ID set in `{playbook_name}` settings. Please input a valid event ID",
             )
 
         response = phantom.requests.get(
-            f"{self._rest_url}container/{container_id}", verify=False
+            f"{self._rest_url}container/{event_id}", verify=False
         )
         response.raise_for_status()
         container = response.json()
@@ -721,12 +722,13 @@ class DomainToolsConnector(BaseConnector):
             "content": [
                 [
                     "repo/playbook_name",
+                    "event_id",
                     "interval (mins)",
                     "last_run (server time)",
                     "last_run_status",
                     "remarks",
                 ],
-                ["local/DomainTools Monitor Domain Risk Score", "1440", "", "", ""],
+                ["local/DomainTools Monitor Domain Risk Score", "", "1440", "", "", ""],
             ],
             "name": self._scheduled_playbooks_list_name,
         }
@@ -795,20 +797,18 @@ class DomainToolsConnector(BaseConnector):
                 phantom.APP_ERROR, "No scheduled playbooks found."
             )
 
-        container, msg = self._get_monitoring_event()
-        if not container:
-            return action_result.set_status(phantom.APP_ERROR, msg)
-
         new_content = [headers]
         for pb in scheduled_playbooks:
-            name, interval, last_run, last_run_status, remarks = pb
-            # check if playbook is valid
-            is_valid_playbook, msg = self._is_playbook_valid(name, container["label"])
-            if not is_valid_playbook:
+            name, event_id, interval, last_run, last_run_status, remarks = pb
+
+            # check and get the corresponding container
+            container, msg = self._get_playbook_monitoring_container(event_id, name)
+            if not container:
                 remarks = msg
                 new_content.append(
                     [
                         name,
+                        event_id,
                         interval,
                         datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "failed",
@@ -816,6 +816,23 @@ class DomainToolsConnector(BaseConnector):
                     ]
                 )
                 continue
+
+            # check if playbook is valid
+            is_valid_playbook, msg = self._is_playbook_valid(name, container["label"])
+            if not is_valid_playbook:
+                remarks = msg
+                new_content.append(
+                    [
+                        name,
+                        event_id,
+                        interval,
+                        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "failed",
+                        remarks,
+                    ]
+                )
+                continue
+
             # check if it's time to run
             is_runnable = self._check_interval(interval, last_run)
             self.debug_print(f"Playbook {name} runnable status: {is_runnable}")
@@ -834,7 +851,9 @@ class DomainToolsConnector(BaseConnector):
                 if not sucess_call:
                     remarks = f"Something went wrong when running {name}."
             # append new values
-            new_content.append([name, interval, last_run, last_run_status, remarks])
+            new_content.append(
+                [name, event_id, interval, last_run, last_run_status, remarks]
+            )
 
         self.debug_print(
             f"New {self._scheduled_playbooks_list_name} Content: {new_content}"
@@ -861,7 +880,7 @@ class DomainToolsConnector(BaseConnector):
             )
         return action_result.set_status(
             phantom.APP_ERROR,
-            f"{self._scheduled_playbooks_list_name}-{res.get('message')}",
+            f"`{self._scheduled_playbooks_list_name}` custom list {res.get('message')}",
         )
 
 
