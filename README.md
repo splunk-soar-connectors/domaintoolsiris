@@ -104,7 +104,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)  
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned)  
 [on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules  
-[configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status.  
+[configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -619,7 +619,7 @@ No parameters are required for this action
 No Output  
 
 ## action: 'configure scheduled playbooks'
-Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status.
+Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status
 
 Type: **generic**  
 Read only: **True**
@@ -628,4 +628,9 @@ Read only: **True**
 No parameters are required for this action
 
 #### Action Output
-No Output
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string |  |   failed  success 
+action_result.data.\* | string |  |  
+action_result.summary | string |  |  
+action_result.message | string |  |  
