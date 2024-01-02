@@ -2060,12 +2060,33 @@
         },
         {
             "action": "configure scheduled playbooks",
-            "description": "Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status.",
+            "description": "Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status",
             "type": "generic",
-            "identifier": "configure_scheduled_playbooks",
+            "identifier": "configure_monitoring_scheduled_playbooks",
             "read_only": true,
             "parameters": {},
-            "output": [],
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                }
+            ],
             "versions": "EQ(*)"
         }
     ],

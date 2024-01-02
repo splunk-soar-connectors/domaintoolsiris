@@ -31,7 +31,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_REVERSE_DOMAIN = "reverse_lookup_domain"
     ACTION_ID_LOAD_HASH = "load_hash"
     ACTION_ID_ON_POLL = "on_poll"
-    ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_scheduled_playbooks"
+    ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_monitoring_scheduled_playbooks"
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -353,7 +353,7 @@ class DomainToolsConnector(BaseConnector):
         elif action_id == self.ACTION_ID_ON_POLL:
             ret_val = self._on_poll(param)
         elif action_id == self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK:
-            ret_val = self._configure_scheduled_playbooks(param)
+            ret_val = self._configure_monitoring_scheduled_playbooks(param)
 
         return ret_val
 
@@ -867,8 +867,8 @@ class DomainToolsConnector(BaseConnector):
             return action_result.set_status(phantom.APP_SUCCESS, "Completed.")
         return action_result.set_status(phantom.APP_ERROR, "Something went wrong.")
 
-    def _configure_scheduled_playbooks(self, param):
-        self.debug_print("configure_scheduled_playbooks action called")
+    def _configure_monitoring_scheduled_playbooks(self, param):
+        self.debug_print("configure_monitoring_scheduled_playbooks action called")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         res, is_created = self._create_scheduled_playbook_list()
