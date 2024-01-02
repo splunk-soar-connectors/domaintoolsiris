@@ -634,3 +634,5 @@ action_result.status | string |  |   failed  success
 action_result.data.\* | string |  |  
 action_result.summary | string |  |  
 action_result.message | string |  |  
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1 
