@@ -2049,19 +2049,9 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "on poll",
-            "description": "Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules",
-            "type": "ingest",
-            "identifier": "on_poll",
-            "read_only": true,
-            "parameters": {},
-            "output": [],
-            "versions": "EQ(*)"
-        },
-        {
             "action": "configure scheduled playbooks",
             "description": "Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status",
-            "type": "generic",
+            "type": "investigate",
             "identifier": "configure_monitoring_scheduled_playbooks",
             "read_only": true,
             "parameters": {},
@@ -2101,6 +2091,16 @@
                     ]
                 }
             ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "on poll",
+            "description": "Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules",
+            "type": "ingest",
+            "identifier": "on_poll",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
             "versions": "EQ(*)"
         }
     ],
