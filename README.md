@@ -103,8 +103,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate  
 [lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)  
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned)  
-[on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules  
 [configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status  
+[on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -606,22 +606,10 @@ action_result.message | string |  |
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1   
 
-## action: 'on poll'
-Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules
-
-Type: **ingest**  
-Read only: **True**
-
-#### Action Parameters
-No parameters are required for this action
-
-#### Action Output
-No Output  
-
 ## action: 'configure scheduled playbooks'
 Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status
 
-Type: **generic**  
+Type: **investigate**  
 Read only: **True**
 
 #### Action Parameters
@@ -635,4 +623,16 @@ action_result.data.\* | string |  |
 action_result.summary | string |  |  
 action_result.message | string |  |  
 summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
+
+## action: 'on poll'
+Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules
+
+Type: **ingest**  
+Read only: **True**
+
+#### Action Parameters
+No parameters are required for this action
+
+#### Action Output
+No Output
