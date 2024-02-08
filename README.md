@@ -11,7 +11,7 @@ Minimum Product Version: 6.1.1
 This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
 
 [comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2019-2023 DomainTools, LLC"
+[comment]: # "  Copyright (c) 2019-2024 DomainTools, LLC"
 [comment]: # ""
 [comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "you may not use this file except in compliance with the License."

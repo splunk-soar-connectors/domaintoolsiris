@@ -1,7 +1,7 @@
 # --
 # File: domaintools_iris_connector.py
 #
-# Copyright (c) 2019-2023 DomainTools, LLC
+# Copyright (c) 2019-2024 DomainTools, LLC
 #
 # --
 
