@@ -5,14 +5,14 @@
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019-2023 DomainTools, LLC",
+    "license": "Copyright (c) 2019-2024 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.4.1",
-    "utctime_updated": "2023-07-14T15:44:30.000000Z",
+    "app_version": "1.5.0",
+    "utctime_updated": "2023-10-25T15:44:30.000000Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
-    "min_phantom_version": "5.5.0",
+    "min_phantom_version": "6.1.1",
     "python_version": "3",
     "logo": "logo_domaintools_iris.svg",
     "logo_dark": "logo_domaintools_iris_dark.svg",
@@ -91,6 +91,12 @@
             "description": "Custom SSL Certificate Path",
             "data_type": "string",
             "order": 10
+        },
+        "http_port": {
+            "description": "Splunk SOAR HTTPS port (default: 8443)",
+            "data_type": "string",
+            "default": "8443",
+            "order": 11
         }
     },
     "actions": [
@@ -249,7 +255,9 @@
                         "google_analytics",
                         "adsense",
                         "asn",
-                        "isp_name"
+                        "isp_name",
+                        "tagged_with_any",
+                        "tagged_with_all"
                     ],
                     "required": true,
                     "order": 0
@@ -2039,95 +2047,134 @@
                 }
             ],
             "versions": "EQ(*)"
+        },
+        {
+            "action": "configure scheduled playbooks",
+            "description": "Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status",
+            "type": "investigate",
+            "identifier": "configure_monitoring_scheduled_playbooks",
+            "read_only": true,
+            "parameters": {},
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "failed",
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "on poll",
+            "description": "Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules",
+            "type": "ingest",
+            "identifier": "on_poll",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
         }
     ],
     "pip39_dependencies": {
-        "pypi": [
-            {
-                "module": "regex"
-            }
-        ],
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/anyio-3.7.1-py3-none-any.whl"
-            },
-            {
-                "module": "certifi",
-                "input_file": "wheels/certifi-2023.5.7-py3-none-any.whl"
-            },
-            {
-                "module": "charset-normalizer",
-                "input_file": "wheels/charset_normalizer-3.1.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.2.0-py3-none-any.whl"
             },
             {
                 "module": "dateparser",
-                "input_file": "wheels/dateparser-1.1.8-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/dateparser-1.2.0-py2.py3-none-any.whl"
             },
             {
-                "module": "domaintools-api",
-                "input_file": "wheels/domaintools_api-1.0.1-py2.py3-none-any.whl"
+                "module": "domaintools_api",
+                "input_file": "wheels/shared/domaintools_api-1.0.1-py2.py3-none-any.whl"
             },
             {
                 "module": "exceptiongroup",
-                "input_file": "wheels/exceptiongroup-1.1.2-py3-none-any.whl"
+                "input_file": "wheels/py3/exceptiongroup-1.2.0-py3-none-any.whl"
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/filelock-3.12.2-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.13.1-py3-none-any.whl"
             },
             {
                 "module": "h11",
-                "input_file": "wheels/h11-0.14.0-py3-none-any.whl"
+                "input_file": "wheels/py3/h11-0.14.0-py3-none-any.whl"
             },
             {
                 "module": "httpcore",
-                "input_file": "wheels/httpcore-0.17.3-py3-none-any.whl"
+                "input_file": "wheels/py3/httpcore-1.0.2-py3-none-any.whl"
             },
             {
                 "module": "httpx",
-                "input_file": "wheels/httpx-0.24.1-py3-none-any.whl"
-            },
-            {
-                "module": "idna",
-                "input_file": "wheels/idna-3.4-py3-none-any.whl"
+                "input_file": "wheels/py3/httpx-0.26.0-py3-none-any.whl"
             },
             {
                 "module": "python_dateutil",
-                "input_file": "wheels/python_dateutil-2.8.2-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/python_dateutil-2.8.2-py2.py3-none-any.whl"
             },
             {
                 "module": "pytz",
-                "input_file": "wheels/pytz-2023.3-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/pytz-2024.1-py2.py3-none-any.whl"
             },
             {
-                "module": "requests-file",
-                "input_file": "wheels/requests_file-1.5.1-py2.py3-none-any.whl"
+                "module": "regex",
+                "input_file": "wheels/py39/regex-2023.12.25-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
-                "module": "requests",
-                "input_file": "wheels/requests-2.31.0-py3-none-any.whl"
+                "module": "requests_file",
+                "input_file": "wheels/shared/requests_file-2.0.0-py2.py3-none-any.whl"
             },
             {
                 "module": "six",
-                "input_file": "wheels/six-1.16.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
             },
             {
                 "module": "sniffio",
-                "input_file": "wheels/sniffio-1.3.0-py3-none-any.whl"
+                "input_file": "wheels/py3/sniffio-1.3.0-py3-none-any.whl"
             },
             {
                 "module": "tldextract",
-                "input_file": "wheels/tldextract-3.4.4-py3-none-any.whl"
+                "input_file": "wheels/py3/tldextract-3.4.4-py3-none-any.whl"
+            },
+            {
+                "module": "typing_extensions",
+                "input_file": "wheels/py3/typing_extensions-4.9.0-py3-none-any.whl"
             },
             {
                 "module": "tzlocal",
-                "input_file": "wheels/tzlocal-5.0.1-py3-none-any.whl"
-            },
-            {
-                "module": "urllib3",
-                "input_file": "wheels/urllib3-2.0.3-py3-none-any.whl"
+                "input_file": "wheels/py3/tzlocal-5.2-py3-none-any.whl"
             }
         ]
-    }
+    },
+    "executable": "spawn3"
 }
