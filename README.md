@@ -2,7 +2,7 @@
 # DomainTools Iris Investigate
 
 Publisher: DomainTools  
-Connector Version: 1.5.0  
+Connector Version: 1.5.1  
 Product Vendor: DomainTools  
 Product Name: DomainTools Iris Investigate  
 Product Version Supported (regex): ".\*"  
