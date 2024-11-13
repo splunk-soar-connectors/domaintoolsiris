@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 import phantom.app as phantom
 import requests
 import tldextract
+
 # 3rd party imports
 from domaintools import API
 from phantom.action_result import ActionResult
@@ -274,9 +275,11 @@ class DomainToolsConnector(BaseConnector):
         # Make the final result sorted in descending order by default
         return sorted(
             final_result,
-            key=lambda d: 0
-            if d.get("domain_risk", {}).get("risk_score_string") == ""
-            else d.get("domain_risk", {}).get("risk_score"),
+            key=lambda d: (
+                0
+                if d.get("domain_risk", {}).get("risk_score_string") == ""
+                else d.get("domain_risk", {}).get("risk_score")
+            ),
             reverse=True,
         )
 
