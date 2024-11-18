@@ -33,6 +33,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_LOAD_HASH = "load_hash"
     ACTION_ID_ON_POLL = "on_poll"
     ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_monitoring_scheduled_playbooks"
+    ACTION_ID_NOD_FEED = "nod_feed"
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -64,6 +65,9 @@ class DomainToolsConnector(BaseConnector):
             )
 
         return phantom.APP_SUCCESS
+
+    def _is_feeds_service(self, service):
+        return service in ("nod", "nad")
 
     def _handle_py_ver_for_byte(self, input_str):
         """
@@ -100,6 +104,21 @@ class DomainToolsConnector(BaseConnector):
         # PAPP-2087 DomainTools - Reverse Email table widget shows contextual action for no domain
         if response.get("domains") == []:
             del response["domains"]
+
+    def _parse_feeds_response(self, action_result, response_json):
+        rows = response_json.strip().split("\n")
+        data = []
+        for row in rows:
+            feed_result = json.loads(row)
+            data.append(
+                {
+                    "timestamp": feed_result.get("timestamp"),
+                    "domain": feed_result.get("domain"),
+                }
+            )
+
+        action_result.update_data(data)
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def _parse_response(self, action_result, response_json):
         """
@@ -184,6 +203,7 @@ class DomainToolsConnector(BaseConnector):
         """
 
         self.save_progress("Connecting to domaintools")
+        always_sign_api_key = query_args.pop("always_sign_api_key", True)
 
         try:
             dt_api = API(
@@ -195,7 +215,7 @@ class DomainToolsConnector(BaseConnector):
                 proxy_url=self._proxy_url,
                 verify_ssl=self._ssl,
                 https=self._ssl,
-                always_sign_api_key=True,
+                always_sign_api_key=always_sign_api_key,
             )
         except Exception as e:
             return action_result.set_status(
@@ -223,6 +243,11 @@ class DomainToolsConnector(BaseConnector):
 
                 try:
                     response_json = response.data()
+
+                    if self._is_feeds_service(service):
+                        # Separate parsing of feeds product
+                        return self._parse_feeds_response(action_result, response_json)
+
                 except Exception as e:
                     return action_result.set_status(
                         phantom.APP_ERROR,
@@ -357,6 +382,8 @@ class DomainToolsConnector(BaseConnector):
             ret_val = self._on_poll(param)
         elif action_id == self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK:
             ret_val = self._configure_monitoring_scheduled_playbooks(param)
+        elif action_id == self.ACTION_ID_NOD_FEED:
+            ret_val = self._nod_feed(param)
 
         return ret_val
 
@@ -885,6 +912,20 @@ class DomainToolsConnector(BaseConnector):
             phantom.APP_ERROR,
             f"`{self._scheduled_playbooks_list_name}` custom list {res.get('message')}",
         )
+
+    def _nod_feed(self, param):
+        self.save_progress("Starting nod_feeds action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = {"always_sign_api_key": False}
+        params.update(param)
+        session_id = params.pop("session_id", None)
+        if session_id:
+            params["sessionID"] = session_id
+
+        self._do_query("nod", action_result, query_args=params)
+        self.save_progress("Completed nod_feed action.")
+
+        return action_result.get_status()
 
 
 if __name__ == "__main__":
