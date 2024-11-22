@@ -95,7 +95,7 @@ class DomainToolsConnector(BaseConnector):
                     error_msg = e.args[1]
                 elif len(e.args) == 1:
                     error_msg = e.args[0]
-        except:
+        except BaseException:
             pass
 
         return error_code, error_msg
@@ -168,17 +168,13 @@ class DomainToolsConnector(BaseConnector):
             self._clean_empty_response(response)
 
             if "results" in response:
-                action_result.update_summary(
-                    {"Connected Domains Count": len(response["results"])}
-                )
+                action_result.update_summary({"Connected Domains Count": len(response["results"])})
                 action_result.update_data(response["results"])
             else:
                 action_result.add_data(response)
 
             if response.get("limit_exceeded"):
-                msg = response.get(
-                    "message", "Response limit exceeded, please narrow your search"
-                )
+                msg = response.get("message", "Response limit exceeded, please narrow your search")
                 action_result.update_summary({"Error": msg})
                 return action_result.set_status(phantom.APP_ERROR, msg)
 
@@ -186,9 +182,7 @@ class DomainToolsConnector(BaseConnector):
 
         return action_result.set_status(
             phantom.APP_ERROR,
-            error.get(
-                "message", "An unknown error occurred while querying domaintools"
-            ),
+            error.get("message", "An unknown error occurred while querying domaintools"),
         )
 
     def _do_query(self, service, action_result, query_args=None):
@@ -218,9 +212,7 @@ class DomainToolsConnector(BaseConnector):
                 always_sign_api_key=always_sign_api_key,
             )
         except Exception as e:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Unable connect to DomainTools API", e
-            )
+            return action_result.set_status(phantom.APP_ERROR, "Unable connect to DomainTools API", e)
 
         try:
             domains = query_args.get("domains")
@@ -269,9 +261,7 @@ class DomainToolsConnector(BaseConnector):
             )
 
         self.save_progress(f"Parsing {len(results_data)} results...")
-        response_json["response"]["results"] = self._convert_risk_scores_to_string(
-            results_data
-        )
+        response_json["response"]["results"] = self._convert_risk_scores_to_string(results_data)
 
         try:
             return self._parse_response(action_result, response_json)
@@ -289,22 +279,14 @@ class DomainToolsConnector(BaseConnector):
         final_result = []
         for result in results_data:
             result.get("domain_risk").update(
-                {
-                    "risk_score_string": self._convert_null_value_to_empty_string(
-                        result.get("domain_risk", {}).get("risk_score")
-                    )
-                }
+                {"risk_score_string": self._convert_null_value_to_empty_string(result.get("domain_risk", {}).get("risk_score"))}
             )
             final_result.append(result)
 
         # Make the final result sorted in descending order by default
         return sorted(
             final_result,
-            key=lambda d: (
-                0
-                if d.get("domain_risk", {}).get("risk_score_string") == ""
-                else d.get("domain_risk", {}).get("risk_score")
-            ),
+            key=lambda d: (0 if d.get("domain_risk", {}).get("risk_score_string") == "" else d.get("domain_risk", {}).get("risk_score")),
             reverse=True,
         )
 
@@ -411,13 +393,9 @@ class DomainToolsConnector(BaseConnector):
                 proxy_password = config.get("proxy_password")
 
                 if not (proxy_username and proxy_password):
-                    raise Exception(
-                        "Must provide both a Proxy Username and Proxy Password."
-                    )
+                    raise Exception("Must provide both a Proxy Username and Proxy Password.")
 
-                proxy_url = (
-                    f"{protocol}://{proxy_username}:{proxy_password}@{server_address}"
-                )
+                proxy_url = f"{protocol}://{proxy_username}:{proxy_password}@{server_address}"
 
         return proxy_url
 
@@ -495,9 +473,7 @@ class DomainToolsConnector(BaseConnector):
                         "ip": a["address"]["value"],
                         "type": "Host IP",
                         "count": a["address"]["count"],
-                        "count_string": self._convert_null_value_to_empty_string(
-                            a["address"]["count"]
-                        ),
+                        "count_string": self._convert_null_value_to_empty_string(a["address"]["count"]),
                     }
                 )
 
@@ -509,9 +485,7 @@ class DomainToolsConnector(BaseConnector):
                             "ip": b["value"],
                             "type": "MX IP",
                             "count": b["count"],
-                            "count_string": self._convert_null_value_to_empty_string(
-                                b["count"]
-                            ),
+                            "count_string": self._convert_null_value_to_empty_string(b["count"]),
                         }
                     )
 
@@ -523,9 +497,7 @@ class DomainToolsConnector(BaseConnector):
                             "ip": b["value"],
                             "type": "NS IP",
                             "count": b["count"],
-                            "count_string": self._convert_null_value_to_empty_string(
-                                b["count"]
-                            ),
+                            "count_string": self._convert_null_value_to_empty_string(b["count"]),
                         }
                     )
 
@@ -576,9 +548,7 @@ class DomainToolsConnector(BaseConnector):
         if not data:
             return action_result.get_status()
 
-        action_result.update_summary(
-            {"domain_risk": data[0]["domain_risk"]["risk_score"]}
-        )
+        action_result.update_summary({"domain_risk": data[0]["domain_risk"]["risk_score"]})
 
         for a in data[0]["domain_risk"]["components"]:
             if a["name"] == "zerolist":
@@ -614,9 +584,7 @@ class DomainToolsConnector(BaseConnector):
 
     def _pivot_action(self, param):
         action_result = self.add_action_result(ActionResult(param))
-        query_field = (
-            param["pivot_type"] if param["pivot_type"] != "domain" else "domains"
-        )
+        query_field = param["pivot_type"] if param["pivot_type"] != "domain" else "domains"
         if query_field == "domains":
             query_value = self._domains
         else:
@@ -632,27 +600,21 @@ class DomainToolsConnector(BaseConnector):
             if params["data_updated_after"].lower() == "today":
                 params["data_updated_after"] = datetime.today().strftime("%Y-%m-%d")
             if params["data_updated_after"].lower() == "yesterday":
-                params["data_updated_after"] = (
-                    datetime.now() - timedelta(days=1)
-                ).strftime("%Y-%m-%d")
+                params["data_updated_after"] = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
         if "create_date" in param:
             params["create_date"] = param["create_date"]
             if params["create_date"].lower() == "today":
                 params["create_date"] = datetime.today().strftime("%Y-%m-%d")
             if params["create_date"].lower() == "yesterday":
-                params["create_date"] = (datetime.now() - timedelta(days=1)).strftime(
-                    "%Y-%m-%d"
-                )
+                params["create_date"] = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
         if "expiration_date" in param:
             params["expiration_date"] = param["expiration_date"]
             if params["expiration_date"].lower() == "today":
                 params["expiration_date"] = datetime.today().strftime("%Y-%m-%d")
             if params["expiration_date"].lower() == "yesterday":
-                params["expiration_date"] = (
-                    datetime.now() - timedelta(days=1)
-                ).strftime("%Y-%m-%d")
+                params["expiration_date"] = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
         if "status" in param and param["status"].lower() != "any":
             params["active"] = param["status"].lower() == "active"
@@ -697,9 +659,7 @@ class DomainToolsConnector(BaseConnector):
         return [], []
 
     def _get_playbook_monitoring_container(self, event_id, playbook_name):
-        self.debug_print(
-            f"Getting playbook corresponding container with ID of {event_id}"
-        )
+        self.debug_print(f"Getting playbook corresponding container with ID of {event_id}")
         config = self.get_config()
         if not event_id:
             return (
@@ -707,9 +667,7 @@ class DomainToolsConnector(BaseConnector):
                 f"No event ID set in `{playbook_name}` settings. Please input a valid event ID",
             )
 
-        response = phantom.requests.get(
-            f"{self._rest_url}container/{event_id}", verify=False
-        )
+        response = phantom.requests.get(f"{self._rest_url}container/{event_id}", verify=False)
         response.raise_for_status()
         container = response.json()
         ingest_label_name = config.get("ingest", {}).get("container_label", "")
@@ -735,9 +693,7 @@ class DomainToolsConnector(BaseConnector):
 
     def _run_playbook(self, data: str):
         self.debug_print(f"Running playbook: {data.get('playbook_id')}")
-        response = phantom.requests.post(
-            f"{self._rest_url}playbook_run/", data=json.dumps(data), verify=False
-        )
+        response = phantom.requests.post(f"{self._rest_url}playbook_run/", data=json.dumps(data), verify=False)
         response.raise_for_status()
         if response.json().get("recieved"):
             return True
@@ -745,9 +701,7 @@ class DomainToolsConnector(BaseConnector):
         return False
 
     def _create_scheduled_playbook_list(self):
-        self.debug_print(
-            f"Creating scheduled playbook list: {self._scheduled_playbooks_list_name}"
-        )
+        self.debug_print(f"Creating scheduled playbook list: {self._scheduled_playbooks_list_name}")
         request_body = {
             "content": [
                 [
@@ -823,9 +777,7 @@ class DomainToolsConnector(BaseConnector):
 
         headers, scheduled_playbooks = self._get_scheduled_playbooks()
         if not scheduled_playbooks:
-            return action_result.set_status(
-                phantom.APP_ERROR, "No scheduled playbooks found."
-            )
+            return action_result.set_status(phantom.APP_ERROR, "No scheduled playbooks found.")
 
         new_content = [headers]
         for pb in scheduled_playbooks:
@@ -881,17 +833,11 @@ class DomainToolsConnector(BaseConnector):
                 if not sucess_call:
                     remarks = f"Something went wrong when running {name}."
             # append new values
-            new_content.append(
-                [name, event_id, interval, last_run, last_run_status, remarks]
-            )
+            new_content.append([name, event_id, interval, last_run, last_run_status, remarks])
 
-        self.debug_print(
-            f"New {self._scheduled_playbooks_list_name} Content: {new_content}"
-        )
+        self.debug_print(f"New {self._scheduled_playbooks_list_name} Content: {new_content}")
         # update the scheduled playbook list
-        update_list_status = self._update_scheduled_playbook_list(
-            {"content": new_content}
-        )
+        update_list_status = self._update_scheduled_playbook_list({"content": new_content})
         self.debug_print(f"Updated List Status: {update_list_status}")
         if update_list_status:
             return action_result.set_status(phantom.APP_SUCCESS, "Completed.")
