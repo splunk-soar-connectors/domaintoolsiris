@@ -6,7 +6,7 @@ ACTION_VIEW_TEMPLATES_DICT = {
 
 
 def display_view(provides, all_app_runs, context):
-    context['results'] = results = []
+    context["results"] = results = []
     for _, action_results in all_app_runs:
         for result in action_results:
             ctx_result = get_ctx_result(result)
@@ -22,14 +22,17 @@ def get_ctx_result(result):
     ctx_result = {}
     param = result.get_param()
     data_list = result.get_data()
-    if (data_list):
-        ctx_result['param'] = param
-        ctx_result['data'] = []
-        ctx_result['sorted_data'] = []
+    if data_list:
+        ctx_result["param"] = param
+        ctx_result["data"] = []
+        ctx_result["sorted_data"] = []
         for data in data_list:
             extracted_data = extract_data(data)
-            ctx_result['data'].append(extracted_data)
-            sorted_keys = sorted(extracted_data, key=lambda kv_pair: (not kv_pair.startswith('domain'), kv_pair))
+            ctx_result["data"].append(extracted_data)
+            sorted_keys = sorted(
+                extracted_data,
+                key=lambda kv_pair: (not kv_pair.startswith("domain"), kv_pair),
+            )
             sorted_data = []
 
             # TODO: This is temporary only. Remove this from the sorted_data once update on pivot links is implemented
@@ -38,7 +41,7 @@ def get_ctx_result(result):
             for key in sorted_keys:
                 if extracted_data[key] or extracted_data[key] == 0:
                     data_count = ""
-                    if type(extracted_data[key]) is dict:
+                    if isinstance(extracted_data[key], dict):
                         value = extracted_data[key].get("value")
                         count = extracted_data[key].get("count")
                         if value in ("", "None", None):
@@ -51,7 +54,7 @@ def get_ctx_result(result):
                     is_list = isinstance(data_value, list)
                     key = " ".join(unique_list(key.split()))
                     sorted_data.append((key, data_value, data_count, is_list, queried_domain))
-            ctx_result['sorted_data'].append(sorted_data)
+            ctx_result["sorted_data"].append(sorted_data)
 
     return ctx_result
 
