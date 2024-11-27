@@ -34,6 +34,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_ON_POLL = "on_poll"
     ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_monitoring_scheduled_playbooks"
     ACTION_ID_NOD_FEED = "nod_feed"
+    ACTION_ID_NAD_FEED = "nad_feed"
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -366,6 +367,8 @@ class DomainToolsConnector(BaseConnector):
             ret_val = self._configure_monitoring_scheduled_playbooks(param)
         elif action_id == self.ACTION_ID_NOD_FEED:
             ret_val = self._nod_feed(param)
+        elif action_id == self.ACTION_ID_NAD_FEED:
+            ret_val = self._nad_feed(param)
 
         return ret_val
 
@@ -860,7 +863,7 @@ class DomainToolsConnector(BaseConnector):
         )
 
     def _nod_feed(self, param):
-        self.save_progress("Starting nod_feeds action.")
+        self.save_progress("Starting nod_feed action.")
         action_result = self.add_action_result(ActionResult(param))
         params = {"always_sign_api_key": False}
         params.update(param)
@@ -869,6 +872,20 @@ class DomainToolsConnector(BaseConnector):
             params["sessionID"] = session_id
 
         self._do_query("nod", action_result, query_args=params)
+        self.save_progress("Completed nod_feed action.")
+
+        return action_result.get_status()
+
+    def _nad_feed(self, param):
+        self.save_progress("Starting nad_feed action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = {"always_sign_api_key": False}
+        params.update(param)
+        session_id = params.pop("session_id", None)
+        if session_id:
+            params["sessionID"] = session_id
+
+        self._do_query("nad", action_result, query_args=params)
         self.save_progress("Completed nod_feed action.")
 
         return action_result.get_status()

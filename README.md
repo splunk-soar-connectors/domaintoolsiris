@@ -106,6 +106,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status  
 [on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules  
 [nod feed](#action-nod-feed) - Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database.  
+[nad feed](#action-nad-feed) - Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days.  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity
@@ -640,6 +641,34 @@ No Output
 
 ## action: 'nod feed'
 Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database.
+
+Type: **investigate**  
+Read only: **True**
+
+#### Action Parameters
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**domain** |  optional  | Used to filter feed results. The filter can be an exact match or a partial match when the \* character is included at the beginning and/or end of the value. | string | 
+**after** |  optional  | A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided. | string | 
+**session_id** |  optional  | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | 
+**top** |  optional  | The number of results to return in the response payload. Primarily used for testing. | string | 
+
+#### Action Output
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data | string |  |  
+action_result.data.\*.domain | string |  `domain`  |  
+action_result.data.\*.timestamp | string |  |  
+action_result.status | string |  |   success  failed 
+action_result.summary | string |  |  
+action_result.message | string |  |  
+action_result.parameter.domain | string |  |  
+action_result.parameter.after | string |  |  
+action_result.parameter.session_id | string |  |  
+action_result.parameter.top | string |  |    
+
+## action: 'nad feed'
+Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days.
 
 Type: **investigate**  
 Read only: **True**
