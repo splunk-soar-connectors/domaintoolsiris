@@ -75,8 +75,8 @@ In this example, we've specified to run three separate monitoring playbooks on d
 [this](https://github.com/DomainTools/playbooks/tree/main/Splunk%20SOAR) Github repository.
 
 
-### Configuration Variables
-The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a DomainTools Iris Investigate asset in SOAR.
+### Configuration variables
+This table lists the configuration variables required to operate DomainTools Iris Investigate. These variables are specified when configuring a DomainTools Iris Investigate asset in Splunk SOAR.
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
