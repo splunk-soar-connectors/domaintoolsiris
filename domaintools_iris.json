@@ -7,8 +7,8 @@
     "type": "information",
     "license": "Copyright (c) 2019-2024 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.5.1",
-    "utctime_updated": "2023-10-25T15:44:30.000000Z",
+    "app_version": "1.5.2",
+    "utctime_updated": "2024-12-20T18:16:45.550619Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
@@ -2102,57 +2102,259 @@
             "parameters": {},
             "output": [],
             "versions": "EQ(*)"
+        },
+        {
+            "action": "nod feed",
+            "description": "Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database.",
+            "type": "investigate",
+            "identifier": "nod_feed",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "after": {
+                    "description": "A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided.",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "session_id": {
+                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "top": {
+                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "data_type": "string",
+                    "order": 3
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Newly Observed Domains List",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "column_name": "Domain Names",
+                    "column_order": 1,
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.timestamp",
+                    "data_type": "string",
+                    "column_name": "Time Stamp",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.after",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.session_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.top",
+                    "data_type": "string"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "nad feed",
+            "description": "Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days.",
+            "type": "investigate",
+            "identifier": "nad_feed",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "after": {
+                    "description": "A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided.",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "session_id": {
+                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "top": {
+                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "data_type": "string",
+                    "order": 3
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Newly Active Domains List",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "column_name": "Domain Names",
+                    "column_order": 1,
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.timestamp",
+                    "data_type": "string",
+                    "column_name": "Time Stamp",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.after",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.session_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.top",
+                    "data_type": "string"
+                }
+            ],
+            "versions": "EQ(*)"
         }
     ],
     "pip39_dependencies": {
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.2.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-3.6.1-py3-none-any.whl"
             },
             {
-                "module": "dateparser",
-                "input_file": "wheels/shared/dateparser-1.2.0-py2.py3-none-any.whl"
+                "module": "certifi",
+                "input_file": "wheels/py3/certifi-2022.6.15-py3-none-any.whl"
+            },
+            {
+                "module": "charset_normalizer",
+                "input_file": "wheels/py3/charset_normalizer-2.0.12-py3-none-any.whl"
+            },
+            {
+                "module": "click",
+                "input_file": "wheels/py3/click-8.1.7-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-1.0.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "exceptiongroup",
-                "input_file": "wheels/py3/exceptiongroup-1.2.0-py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.1.0-py2.py3-none-any.whl"
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.13.1-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.7.1-py3-none-any.whl"
             },
             {
                 "module": "h11",
-                "input_file": "wheels/py3/h11-0.14.0-py3-none-any.whl"
+                "input_file": "wheels/py3/h11-0.12.0-py3-none-any.whl"
             },
             {
                 "module": "httpcore",
-                "input_file": "wheels/py3/httpcore-1.0.2-py3-none-any.whl"
+                "input_file": "wheels/py3/httpcore-0.15.0-py3-none-any.whl"
             },
             {
                 "module": "httpx",
-                "input_file": "wheels/py3/httpx-0.26.0-py3-none-any.whl"
+                "input_file": "wheels/py3/httpx-0.23.0-py3-none-any.whl"
             },
             {
-                "module": "python_dateutil",
-                "input_file": "wheels/shared/python_dateutil-2.8.2-py2.py3-none-any.whl"
+                "module": "idna",
+                "input_file": "wheels/py3/idna-3.3-py3-none-any.whl"
             },
             {
-                "module": "pytz",
-                "input_file": "wheels/shared/pytz-2024.1-py2.py3-none-any.whl"
+                "module": "markdown_it_py",
+                "input_file": "wheels/py3/markdown_it_py-3.0.0-py3-none-any.whl"
             },
             {
-                "module": "regex",
-                "input_file": "wheels/py39/regex-2023.12.25-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "module": "mdurl",
+                "input_file": "wheels/py3/mdurl-0.1.2-py3-none-any.whl"
+            },
+            {
+                "module": "pygments",
+                "input_file": "wheels/py3/pygments-2.18.0-py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/py3/requests-2.28.0-py3-none-any.whl"
             },
             {
                 "module": "requests_file",
-                "input_file": "wheels/shared/requests_file-2.0.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests_file-1.5.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "rfc3986",
+                "input_file": "wheels/shared/rfc3986-1.5.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "rich",
+                "input_file": "wheels/py3/rich-13.9.4-py3-none-any.whl"
+            },
+            {
+                "module": "shellingham",
+                "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
             },
             {
                 "module": "six",
@@ -2160,19 +2362,23 @@
             },
             {
                 "module": "sniffio",
-                "input_file": "wheels/py3/sniffio-1.3.0-py3-none-any.whl"
+                "input_file": "wheels/py3/sniffio-1.2.0-py3-none-any.whl"
             },
             {
                 "module": "tldextract",
                 "input_file": "wheels/py3/tldextract-3.4.4-py3-none-any.whl"
             },
             {
-                "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.5.0-py3-none-any.whl"
+                "module": "typer",
+                "input_file": "wheels/py3/typer-0.13.0-py3-none-any.whl"
             },
             {
-                "module": "tzlocal",
-                "input_file": "wheels/py3/tzlocal-5.2-py3-none-any.whl"
+                "module": "typing_extensions",
+                "input_file": "wheels/py3/typing_extensions-4.12.2-py3-none-any.whl"
+            },
+            {
+                "module": "urllib3",
+                "input_file": "wheels/shared/urllib3-1.26.9-py2.py3-none-any.whl"
             }
         ]
     },
