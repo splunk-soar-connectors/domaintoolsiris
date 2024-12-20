@@ -8,7 +8,7 @@
     "license": "Copyright (c) 2019-2024 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
     "app_version": "1.5.2",
-    "utctime_updated": "2023-10-25T15:44:30.000000Z",
+    "utctime_updated": "2024-12-20T18:16:45.550619Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
