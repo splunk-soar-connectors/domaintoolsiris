@@ -12,7 +12,7 @@
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
-    "min_phantom_version": "6.1.1",
+    "min_phantom_version": "6.3.0",
     "python_version": "3",
     "logo": "logo_domaintools_iris.svg",
     "logo_dark": "logo_domaintools_iris_dark.svg",
@@ -2105,7 +2105,7 @@
         },
         {
             "action": "nod feed",
-            "description": "Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database.",
+            "description": "Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database",
             "type": "investigate",
             "identifier": "nod_feed",
             "read_only": true,
@@ -2146,7 +2146,7 @@
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
                     "column_name": "Domain Names",
-                    "column_order": 1,
+                    "column_order": 0,
                     "contains": [
                         "domain"
                     ]
@@ -2155,7 +2155,7 @@
                     "data_path": "action_result.data.*.timestamp",
                     "data_type": "string",
                     "column_name": "Time Stamp",
-                    "column_order": 2
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.status",
@@ -2174,11 +2174,11 @@
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.parameter.domain",
+                    "data_path": "action_result.parameter.after",
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.parameter.after",
+                    "data_path": "action_result.parameter.domain",
                     "data_type": "string"
                 },
                 {
@@ -2188,13 +2188,27 @@
                 {
                     "data_path": "action_result.parameter.top",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "versions": "EQ(*)"
         },
         {
             "action": "nad feed",
-            "description": "Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days.",
+            "description": "Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days",
             "type": "investigate",
             "identifier": "nad_feed",
             "read_only": true,
@@ -2235,7 +2249,7 @@
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
                     "column_name": "Domain Names",
-                    "column_order": 1,
+                    "column_order": 0,
                     "contains": [
                         "domain"
                     ]
@@ -2244,7 +2258,7 @@
                     "data_path": "action_result.data.*.timestamp",
                     "data_type": "string",
                     "column_name": "Time Stamp",
-                    "column_order": 2
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.status",
@@ -2263,11 +2277,11 @@
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.parameter.domain",
+                    "data_path": "action_result.parameter.after",
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.parameter.after",
+                    "data_path": "action_result.parameter.domain",
                     "data_type": "string"
                 },
                 {
@@ -2277,6 +2291,20 @@
                 {
                     "data_path": "action_result.parameter.top",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "versions": "EQ(*)"
