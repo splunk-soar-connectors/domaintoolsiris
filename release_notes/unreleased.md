@@ -1,3 +1,1 @@
 **Unreleased**
-* Added `nod_feed` action to support for NOD Feeds.
-* Added `nad_feed` action to support for NAD Feeds.
