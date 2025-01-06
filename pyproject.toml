@@ -1,0 +1,4 @@
+[tool.black]
+line-length = 145
+target-version = ['py39']
+verbose = true
