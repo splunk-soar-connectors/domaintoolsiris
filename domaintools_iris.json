@@ -5,7 +5,7 @@
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019-2024 DomainTools, LLC",
+    "license": "Copyright (c) 2019-2025 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
     "app_version": "1.5.3",
     "utctime_updated": "2024-12-20T18:16:45.550619Z",
