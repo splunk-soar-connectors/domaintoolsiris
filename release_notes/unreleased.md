@@ -1,1 +1,2 @@
 **Unreleased**
+* Updated copyright year
