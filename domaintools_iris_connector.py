@@ -106,19 +106,27 @@ class DomainToolsConnector(BaseConnector):
         if response.get("domains") == []:
             del response["domains"]
 
-    def _parse_feeds_response(self, action_result, response_json):
-        rows = response_json.strip().split("\n")
-        data = []
-        for row in rows:
-            feed_result = json.loads(row)
-            data.append(
-                {
-                    "timestamp": feed_result.get("timestamp"),
-                    "domain": feed_result.get("domain"),
-                }
-            )
+    def _parse_feeds_response(self, service, action_result, feeds_results):
+        try:
+            for response in feeds_results.response():
+                data = []
+                rows = response.strip().split("\n")
 
-        action_result.update_data(data)
+                for row in rows:
+                    if service in ("nod", "nad"):
+                        feed_result = json.loads(row)
+                        data.append(
+                            {
+                                "timestamp": feed_result.get("timestamp"),
+                                "domain": feed_result.get("domain"),
+                            }
+                        )
+
+                action_result.update_data(data)
+        except Exception as error:
+            action_result.add_data({})
+            return action_result.set_status(phantom.APP_ERROR, str(error))
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _parse_response(self, action_result, response_json):
@@ -235,11 +243,11 @@ class DomainToolsConnector(BaseConnector):
                     response = service_api(**query_args, position=position)
 
                 try:
-                    response_json = response.data()
-
                     if self._is_feeds_service(service):
                         # Separate parsing of feeds product
-                        return self._parse_feeds_response(action_result, response_json)
+                        return self._parse_feeds_response(service, action_result, response)
+
+                    response_json = response.data()
 
                 except Exception as e:
                     return action_result.set_status(
@@ -863,8 +871,11 @@ class DomainToolsConnector(BaseConnector):
         if session_id:
             params["sessionID"] = session_id
 
-        self._do_query("nod", action_result, query_args=params)
+        ret_val = self._do_query("nod", action_result, query_args=params)
         self.save_progress("Completed nod_feed action.")
+
+        if not ret_val:
+            return action_result.get_data()
 
         return action_result.get_status()
 
@@ -877,8 +888,11 @@ class DomainToolsConnector(BaseConnector):
         if session_id:
             params["sessionID"] = session_id
 
-        self._do_query("nad", action_result, query_args=params)
-        self.save_progress("Completed nod_feed action.")
+        ret_val = self._do_query("nad", action_result, query_args=params)
+        self.save_progress("Completed nad_feed action.")
+
+        if not ret_val:
+            return action_result.get_data()
 
         return action_result.get_status()
 
