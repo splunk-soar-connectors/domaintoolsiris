@@ -2109,6 +2109,11 @@
                     "data_type": "string",
                     "order": 0
                 },
+                "before": {
+                    "description": "The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive.",
+                    "data_type": "string",
+                    "order": 1
+                },
                 "after": {
                     "description": "Filter for records before the given time value inclusive or time offset relative to now.",
                     "data_type": "string",
@@ -2211,6 +2216,11 @@
                     "description": "Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '*'. Check the documentation for examples",
                     "data_type": "string",
                     "order": 0
+                },
+                "before": {
+                    "description": "The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive.",
+                    "data_type": "string",
+                    "order": 1
                 },
                 "after": {
                     "description": "Filter for records before the given time value inclusive or time offset relative to now.",
