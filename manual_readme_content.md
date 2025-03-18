@@ -1,45 +1,33 @@
-[comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2019-2025 DomainTools, LLC"
-[comment]: # ""
-[comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
-[comment]: # "you may not use this file except in compliance with the License."
-[comment]: # "You may obtain a copy of the License at"
-[comment]: # ""
-[comment]: # "    http://www.apache.org/licenses/LICENSE-2.0"
-[comment]: # ""
-[comment]: # "Unless required by applicable law or agreed to in writing, software distributed under"
-[comment]: # "the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,"
-[comment]: # "either express or implied. See the License for the specific language governing permissions"
-[comment]: # "and limitations under the License."
-[comment]: # ""
-
-[comment]: # "Monitoring/Scheduling Playbook(s) feature"
 ## DomainTools Iris Investigate Monitoring Playbook Feature
+
 This feature allows the user to schedule playbooks to run on an specified interval and run it on a specific container/event ID you provided on each row. Coupled with our reference playbooks, linked below, this can be a powerful tool to notify you of domain infrastructure changes, or when newly created domains match specific infrastructure you're monitoring. See the individual playbooks for more information. This readme covers how to set up Iris Monitoring for those playbooks.
 
 ### Configuration
+
 This feature depends on the 1 asset configuration fields that are **required** when using this feature.
 | **Name** | **Description** | **Default Value** | **Required** |
 | --- | --- | --- | --- |
 | Splunk SOAR HTTPS port (default: 8443) | Splunk SOAR HTTP port if your instance uses one other than the default, 8443 | 8443 | Yes |
 
 To configure this, you need to:
-1. Go to **Apps**
-2. Select **DomainTools Iris Investigate**
-3. Select a configured asset or create one if you don't have any.
-4. Go to **Asset Settings**
-5. Look for `Splunk SOAR HTTPS port (default: 8443)` field. By default it contains `8443` value.
 
+1. Go to **Apps**
+1. Select **DomainTools Iris Investigate**
+1. Select a configured asset or create one if you don't have any.
+1. Go to **Asset Settings**
+1. Look for `Splunk SOAR HTTPS port (default: 8443)` field. By default it contains `8443` value.
 
 ### Prerequisites
+
 This feature uses a custom list named `domaintools_scheduled_playbooks`. <br>
 To generate the custom list, you need to:
+
 1. Go to **Apps**
-2. Select **DomainTools Iris Investigate**
-3, Select a configured asset or create one if you don't have any.
-4. Go to **Actions** dropdown then;
-5. Select '`configure scheduled playbooks`' action, then;
-6. Hit `Test Action`.
+1. Select **DomainTools Iris Investigate**
+   3, Select a configured asset or create one if you don't have any.
+1. Go to **Actions** dropdown then;
+1. Select '`configure scheduled playbooks`' action, then;
+1. Hit `Test Action`.
 
 If you go back to custom list page. you should have the `domaintools_scheduled_playbooks` generated for you.
 
@@ -53,11 +41,12 @@ If you go back to custom list page. you should have the `domaintools_scheduled_p
 In this example, we've specified to run three separate monitoring playbooks on daily schedules. Note that each scheduled lookup will consume Iris Investigate queries, depending how many domains or Iris search hashes are being monitored.<br>
 
 ### How to use monitoring/scheduling feature in DomainTools Iris Investigate App
+
 1. Under **Apps** > **DomainTools Iris Investigate** > **Asset Settings** > **Ingest Settings** > **Label**, specify or select a label to apply to objects from this source. <br>
-**Recommended:** Use a custom label rather using a predefined label like `events`.
-2. Specify a polling interval to check if playbooks need to be run. Note that this is separate from the playbook run interval specified in step 4. We **recommend** running **every minute** for the most accurate scheduling.
-3. Under Custom Lists > `domaintools_scheduled_playbooks` input your desired playbook schedule following the example in the Configuration Section<br>
-**Note:** Make sure the label of the **playbook** and **event_id** you inputted shares the label that you selected in *Step 1*. The `domaintools_scheduled_playbooks` custom list should have been created when you updated our installed the DomainTools app, but if you don't see it, you can generate it by following the **Prerequisites** section of this page.
+   **Recommended:** Use a custom label rather using a predefined label like `events`.
+1. Specify a polling interval to check if playbooks need to be run. Note that this is separate from the playbook run interval specified in step 4. We **recommend** running **every minute** for the most accurate scheduling.
+1. Under Custom Lists > `domaintools_scheduled_playbooks` input your desired playbook schedule following the example in the Configuration Section<br>
+   **Note:** Make sure the label of the **playbook** and **event_id** you inputted shares the label that you selected in *Step 1*. The `domaintools_scheduled_playbooks` custom list should have been created when you updated our installed the DomainTools app, but if you don't see it, you can generate it by following the **Prerequisites** section of this page.
 
 **Note:** For the DomainTools reference playbooks, see
 [this](https://github.com/DomainTools/playbooks/tree/main/Splunk%20SOAR) Github repository.
