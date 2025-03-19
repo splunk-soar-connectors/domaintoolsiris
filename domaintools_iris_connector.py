@@ -35,6 +35,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_monitoring_scheduled_playbooks"
     ACTION_ID_NOD_FEED = "nod_feed"
     ACTION_ID_NAD_FEED = "nad_feed"
+    ACTION_ID_DOMAIN_DISCOVERY_FEED = "domain_discovery_feed"
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -68,7 +69,7 @@ class DomainToolsConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def _is_feeds_service(self, service):
-        return service in ("nod", "nad")
+        return service in ("nod", "nad", "domaindiscovery")
 
     def _handle_py_ver_for_byte(self, input_str):
         """
@@ -113,7 +114,7 @@ class DomainToolsConnector(BaseConnector):
                 rows = response.strip().split("\n")
 
                 for row in rows:
-                    if service in ("nod", "nad"):
+                    if service in ("nod", "nad", "domaindiscovery"):
                         feed_result = json.loads(row)
                         data.append(
                             {
@@ -377,6 +378,8 @@ class DomainToolsConnector(BaseConnector):
             ret_val = self._nod_feed(param)
         elif action_id == self.ACTION_ID_NAD_FEED:
             ret_val = self._nad_feed(param)
+        elif action_id == self.ACTION_ID_DOMAIN_DISCOVERY_FEED:
+            ret_val = self._domain_discovery_feed(param)
 
         return ret_val
 
@@ -890,6 +893,23 @@ class DomainToolsConnector(BaseConnector):
 
         ret_val = self._do_query("nad", action_result, query_args=params)
         self.save_progress("Completed nad_feed action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _domain_discovery_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = {"always_sign_api_key": False}
+        params.update(param)
+        session_id = params.pop("session_id", None)
+        if session_id:
+            params["sessionID"] = session_id
+
+        ret_val = self._do_query("domaindiscovery", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
 
         if not ret_val:
             return action_result.get_data()
