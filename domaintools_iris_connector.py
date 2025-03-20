@@ -33,9 +33,12 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_LOAD_HASH = "load_hash"
     ACTION_ID_ON_POLL = "on_poll"
     ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_monitoring_scheduled_playbooks"
+
+    # RTUF action_ids
     ACTION_ID_NOD_FEED = "nod_feed"
     ACTION_ID_NAD_FEED = "nad_feed"
     ACTION_ID_DOMAIN_DISCOVERY_FEED = "domain_discovery_feed"
+    RTUF_SERVICES_LIST = ["nod", "nad", "domaindiscovery"]
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -47,6 +50,22 @@ class DomainToolsConnector(BaseConnector):
         self._domains = None
         self._proxy_url = None
         self._scheduled_playbooks_list_name = "domaintools_scheduled_playbooks"
+        self.ACTION_ID_TO_ACTION = {
+            phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY: self._test_connectivity,
+            self.ACTION_ID_DOMAIN_REPUTATION: self._domain_reputation,
+            self.ACTION_ID_DOMAIN_ENRICH: self._domain_enrich,
+            self.ACTION_ID_DOMAIN_INVESTIGATE: self._domain_investigate,
+            self.ACTION_ID_PIVOT: self._pivot_action,
+            self.ACTION_ID_REVERSE_IP: self._reverse_lookup_ip,
+            self.ACTION_ID_REVERSE_EMAIL: self._reverse_whois_email,
+            self.ACTION_ID_REVERSE_DOMAIN: self._reverse_lookup_domain,
+            self.ACTION_ID_LOAD_HASH: self._load_hash,
+            self.ACTION_ID_ON_POLL: self._on_poll,
+            self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK: self._configure_monitoring_scheduled_playbooks,
+            self.ACTION_ID_NOD_FEED: self._nod_feed,
+            self.ACTION_ID_NAD_FEED: self._nad_feed,
+            self.ACTION_ID_DOMAIN_DISCOVERY_FEED: self._domain_discovery_feed,
+        }
 
     def initialize(self):
         # get the app configuation - super class pulls domaintools_iris.json
@@ -67,9 +86,6 @@ class DomainToolsConnector(BaseConnector):
             )
 
         return phantom.APP_SUCCESS
-
-    def _is_feeds_service(self, service):
-        return service in ("nod", "nad", "domaindiscovery")
 
     def _handle_py_ver_for_byte(self, input_str):
         """
@@ -114,7 +130,7 @@ class DomainToolsConnector(BaseConnector):
                 rows = response.strip().split("\n")
 
                 for row in rows:
-                    if service in ("nod", "nad", "domaindiscovery"):
+                    if service in self.RTUF_SERVICES_LIST:
                         feed_result = json.loads(row)
                         data.append(
                             {
@@ -244,7 +260,7 @@ class DomainToolsConnector(BaseConnector):
                     response = service_api(**query_args, position=position)
 
                 try:
-                    if self._is_feeds_service(service):
+                    if service in self.RTUF_SERVICES_LIST:
                         # Separate parsing of feeds product
                         return self._parse_feeds_response(service, action_result, response)
 
@@ -324,8 +340,6 @@ class DomainToolsConnector(BaseConnector):
         )
 
     def handle_action(self, param):
-        ret_val = phantom.APP_SUCCESS
-
         # Get the action that we are supposed to execute for this App Run
         action_id = self.get_action_identifier()
 
@@ -352,36 +366,15 @@ class DomainToolsConnector(BaseConnector):
             self._domains = self._get_domains(hostnames)
 
         # Handle the actions
-        if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
-            ret_val = self._test_connectivity()
-        elif action_id == self.ACTION_ID_DOMAIN_ENRICH:
-            ret_val = self._domain_enrich(param)
-        elif action_id == self.ACTION_ID_DOMAIN_INVESTIGATE:
-            ret_val = self._domain_investigate(param)
-        elif action_id == self.ACTION_ID_DOMAIN_REPUTATION:
-            ret_val = self._domain_reputation(param)
-        elif action_id == self.ACTION_ID_PIVOT:
-            ret_val = self._pivot_action(param)
-        elif action_id == self.ACTION_ID_REVERSE_IP:
-            ret_val = self._reverse_lookup_ip(param)
-        elif action_id == self.ACTION_ID_REVERSE_EMAIL:
-            ret_val = self._reverse_whois_email(param)
-        elif action_id == self.ACTION_ID_REVERSE_DOMAIN:
-            ret_val = self._reverse_lookup_domain(param)
-        elif action_id == self.ACTION_ID_LOAD_HASH:
-            ret_val = self._load_hash(param)
-        elif action_id == self.ACTION_ID_ON_POLL:
-            ret_val = self._on_poll(param)
-        elif action_id == self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK:
-            ret_val = self._configure_monitoring_scheduled_playbooks(param)
-        elif action_id == self.ACTION_ID_NOD_FEED:
-            ret_val = self._nod_feed(param)
-        elif action_id == self.ACTION_ID_NAD_FEED:
-            ret_val = self._nad_feed(param)
-        elif action_id == self.ACTION_ID_DOMAIN_DISCOVERY_FEED:
-            ret_val = self._domain_discovery_feed(param)
+        action = self.ACTION_ID_TO_ACTION.get(action_id)
+        if action:
+            if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
+                # Special handling as this requires no param
+                return action()
 
-        return ret_val
+            return action(param)
+
+        return phantom.APP_SUCCESS
 
     def _get_proxy_url(self, config):
         proxy_url = None
