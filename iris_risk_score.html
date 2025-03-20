@@ -1,12 +1,13 @@
 {% extends 'widgets/widget_template.html' %}
 {% load custom_template %}
-
-{% block custom_title_prop %}{% if title_logo %}style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"{% endif %}{% endblock %}
+{% block custom_title_prop %}
+  {% if title_logo %}
+    style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"
+  {% endif %}
+{% endblock %}
 {% block title1 %}{{ title1 }}{% endblock %}
 {% block title2 %}{{ title2 }}{% endblock %}
-{% block custom_tools %}
-{% endblock %}
-
+{% block custom_tools %}{% endblock %}
 <!-- File: iris_risk_score.html
   Copyright (c) 2019-2025 DomainTools, LLC
 
@@ -40,23 +41,36 @@ and limitations under the License.
                   <td colspan="2">
                     {% for list_of_values in value %}
                       <p style="width: 100%;margin: 0;">
-                          <span style="display: inline-block;vertical-align: top;max-width: 150px;text-align: left; width: 70%;">{{ list_of_values.name | title }}:</span>
-                          <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">{{ list_of_values.risk_score }}</span>
+                        <span style="display: inline-block;
+                                     vertical-align: top;
+                                     max-width: 150px;
+                                     text-align: left;
+                                     width: 70%">{{ list_of_values.name | title }}:</span>
+                        <span style="display: inline-block;
+                                     vertical-align: top;
+                                     text-align: left;
+                                     min-width: 50px;
+                                     max-width: 100px">{{ list_of_values.risk_score }}</span>
                       </p>
-                  {% endfor %}
+                    {% endfor %}
                   </td>
                 {% else %}
-                <td colspan="2">
-                  <p>
-                    <span style="display: inline-block;vertical-align: top;max-width: 300px;text-align: left; width: 90%;">
-                    {% if key == 'domain' %}
-                      <a target="_blank" href="https://research.domaintools.com/iris/search/?q={{ value }}"><u>{{ value }}</u></a>
-                    {% else %}
-                      {{ value }}
-                    {% endif %}
-                    </span>
-                  </p>
-                </td>
+                  <td colspan="2">
+                    <p>
+                      <span style="display: inline-block;
+                                   vertical-align: top;
+                                   max-width: 300px;
+                                   text-align: left;
+                                   width: 90%">
+                        {% if key == 'domain' %}
+                          <a target="_blank"
+                             href="https://research.domaintools.com/iris/search/?q={{ value }}"><u>{{ value }}</u></a>
+                        {% else %}
+                          {{ value }}
+                        {% endif %}
+                      </span>
+                    </p>
+                  </td>
                 {% endif %}
               </tr>
             {% endif %}

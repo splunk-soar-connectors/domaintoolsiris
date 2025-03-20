@@ -1,12 +1,13 @@
 {% extends 'widgets/widget_template.html' %}
 {% load custom_template %}
-
-{% block custom_title_prop %}{% if title_logo %}style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"{% endif %}{% endblock %}
+{% block custom_title_prop %}
+  {% if title_logo %}
+    style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"
+  {% endif %}
+{% endblock %}
 {% block title1 %}{{ title1 }}{% endblock %}
 {% block title2 %}{{ title2 }}{% endblock %}
-{% block custom_tools %}
-{% endblock %}
-
+{% block custom_tools %}{% endblock %}
 <!-- File: iris_domain_profile.html
   Copyright (c) 2019-2025 DomainTools, LLC
 
@@ -29,58 +30,91 @@ and limitations under the License.
       {% for sorted_data in result.sorted_data %}
         <table class="phantom-table dataTable no-footer">
           <tr style = "background-color: #007abd;">
-              <th style="width:30%; color: white;">Property</th>
-              <th style="width:70%; color: white;">Value</th>
-            </tr>
-            {% for key, value, count, is_list, queried_domain in sorted_data %}
-              <tr>
-                <td style="vertical-align:top;">{{ key | title }}:</td>
-                {% if is_list %}
-                  <td colspan="2">
-                    {% for list_of_values in value %}
-                      {% if key == "domain risk components" %}
-                        <p style="width: 100%;margin: 0;">
-                            <span style="display: inline-block;vertical-align: top;max-width: 150px;text-align: left; width: 70%;">{{ list_of_values.name | title }}:</span>
-                            <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 100px;">{{ list_of_values.risk_score }}</span>
-                        </p>
-                      {% elif 'value' in list_of_values %}
-                        <p style="width: 100%;margin: 0;">
-                          <span style="display: inline-block;vertical-align: top;max-width: 300px;text-align: left; width: 90%;">{{ list_of_values.value }}</span>
-                        </p>
-                      {% elif key == "registrar status" %}
-                        <p>{{ list_of_values }}</p>
-                      {% else %}
-                        {% for k,v in list_of_values.items %}
-                          {% if 'value' in v %}
-                            <p style="width: 100%;margin: 0;">
-                              <span style="display: inline-block;vertical-align: top;min-width: 80px;text-align: left; width: 20%;"> {{ k }}: </span>
-                              <span style="display: inline-block;vertical-align: top;max-width: 220px;text-align: left; width: 70%;"> {{ v.value }} </span>
-                            </p>
-                          {% else %}
-                            <p style="width: 100%;margin: 0;">
-                              <span style="display: inline-block;vertical-align: top;max-width: 80px;text-align: left; width: 70%;">{{ k | title }}:</span>
-                              <span style="display: inline-block;vertical-align: top; text-align: left; min-width: 50px;max-width: 150px;">{{ v }}</span>
-                            </p>
-                          {% endif %}
-                        {% endfor %}
-                      {% endif %}
+            <th style="width:30%; color: white;">Property</th>
+            <th style="width:70%; color: white;">Value</th>
+          </tr>
+          {% for key, value, count, is_list, queried_domain in sorted_data %}
+            <tr>
+              <td style="vertical-align:top;">{{ key | title }}:</td>
+              {% if is_list %}
+                <td colspan="2">
+                  {% for list_of_values in value %}
+                    {% if key == "domain risk components" %}
+                      <p style="width: 100%;margin: 0;">
+                        <span style="display: inline-block;
+                                     vertical-align: top;
+                                     max-width: 150px;
+                                     text-align: left;
+                                     width: 70%">{{ list_of_values.name | title }}:</span>
+                        <span style="display: inline-block;
+                                     vertical-align: top;
+                                     text-align: left;
+                                     min-width: 50px;
+                                     max-width: 100px">{{ list_of_values.risk_score }}</span>
+                      </p>
+                    {% elif 'value' in list_of_values %}
+                      <p style="width: 100%;margin: 0;">
+                        <span style="display: inline-block;
+                                     vertical-align: top;
+                                     max-width: 300px;
+                                     text-align: left;
+                                     width: 90%">{{ list_of_values.value }}</span>
+                      </p>
+                    {% elif key == "registrar status" %}
+                      <p>{{ list_of_values }}</p>
+                    {% else %}
+                      {% for k,v in list_of_values.items %}
+                        {% if 'value' in v %}
+                          <p style="width: 100%;margin: 0;">
+                            <span style="display: inline-block;
+                                         vertical-align: top;
+                                         min-width: 80px;
+                                         text-align: left;
+                                         width: 20%">{{ k }}:</span>
+                            <span style="display: inline-block;
+                                         vertical-align: top;
+                                         max-width: 220px;
+                                         text-align: left;
+                                         width: 70%">{{ v.value }}</span>
+                          </p>
+                        {% else %}
+                          <p style="width: 100%;margin: 0;">
+                            <span style="display: inline-block;
+                                         vertical-align: top;
+                                         max-width: 80px;
+                                         text-align: left;
+                                         width: 70%">{{ k | title }}:</span>
+                            <span style="display: inline-block;
+                                         vertical-align: top;
+                                         text-align: left;
+                                         min-width: 50px;
+                                         max-width: 150px">{{ v }}</span>
+                          </p>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
                   {% endfor %}
-                  </td>
-                {% else %}
+                </td>
+              {% else %}
                 <td colspan="2">
                   <p>
-                    <span style="display: inline-block;vertical-align: top;max-width: 300px;text-align: left; width: 90%;">
+                    <span style="display: inline-block;
+                                 vertical-align: top;
+                                 max-width: 300px;
+                                 text-align: left;
+                                 width: 90%">
                       {% if key == 'domain' %}
-                        <a target="_blank" href="https://research.domaintools.com/iris/search/?q={{ value }}"><u>{{ value }}</u></a>
+                        <a target="_blank"
+                           href="https://research.domaintools.com/iris/search/?q={{ value }}"><u>{{ value }}</u></a>
                       {% else %}
                         {{ value }}
                       {% endif %}
                     </span>
                   </p>
                 </td>
-                {% endif %}
-              </tr>
-            {% endfor %}
+              {% endif %}
+            </tr>
+          {% endfor %}
         </table>
       {% endfor %}
     {% endif %}

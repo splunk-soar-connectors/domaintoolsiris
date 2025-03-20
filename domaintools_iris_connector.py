@@ -38,7 +38,7 @@ class DomainToolsConnector(BaseConnector):
 
     def __init__(self):
         # Call the BaseConnectors init first
-        super(DomainToolsConnector, self).__init__()
+        super().__init__()
 
         self._ssl = None
         self._username = None
@@ -257,7 +257,7 @@ class DomainToolsConnector(BaseConnector):
         except Exception as e:
             return action_result.set_status(
                 phantom.APP_ERROR,
-                "Unable connect to DomainTools {} API".format(service),
+                f"Unable connect to DomainTools {service} API",
                 e,
             )
 
@@ -320,7 +320,7 @@ class DomainToolsConnector(BaseConnector):
         # Get the action that we are supposed to execute for this App Run
         action_id = self.get_action_identifier()
 
-        self.debug_print("action_id: {}".format(self.get_action_identifier()))
+        self.debug_print(f"action_id: {self.get_action_identifier()}")
 
         # Get the config
         config = self.get_config()
@@ -450,7 +450,7 @@ class DomainToolsConnector(BaseConnector):
         for hostname in hostnames:
             cleaned = self._refang(hostname)
             result = extract(cleaned)
-            domains.append("{0}.{1}".format(result.domain, result.suffix))
+            domains.append(f"{result.domain}.{result.suffix}")
 
         return domains
 
