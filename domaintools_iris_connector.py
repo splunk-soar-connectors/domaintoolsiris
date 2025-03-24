@@ -920,11 +920,7 @@ class DomainToolsConnector(BaseConnector):
     def _domain_discovery_feed(self, param):
         self.save_progress(f"Starting {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
         action_result = self.add_action_result(ActionResult(param))
-        params = {"always_sign_api_key": False}
-        params.update(param)
-        session_id = params.pop("session_id", None)
-        if session_id:
-            params["sessionID"] = session_id
+        params = self._get_rtuf_actions_params(param)
 
         ret_val = self._do_query("domaindiscovery", action_result, query_args=params)
         self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
@@ -933,6 +929,28 @@ class DomainToolsConnector(BaseConnector):
             return action_result.get_data()
 
         return action_result.get_status()
+
+    def _parsed_domain_rdap_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("domainrdap", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _get_rtuf_actions_params(self, param):
+        params = {"always_sign_api_key": False}
+        params.update(param)
+        session_id = params.pop("session_id", None)
+        if session_id:
+            params["sessionID"] = session_id
+
+        return params
 
 
 if __name__ == "__main__":
