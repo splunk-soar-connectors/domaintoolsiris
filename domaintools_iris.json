@@ -2310,105 +2310,125 @@
             "versions": "EQ(*)"
         }
     ],
+    "executable": "spawn3",
     "pip39_dependencies": {
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-3.6.1-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.9.0-py3-none-any.whl"
             },
             {
-                "module": "certifi",
-                "input_file": "wheels/py3/certifi-2022.6.15-py3-none-any.whl"
-            },
-            {
-                "module": "charset_normalizer",
-                "input_file": "wheels/py3/charset_normalizer-2.0.12-py3-none-any.whl"
-            },
-            {
-                "module": "click",
-                "input_file": "wheels/py3/click-8.1.7-py3-none-any.whl"
+                "module": "dateparser",
+                "input_file": "wheels/py3/dateparser-1.2.1-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.1.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-1.0.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "exceptiongroup",
+                "input_file": "wheels/py3/exceptiongroup-1.2.2-py3-none-any.whl"
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.7.1-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.18.0-py3-none-any.whl"
             },
             {
                 "module": "h11",
-                "input_file": "wheels/py3/h11-0.12.0-py3-none-any.whl"
+                "input_file": "wheels/py3/h11-0.14.0-py3-none-any.whl"
             },
             {
                 "module": "httpcore",
-                "input_file": "wheels/py3/httpcore-0.15.0-py3-none-any.whl"
+                "input_file": "wheels/py3/httpcore-1.0.7-py3-none-any.whl"
             },
             {
                 "module": "httpx",
-                "input_file": "wheels/py3/httpx-0.23.0-py3-none-any.whl"
+                "input_file": "wheels/py3/httpx-0.28.1-py3-none-any.whl"
             },
             {
-                "module": "idna",
-                "input_file": "wheels/py3/idna-3.3-py3-none-any.whl"
+                "module": "pytz",
+                "input_file": "wheels/shared/pytz-2025.2-py2.py3-none-any.whl"
             },
             {
-                "module": "markdown_it_py",
-                "input_file": "wheels/py3/markdown_it_py-3.0.0-py3-none-any.whl"
-            },
-            {
-                "module": "mdurl",
-                "input_file": "wheels/py3/mdurl-0.1.2-py3-none-any.whl"
-            },
-            {
-                "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.18.0-py3-none-any.whl"
-            },
-            {
-                "module": "requests",
-                "input_file": "wheels/py3/requests-2.28.0-py3-none-any.whl"
+                "module": "regex",
+                "input_file": "wheels/py39/regex-2024.11.6-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "requests_file",
-                "input_file": "wheels/shared/requests_file-1.5.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "rfc3986",
-                "input_file": "wheels/shared/rfc3986-1.5.0-py2.py3-none-any.whl"
-            },
-            {
-                "module": "rich",
-                "input_file": "wheels/py3/rich-13.9.4-py3-none-any.whl"
-            },
-            {
-                "module": "shellingham",
-                "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
-            },
-            {
-                "module": "six",
-                "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests_file-2.1.0-py2.py3-none-any.whl"
             },
             {
                 "module": "sniffio",
-                "input_file": "wheels/py3/sniffio-1.2.0-py3-none-any.whl"
+                "input_file": "wheels/py3/sniffio-1.3.1-py3-none-any.whl"
             },
             {
                 "module": "tldextract",
                 "input_file": "wheels/py3/tldextract-3.4.4-py3-none-any.whl"
             },
             {
-                "module": "typer",
-                "input_file": "wheels/py3/typer-0.13.0-py3-none-any.whl"
-            },
-            {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.12.2-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.13.2-py3-none-any.whl"
             },
             {
-                "module": "urllib3",
-                "input_file": "wheels/shared/urllib3-1.26.9-py2.py3-none-any.whl"
+                "module": "tzlocal",
+                "input_file": "wheels/py3/tzlocal-5.3.1-py3-none-any.whl"
             }
         ]
     },
-    "executable": "spawn3"
+    "pip313_dependencies": {
+        "wheel": [
+            {
+                "module": "anyio",
+                "input_file": "wheels/py3/anyio-4.9.0-py3-none-any.whl"
+            },
+            {
+                "module": "dateparser",
+                "input_file": "wheels/py3/dateparser-1.2.1-py3-none-any.whl"
+            },
+            {
+                "module": "domaintools_api",
+                "input_file": "wheels/shared/domaintools_api-1.0.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "filelock",
+                "input_file": "wheels/py3/filelock-3.18.0-py3-none-any.whl"
+            },
+            {
+                "module": "h11",
+                "input_file": "wheels/py3/h11-0.14.0-py3-none-any.whl"
+            },
+            {
+                "module": "httpcore",
+                "input_file": "wheels/py3/httpcore-1.0.7-py3-none-any.whl"
+            },
+            {
+                "module": "httpx",
+                "input_file": "wheels/py3/httpx-0.28.1-py3-none-any.whl"
+            },
+            {
+                "module": "pytz",
+                "input_file": "wheels/shared/pytz-2025.2-py2.py3-none-any.whl"
+            },
+            {
+                "module": "regex",
+                "input_file": "wheels/py313/regex-2024.11.6-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "requests_file",
+                "input_file": "wheels/shared/requests_file-2.1.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "sniffio",
+                "input_file": "wheels/py3/sniffio-1.3.1-py3-none-any.whl"
+            },
+            {
+                "module": "tldextract",
+                "input_file": "wheels/py3/tldextract-3.4.4-py3-none-any.whl"
+            },
+            {
+                "module": "tzlocal",
+                "input_file": "wheels/py3/tzlocal-5.3.1-py3-none-any.whl"
+            }
+        ]
+    }
 }
