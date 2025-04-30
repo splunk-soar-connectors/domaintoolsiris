@@ -1,7 +1,7 @@
 # DomainTools Iris Investigate
 
 Publisher: DomainTools \
-Connector Version: 1.5.4 \
+Connector Version: 1.5.5 \
 Product Vendor: DomainTools \
 Product Name: DomainTools Iris Investigate \
 Minimum Product Version: 6.3.0
