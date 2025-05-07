@@ -55,7 +55,7 @@ class DomainToolsConnector(BaseConnector):
         self.app_version_number = app_json_configuration.get("app_version", "")
         self.app_name = app_json_configuration.get("name", "")
         self.app_partner = "splunk_soar"
-        self._rest_url = phrules.build_phantom_rest_url()
+        self._rest_url = f"{self.get_phantom_base_url()}/rest"
 
         # Fetching the Python major version
         try:
