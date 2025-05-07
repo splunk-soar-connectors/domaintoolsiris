@@ -12,7 +12,6 @@ import sys
 from datetime import datetime, timedelta
 
 import phantom.app as phantom
-import phantom.rules as phrules
 import requests
 import tldextract
 
