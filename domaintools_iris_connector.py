@@ -54,7 +54,7 @@ class DomainToolsConnector(BaseConnector):
         self.app_version_number = app_json_configuration.get("app_version", "")
         self.app_name = app_json_configuration.get("name", "")
         self.app_partner = "splunk_soar"
-        self._rest_url = self._build_rest_url()
+        self._rest_url = f"{self.get_phantom_base_url()}/rest"
 
         # Fetching the Python major version
         try:
@@ -637,14 +637,6 @@ class DomainToolsConnector(BaseConnector):
             return action_result.get_data()
 
         return action_result.get_status()
-
-    def _build_rest_url(self):
-        self.debug_print(self.get_config())
-        http_port = self.get_config().get("http_port")
-        if http_port:
-            return f"https://127.0.0.1:{http_port}/rest/"
-
-        return "https://127.0.0.1:8443/rest/"
 
     def _get_scheduled_playbooks(self):
         response = phantom.requests.get(

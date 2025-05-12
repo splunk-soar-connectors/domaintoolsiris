@@ -78,7 +78,6 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **custom_ssl_certificate** | optional | boolean | Use Custom SSL Certificate |
 **ssl** | optional | boolean | Use SSL |
 **custom_ssl_certificate_path** | optional | string | Custom SSL Certificate Path |
-**http_port** | optional | string | Splunk SOAR HTTPS port (default: 8443) |
 
 ### Supported Actions
 
