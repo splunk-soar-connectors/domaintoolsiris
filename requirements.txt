@@ -1,2 +1,2 @@
-domaintools_api==1.0.1
-tldextract==3.4.4
+domaintools_api
+tldextract==5.3.4
