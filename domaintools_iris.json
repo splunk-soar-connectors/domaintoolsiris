@@ -2322,6 +2322,118 @@
             "versions": "EQ(*)"
         },
         {
+            "action": "noh feed",
+            "description": "Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network.",
+            "type": "investigate",
+            "identifier": "noh_feed",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "before": {
+                    "description": "The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive.",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "after": {
+                    "description": "The start of the query window in seconds in ISO8601 format, relative to the current time, inclusive.",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "session_id": {
+                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "data_type": "string",
+                    "order": 3
+                },
+                "top": {
+                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "data_type": "string",
+                    "order": 4
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Newly Observed Hosts List",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "column_name": "Domain Names",
+                    "column_order": 0,
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.timestamp",
+                    "data_type": "string",
+                    "column_name": "Time Stamp",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.after",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.before",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.session_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.top",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
             "action": "domain discovery feed",
             "description": "New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties.",
             "type": "investigate",

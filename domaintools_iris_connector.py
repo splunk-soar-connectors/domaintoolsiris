@@ -37,9 +37,10 @@ class DomainToolsConnector(BaseConnector):
     # RTUF action_ids
     ACTION_ID_NOD_FEED = "nod_feed"
     ACTION_ID_NAD_FEED = "nad_feed"
+    ACTION_ID_NOH_FEED = "noh_feed"
     ACTION_ID_DOMAIN_DISCOVERY_FEED = "domain_discovery_feed"
     ACTION_ID_PARSED_DOMAIN_RDAP_FEED = "parsed_domain_rdap_feed"
-    RTUF_SERVICES_LIST = ["nod", "nad", "domaindiscovery", "domainrdap"]
+    RTUF_SERVICES_LIST = ["nod", "nad", "noh", "domaindiscovery", "domainrdap"]
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -65,6 +66,7 @@ class DomainToolsConnector(BaseConnector):
             self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK: self._configure_monitoring_scheduled_playbooks,
             self.ACTION_ID_NOD_FEED: self._nod_feed,
             self.ACTION_ID_NAD_FEED: self._nad_feed,
+            self.ACTION_ID_NOH_FEED: self._noh_feed,
             self.ACTION_ID_DOMAIN_DISCOVERY_FEED: self._domain_discovery_feed,
             self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED: self._parsed_domain_rdap_feed,
         }
@@ -908,35 +910,13 @@ class DomainToolsConnector(BaseConnector):
 
         return action_result.get_status()
 
-    def _get_rtuf_actions_params(self, param):
-        params = {"always_sign_api_key": False}
-        params.update(param)
-        session_id = params.pop("session_id", None)
-        if session_id:
-            params["sessionID"] = session_id
-
-        return params
-
-    def _domain_discovery_feed(self, param):
-        self.save_progress(f"Starting {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
+    def _noh_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_NOH_FEED} action.")
         action_result = self.add_action_result(ActionResult(param))
         params = self._get_rtuf_actions_params(param)
 
-        ret_val = self._do_query("domaindiscovery", action_result, query_args=params)
-        self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
-
-        if not ret_val:
-            return action_result.get_data()
-
-        return action_result.get_status()
-
-    def _parsed_domain_rdap_feed(self, param):
-        self.save_progress(f"Starting {self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED} action.")
-        action_result = self.add_action_result(ActionResult(param))
-        params = self._get_rtuf_actions_params(param)
-
-        ret_val = self._do_query("domainrdap", action_result, query_args=params)
-        self.save_progress(f"Completed {self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED} action.")
+        ret_val = self._do_query("noh", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_NOH_FEED} action.")
 
         if not ret_val:
             return action_result.get_data()
