@@ -2105,22 +2105,22 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "description": "Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '*'. Check the documentation for examples",
                     "data_type": "string",
                     "order": 0
                 },
                 "after": {
-                    "description": "A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided.",
+                    "description": "Filter for records before the given time value inclusive or time offset relative to now.",
                     "data_type": "string",
                     "order": 1
                 },
                 "session_id": {
-                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "description": "A custom string to distinguish between different sessions",
                     "data_type": "string",
                     "order": 2
                 },
                 "top": {
-                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "description": "Limit the number of results to the top N, where N is the value of this parameter",
                     "data_type": "string",
                     "order": 3
                 }
@@ -2208,22 +2208,22 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "description": "Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '*'. Check the documentation for examples",
                     "data_type": "string",
                     "order": 0
                 },
                 "after": {
-                    "description": "A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided.",
+                    "description": "Filter for records before the given time value inclusive or time offset relative to now.",
                     "data_type": "string",
                     "order": 1
                 },
                 "session_id": {
-                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "description": "A custom string to distinguish between different sessions",
                     "data_type": "string",
                     "order": 2
                 },
                 "top": {
-                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "description": "Limit the number of results to the top N, where N is the value of this parameter",
                     "data_type": "string",
                     "order": 3
                 }
