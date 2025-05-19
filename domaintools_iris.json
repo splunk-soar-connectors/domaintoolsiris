@@ -7,7 +7,7 @@
     "type": "information",
     "license": "Copyright (c) 2019-2025 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
-    "app_version": "1.5.6",
+    "app_version": "1.5.7",
     "utctime_updated": "2025-05-12T20:57:15.613807Z",
     "product_vendor": "DomainTools",
     "product_name": "DomainTools Iris Investigate",
@@ -2105,22 +2105,22 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "description": "Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '*'. Check the documentation for examples",
                     "data_type": "string",
                     "order": 0
                 },
                 "after": {
-                    "description": "A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided.",
+                    "description": "Filter for records before the given time value inclusive or time offset relative to now.",
                     "data_type": "string",
                     "order": 1
                 },
                 "session_id": {
-                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "description": "A custom string to distinguish between different sessions",
                     "data_type": "string",
                     "order": 2
                 },
                 "top": {
-                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "description": "Limit the number of results to the top N, where N is the value of this parameter",
                     "data_type": "string",
                     "order": 3
                 }
@@ -2208,22 +2208,22 @@
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "description": "Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '*'. Check the documentation for examples",
                     "data_type": "string",
                     "order": 0
                 },
                 "after": {
-                    "description": "A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided.",
+                    "description": "Filter for records before the given time value inclusive or time offset relative to now.",
                     "data_type": "string",
                     "order": 1
                 },
                 "session_id": {
-                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "description": "A custom string to distinguish between different sessions",
                     "data_type": "string",
                     "order": 2
                 },
                 "top": {
-                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "description": "Limit the number of results to the top N, where N is the value of this parameter",
                     "data_type": "string",
                     "order": 3
                 }
@@ -2311,12 +2311,12 @@
                 "input_file": "wheels/py3/anyio-4.9.0-py3-none-any.whl"
             },
             {
-                "module": "dateparser",
-                "input_file": "wheels/py3/dateparser-1.2.1-py3-none-any.whl"
+                "module": "click",
+                "input_file": "wheels/py3/click-8.1.8-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-1.0.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.4.1-py2.py3-none-any.whl"
             },
             {
                 "module": "exceptiongroup",
@@ -2339,16 +2339,28 @@
                 "input_file": "wheels/py3/httpx-0.28.1-py3-none-any.whl"
             },
             {
-                "module": "pytz",
-                "input_file": "wheels/shared/pytz-2025.2-py2.py3-none-any.whl"
+                "module": "markdown_it_py",
+                "input_file": "wheels/py3/markdown_it_py-3.0.0-py3-none-any.whl"
             },
             {
-                "module": "regex",
-                "input_file": "wheels/py39/regex-2024.11.6-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+                "module": "mdurl",
+                "input_file": "wheels/py3/mdurl-0.1.2-py3-none-any.whl"
+            },
+            {
+                "module": "pygments",
+                "input_file": "wheels/py3/pygments-2.19.1-py3-none-any.whl"
             },
             {
                 "module": "requests_file",
                 "input_file": "wheels/shared/requests_file-2.1.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "rich",
+                "input_file": "wheels/py3/rich-14.0.0-py3-none-any.whl"
+            },
+            {
+                "module": "shellingham",
+                "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
             },
             {
                 "module": "sniffio",
@@ -2356,15 +2368,15 @@
             },
             {
                 "module": "tldextract",
-                "input_file": "wheels/py3/tldextract-3.4.4-py3-none-any.whl"
+                "input_file": "wheels/py3/tldextract-5.3.0-py3-none-any.whl"
+            },
+            {
+                "module": "typer",
+                "input_file": "wheels/py3/typer-0.15.4-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
                 "input_file": "wheels/py3/typing_extensions-4.13.2-py3-none-any.whl"
-            },
-            {
-                "module": "tzlocal",
-                "input_file": "wheels/py3/tzlocal-5.3.1-py3-none-any.whl"
             }
         ]
     },
@@ -2375,12 +2387,12 @@
                 "input_file": "wheels/py3/anyio-4.9.0-py3-none-any.whl"
             },
             {
-                "module": "dateparser",
-                "input_file": "wheels/py3/dateparser-1.2.1-py3-none-any.whl"
+                "module": "click",
+                "input_file": "wheels/py3/click-8.1.8-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-1.0.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.4.1-py2.py3-none-any.whl"
             },
             {
                 "module": "filelock",
@@ -2399,16 +2411,28 @@
                 "input_file": "wheels/py3/httpx-0.28.1-py3-none-any.whl"
             },
             {
-                "module": "pytz",
-                "input_file": "wheels/shared/pytz-2025.2-py2.py3-none-any.whl"
+                "module": "markdown_it_py",
+                "input_file": "wheels/py3/markdown_it_py-3.0.0-py3-none-any.whl"
             },
             {
-                "module": "regex",
-                "input_file": "wheels/py313/regex-2024.11.6-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+                "module": "mdurl",
+                "input_file": "wheels/py3/mdurl-0.1.2-py3-none-any.whl"
+            },
+            {
+                "module": "pygments",
+                "input_file": "wheels/py3/pygments-2.19.1-py3-none-any.whl"
             },
             {
                 "module": "requests_file",
                 "input_file": "wheels/shared/requests_file-2.1.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "rich",
+                "input_file": "wheels/py3/rich-14.0.0-py3-none-any.whl"
+            },
+            {
+                "module": "shellingham",
+                "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
             },
             {
                 "module": "sniffio",
@@ -2416,11 +2440,15 @@
             },
             {
                 "module": "tldextract",
-                "input_file": "wheels/py3/tldextract-3.4.4-py3-none-any.whl"
+                "input_file": "wheels/py3/tldextract-5.3.0-py3-none-any.whl"
             },
             {
-                "module": "tzlocal",
-                "input_file": "wheels/py3/tzlocal-5.3.1-py3-none-any.whl"
+                "module": "typer",
+                "input_file": "wheels/py3/typer-0.15.4-py3-none-any.whl"
+            },
+            {
+                "module": "typing_extensions",
+                "input_file": "wheels/py3/typing_extensions-4.13.2-py3-none-any.whl"
             }
         ]
     }

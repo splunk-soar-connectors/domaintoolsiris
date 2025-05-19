@@ -1,7 +1,7 @@
 # DomainTools Iris Investigate
 
 Publisher: DomainTools \
-Connector Version: 1.5.6 \
+Connector Version: 1.5.7 \
 Product Vendor: DomainTools \
 Product Name: DomainTools Iris Investigate \
 Minimum Product Version: 6.3.0
@@ -670,10 +670,10 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value. | string | |
-**after** | optional | A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided. | string | |
-**session_id** | optional | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | |
-**top** | optional | The number of results to return in the response payload. Primarily used for testing. | string | |
+**domain** | optional | Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '\*'. Check the documentation for examples | string | |
+**after** | optional | Filter for records before the given time value inclusive or time offset relative to now. | string | |
+**session_id** | optional | A custom string to distinguish between different sessions | string | |
+**top** | optional | Limit the number of results to the top N, where N is the value of this parameter | string | |
 
 #### Action Output
 
@@ -703,10 +703,10 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value. | string | |
-**after** | optional | A negative integer (in seconds) representing the start of the time window, relative to the current time in seconds, for which data will be provided. | string | |
-**session_id** | optional | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | |
-**top** | optional | The number of results to return in the response payload. Primarily used for testing. | string | |
+**domain** | optional | Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '\*'. Check the documentation for examples | string | |
+**after** | optional | Filter for records before the given time value inclusive or time offset relative to now. | string | |
+**session_id** | optional | A custom string to distinguish between different sessions | string | |
+**top** | optional | Limit the number of results to the top N, where N is the value of this parameter | string | |
 
 #### Action Output
 
