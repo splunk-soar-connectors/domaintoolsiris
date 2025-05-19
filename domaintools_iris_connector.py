@@ -866,9 +866,6 @@ class DomainToolsConnector(BaseConnector):
         if not ret_val:
             return action_result.get_data()
 
-        if not ret_val:
-            return action_result.get_data()
-
         return action_result.get_status()
 
     def _nad_feed(self, param):
