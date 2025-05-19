@@ -2117,7 +2117,7 @@
                 "after": {
                     "description": "Filter for records before the given time value inclusive or time offset relative to now.",
                     "data_type": "string",
-                    "order": 3
+                    "order": 2
                 },
                 "session_id": {
                     "description": "A custom string to distinguish between different sessions",
@@ -2229,7 +2229,7 @@
                 "after": {
                     "description": "Filter for records before the given time value inclusive or time offset relative to now.",
                     "data_type": "string",
-                    "order": 3
+                    "order": 2
                 },
                 "session_id": {
                     "description": "A custom string to distinguish between different sessions",
