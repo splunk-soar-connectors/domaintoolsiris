@@ -2098,6 +2098,352 @@
             "versions": "EQ(*)"
         },
         {
+            "action": "parsed domain rdap",
+            "description": "The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data.",
+            "type": "investigate",
+            "identifier": "parsed_domain_rdap",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "The domain name to query (e.g., example.com)",
+                    "data_type": "string",
+                    "order": 0
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Parsed Domain RDAP Result",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "column_name": "Domain",
+                    "column_order": 0,
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.domain_statuses",
+                    "data_type": "string",
+                    "column_name": "Domain Statuses",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.creation_date",
+                    "data_type": "string",
+                    "column_name": "Creation Date",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.last_changed_date",
+                    "data_type": "string",
+                    "column_name": "Last Changed Date",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.expiration_date",
+                    "data_type": "string",
+                    "column_name": "Expiration Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.dnssec.signed",
+                    "data_type": "boolean",
+                    "column_name": "DNSSec Signed",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.nameservers",
+                    "data_type": "string",
+                    "column_name": "Name Servers",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.conformance",
+                    "data_type": "string",
+                    "column_name": "Conformance",
+                    "column_order": 7
+                },
+                {
+                    "data_path": "action_result.data.*.emails",
+                    "data_type": "string",
+                    "column_name": "Emails",
+                    "column_order": 8
+                },
+                {
+                    "data_path": "action_result.data.*.email_domains",
+                    "data_type": "string",
+                    "column_name": "Email Domains",
+                    "column_order": 9
+                },
+                {
+                    "data_path": "action_result.data.*.unclassified_emails",
+                    "data_type": "string",
+                    "column_name": "Unclassified Emails",
+                    "column_order": 10
+                },
+                {
+                    "data_path": "action_result.data.*.registrar_name",
+                    "data_type": "string",
+                    "column_name": "Registrar Name",
+                    "column_order": 11
+                },
+                {
+                    "data_path": "action_result.data.*.registrar_iana_id",
+                    "data_type": "string",
+                    "column_name": "Registrar Iana ID",
+                    "column_order": 12
+                },
+                {
+                    "data_path": "action_result.data.*.registrar_contacts_name",
+                    "data_type": "string",
+                    "column_name": "Registrar Contacts Name",
+                    "column_order": 13
+                },
+                {
+                    "data_path": "action_result.data.*.registrar_contacts_email",
+                    "data_type": "string",
+                    "column_name": "Registrar Contacts Email",
+                    "column_order": 14
+                },
+                {
+                    "data_path": "action_result.data.*.registrar_contacts_phone",
+                    "data_type": "string",
+                    "column_name": "Registrar Contacts Phone",
+                    "column_order": 15
+                },
+                {
+                    "data_path": "action_result.data.*.registrar_contacts_roles",
+                    "data_type": "string",
+                    "column_name": "Registrar Contacts Roles",
+                    "column_order": 16
+                },
+                {
+                    "data_path": "action_result.data.*.contact_name_1",
+                    "data_type": "string",
+                    "column_name": "Contact Name 1",
+                    "column_order": 17
+                },
+                {
+                    "data_path": "action_result.data.*.contact_org_1",
+                    "data_type": "string",
+                    "column_name": "Contact Org 1",
+                    "column_order": 18
+                },
+                {
+                    "data_path": "action_result.data.*.contact_email_1",
+                    "data_type": "string",
+                    "column_name": "Contact Email 1",
+                    "column_order": 19
+                },
+                {
+                    "data_path": "action_result.data.*.contact_phone_1",
+                    "data_type": "string",
+                    "column_name": "Contact Phone 1",
+                    "column_order": 20
+                },
+                {
+                    "data_path": "action_result.data.*.contact_street_1",
+                    "data_type": "string",
+                    "column_name": "Contact Street 1",
+                    "column_order": 21
+                },
+                {
+                    "data_path": "action_result.data.*.contact_city_1",
+                    "data_type": "string",
+                    "column_name": "Contact City 1",
+                    "column_order": 22
+                },
+                {
+                    "data_path": "action_result.data.*.contact_postal_1",
+                    "data_type": "string",
+                    "column_name": "Contact Postal 1",
+                    "column_order": 23
+                },
+                {
+                    "data_path": "action_result.data.*.contact_region_1",
+                    "data_type": "string",
+                    "column_name": "Contact Region 1",
+                    "column_order": 24
+                },
+                {
+                    "data_path": "action_result.data.*.contact_country_1",
+                    "data_type": "string",
+                    "column_name": "Contact Country 1",
+                    "column_order": 25
+                },
+                {
+                    "data_path": "action_result.data.*.contact_roles_1",
+                    "data_type": "string",
+                    "column_name": "Contact Roles 1",
+                    "column_order": 26
+                },
+                {
+                    "data_path": "action_result.data.*.contact_name_2",
+                    "data_type": "string",
+                    "column_name": "Contact Name 2",
+                    "column_order": 27
+                },
+                {
+                    "data_path": "action_result.data.*.contact_org_2",
+                    "data_type": "string",
+                    "column_name": "Contact Org 2",
+                    "column_order": 28
+                },
+                {
+                    "data_path": "action_result.data.*.contact_email_2",
+                    "data_type": "string",
+                    "column_name": "Contact Email 2",
+                    "column_order": 29
+                },
+                {
+                    "data_path": "action_result.data.*.contact_phone_2",
+                    "data_type": "string",
+                    "column_name": "Contact Phone 2",
+                    "column_order": 30
+                },
+                {
+                    "data_path": "action_result.data.*.contact_street_2",
+                    "data_type": "string",
+                    "column_name": "Contact Street 2",
+                    "column_order": 31
+                },
+                {
+                    "data_path": "action_result.data.*.contact_city_2",
+                    "data_type": "string",
+                    "column_name": "Contact City 2",
+                    "column_order": 32
+                },
+                {
+                    "data_path": "action_result.data.*.contact_postal_2",
+                    "data_type": "string",
+                    "column_name": "Contact Postal 2",
+                    "column_order": 33
+                },
+                {
+                    "data_path": "action_result.data.*.contact_region_2",
+                    "data_type": "string",
+                    "column_name": "Contact Region 2",
+                    "column_order": 34
+                },
+                {
+                    "data_path": "action_result.data.*.contact_country_2",
+                    "data_type": "string",
+                    "column_name": "Contact Country 2",
+                    "column_order": 35
+                },
+                {
+                    "data_path": "action_result.data.*.contact_roles_2",
+                    "data_type": "string",
+                    "column_name": "Contact Roles 1",
+                    "column_order": 36
+                },
+                {
+                    "data_path": "action_result.data.*.contact_name_3",
+                    "data_type": "string",
+                    "column_name": "Contact Name 3",
+                    "column_order": 37
+                },
+                {
+                    "data_path": "action_result.data.*.contact_org_3",
+                    "data_type": "string",
+                    "column_name": "Contact Org 3",
+                    "column_order": 38
+                },
+                {
+                    "data_path": "action_result.data.*.contact_email_3",
+                    "data_type": "string",
+                    "column_name": "Contact Email 3",
+                    "column_order": 39
+                },
+                {
+                    "data_path": "action_result.data.*.contact_phone_3",
+                    "data_type": "string",
+                    "column_name": "Contact Phone 3",
+                    "column_order": 40
+                },
+                {
+                    "data_path": "action_result.data.*.contact_street_3",
+                    "data_type": "string",
+                    "column_name": "Contact Street 3",
+                    "column_order": 41
+                },
+                {
+                    "data_path": "action_result.data.*.contact_city_3",
+                    "data_type": "string",
+                    "column_name": "Contact City 3",
+                    "column_order": 42
+                },
+                {
+                    "data_path": "action_result.data.*.contact_postal_3",
+                    "data_type": "string",
+                    "column_name": "Contact Postal 3",
+                    "column_order": 43
+                },
+                {
+                    "data_path": "action_result.data.*.contact_region_3",
+                    "data_type": "string",
+                    "column_name": "Contact Region 3",
+                    "column_order": 44
+                },
+                {
+                    "data_path": "action_result.data.*.contact_country_3",
+                    "data_type": "string",
+                    "column_name": "Contact Country 3",
+                    "column_order": 45
+                },
+                {
+                    "data_path": "action_result.data.*.contact_roles_3",
+                    "data_type": "string",
+                    "column_name": "Contact Roles 3",
+                    "column_order": 46
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
             "action": "nod feed",
             "description": "Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database",
             "type": "investigate",
@@ -2732,7 +3078,7 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.15.4-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.16.0-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
@@ -2748,7 +3094,7 @@
             },
             {
                 "module": "click",
-                "input_file": "wheels/py3/click-8.1.8-py3-none-any.whl"
+                "input_file": "wheels/py3/click-8.2.1-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
@@ -2804,7 +3150,7 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.15.4-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.16.0-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",

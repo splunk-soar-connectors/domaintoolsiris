@@ -33,6 +33,7 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_LOAD_HASH = "load_hash"
     ACTION_ID_ON_POLL = "on_poll"
     ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_monitoring_scheduled_playbooks"
+    ACTION_ID_PARSED_DOMAIN_RDAP = "parsed_domain_rdap"
 
     # RTUF action_ids
     ACTION_ID_NOD_FEED = "nod_feed"
@@ -64,6 +65,7 @@ class DomainToolsConnector(BaseConnector):
             self.ACTION_ID_LOAD_HASH: self._load_hash,
             self.ACTION_ID_ON_POLL: self._on_poll,
             self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK: self._configure_monitoring_scheduled_playbooks,
+            self.ACTION_ID_PARSED_DOMAIN_RDAP: self._parsed_domain_rdap,
             self.ACTION_ID_NOD_FEED: self._nod_feed,
             self.ACTION_ID_NAD_FEED: self._nad_feed,
             self.ACTION_ID_NOH_FEED: self._noh_feed,
@@ -260,8 +262,11 @@ class DomainToolsConnector(BaseConnector):
                     if service in self.RTUF_SERVICES_LIST:
                         # Separate parsing of feeds product
                         return self._parse_feeds_response(service, action_result, response)
-
-                    response_json = response.data()
+                    elif service == self.ACTION_ID_PARSED_DOMAIN_RDAP:
+                        response_json = response.data()
+                        response_json["response"] = response.flattened()
+                    else:
+                        response_json = response.data()
 
                 except Exception as e:
                     return action_result.set_status(
@@ -274,7 +279,7 @@ class DomainToolsConnector(BaseConnector):
                     response = response_json.get("response", {})
                     has_more_results = response.get("has_more_results")
                     position = response.get("position")
-                    results_data += response.get("results")
+                    results_data += response.get("results", [])
 
         except Exception as e:
             return action_result.set_status(
@@ -283,8 +288,9 @@ class DomainToolsConnector(BaseConnector):
                 e,
             )
 
-        self.save_progress(f"Parsing {len(results_data)} results...")
-        response_json["response"]["results"] = self._convert_risk_scores_to_string(results_data)
+        self.save_progress(f"Parsing results from {service}...")
+        if results_data:
+            response_json["response"]["results"] = self._convert_risk_scores_to_string(results_data)
 
         try:
             return self._parse_response(action_result, response_json)
@@ -854,6 +860,19 @@ class DomainToolsConnector(BaseConnector):
             phantom.APP_ERROR,
             f"`{self._scheduled_playbooks_list_name}` custom list {res.get('message')}",
         )
+
+    def _parsed_domain_rdap(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_PARSED_DOMAIN_RDAP} action.")
+        params = {"query": param.get("domain")}
+        action_result = self.add_action_result(ActionResult(params))
+
+        ret_val = self._do_query(self.ACTION_ID_PARSED_DOMAIN_RDAP, action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_PARSED_DOMAIN_RDAP} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
 
     def _nod_feed(self, param):
         self.save_progress(f"Starting {self.ACTION_ID_NOD_FEED} action.")
