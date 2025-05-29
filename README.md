@@ -4,7 +4,7 @@ Publisher: DomainTools \
 Connector Version: 1.6.0 \
 Product Vendor: DomainTools \
 Product Name: DomainTools Iris Investigate \
-Minimum Product Version: 6.3.0
+Minimum Product Version: 6.3.1
 
 This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
 
@@ -93,7 +93,10 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status \
 [on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules \
 [nod feed](#action-nod-feed) - Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database \
-[nad feed](#action-nad-feed) - Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days
+[nad feed](#action-nad-feed) - Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days \
+[noh feed](#action-noh-feed) - Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network. \
+[domain discovery feed](#action-domain-discovery-feed) - New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties. \
+[domain rdap feed](#action-domain-rdap-feed) - List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar.
 
 ## action: 'test connectivity'
 
@@ -671,6 +674,7 @@ Read only: **True**
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **domain** | optional | Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '\*'. Check the documentation for examples | string | |
+**before** | optional | The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive. | string | |
 **after** | optional | Filter for records before the given time value inclusive or time offset relative to now. | string | |
 **session_id** | optional | A custom string to distinguish between different sessions | string | |
 **top** | optional | Limit the number of results to the top N, where N is the value of this parameter | string | |
@@ -686,6 +690,7 @@ action_result.status | string | | success failed |
 action_result.summary | string | | |
 action_result.message | string | | |
 action_result.parameter.after | string | | |
+action_result.parameter.before | string | | |
 action_result.parameter.domain | string | | |
 action_result.parameter.session_id | string | | |
 action_result.parameter.top | string | | |
@@ -704,6 +709,7 @@ Read only: **True**
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **domain** | optional | Filter for an exact domain or a substring contained within a domain by prefixing or suffixing your substring with '\*'. Check the documentation for examples | string | |
+**before** | optional | The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive. | string | |
 **after** | optional | Filter for records before the given time value inclusive or time offset relative to now. | string | |
 **session_id** | optional | A custom string to distinguish between different sessions | string | |
 **top** | optional | Limit the number of results to the top N, where N is the value of this parameter | string | |
@@ -719,6 +725,113 @@ action_result.status | string | | success failed |
 action_result.summary | string | | |
 action_result.message | string | | |
 action_result.parameter.after | string | | |
+action_result.parameter.before | string | | |
+action_result.parameter.domain | string | | |
+action_result.parameter.session_id | string | | |
+action_result.parameter.top | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'noh feed'
+
+Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network.
+
+Type: **investigate** \
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value. | string | |
+**before** | optional | The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive. | string | |
+**after** | optional | The start of the query window in seconds in ISO8601 format, relative to the current time, inclusive. | string | |
+**session_id** | optional | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | |
+**top** | optional | The number of results to return in the response payload. Primarily used for testing. | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data | string | | |
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.timestamp | string | | |
+action_result.status | string | | success failed |
+action_result.summary | string | | |
+action_result.message | string | | |
+action_result.parameter.after | string | | |
+action_result.parameter.before | string | | |
+action_result.parameter.domain | string | | |
+action_result.parameter.session_id | string | | |
+action_result.parameter.top | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'domain discovery feed'
+
+New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties.
+
+Type: **investigate** \
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value. | string | |
+**before** | optional | The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive. | string | |
+**after** | optional | The start of the query window in seconds in ISO8601 format, relative to the current time, inclusive. | string | |
+**session_id** | optional | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | |
+**top** | optional | The number of results to return in the response payload. Primarily used for testing. | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data | string | | |
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.timestamp | string | | |
+action_result.status | string | | success failed |
+action_result.summary | string | | |
+action_result.message | string | | |
+action_result.parameter.after | string | | |
+action_result.parameter.before | string | | |
+action_result.parameter.domain | string | | |
+action_result.parameter.session_id | string | | |
+action_result.parameter.top | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'domain rdap feed'
+
+List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar.
+
+Type: **investigate** \
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value. | string | |
+**before** | optional | The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive. | string | |
+**after** | optional | The start of the query window in seconds in ISO8601 format, relative to the current time, inclusive. | string | |
+**session_id** | optional | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | |
+**top** | optional | The number of results to return in the response payload. Primarily used for testing. | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data | string | | |
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.timestamp | string | | |
+action_result.data.\*.parsed_record.parsed_fields | string | | |
+action_result.status | string | | success failed |
+action_result.summary | string | | |
+action_result.message | string | | |
+action_result.parameter.after | string | | |
+action_result.parameter.before | string | | |
 action_result.parameter.domain | string | | |
 action_result.parameter.session_id | string | | |
 action_result.parameter.top | string | | |
