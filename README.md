@@ -92,6 +92,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned) \
 [configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status \
 [on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules \
+[parsed domain rdap](#action-parsed-domain-rdap) - The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data. \
 [nod feed](#action-nod-feed) - Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database \
 [nad feed](#action-nad-feed) - Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days \
 [noh feed](#action-noh-feed) - Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network. \
@@ -661,6 +662,78 @@ No parameters are required for this action
 #### Action Output
 
 No Output
+
+## action: 'parsed domain rdap'
+
+The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data.
+
+Type: **investigate** \
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**domain** | optional | The domain name to query (e.g., example.com) | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data | string | | |
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.domain_statuses | string | | |
+action_result.data.\*.creation_date | string | | |
+action_result.data.\*.last_changed_date | string | | |
+action_result.data.\*.expiration_date | string | | |
+action_result.data.\*.dnssec.signed | boolean | | |
+action_result.data.\*.nameservers | string | | |
+action_result.data.\*.conformance | string | | |
+action_result.data.\*.emails | string | | |
+action_result.data.\*.email_domains | string | | |
+action_result.data.\*.unclassified_emails | string | | |
+action_result.data.\*.registrar_name | string | | |
+action_result.data.\*.registrar_iana_id | string | | |
+action_result.data.\*.registrar_contacts_name | string | | |
+action_result.data.\*.registrar_contacts_email | string | | |
+action_result.data.\*.registrar_contacts_phone | string | | |
+action_result.data.\*.registrar_contacts_roles | string | | |
+action_result.data.\*.contact_name_1 | string | | |
+action_result.data.\*.contact_org_1 | string | | |
+action_result.data.\*.contact_email_1 | string | | |
+action_result.data.\*.contact_phone_1 | string | | |
+action_result.data.\*.contact_street_1 | string | | |
+action_result.data.\*.contact_city_1 | string | | |
+action_result.data.\*.contact_postal_1 | string | | |
+action_result.data.\*.contact_region_1 | string | | |
+action_result.data.\*.contact_country_1 | string | | |
+action_result.data.\*.contact_roles_1 | string | | |
+action_result.data.\*.contact_name_2 | string | | |
+action_result.data.\*.contact_org_2 | string | | |
+action_result.data.\*.contact_email_2 | string | | |
+action_result.data.\*.contact_phone_2 | string | | |
+action_result.data.\*.contact_street_2 | string | | |
+action_result.data.\*.contact_city_2 | string | | |
+action_result.data.\*.contact_postal_2 | string | | |
+action_result.data.\*.contact_region_2 | string | | |
+action_result.data.\*.contact_country_2 | string | | |
+action_result.data.\*.contact_roles_2 | string | | |
+action_result.data.\*.contact_name_3 | string | | |
+action_result.data.\*.contact_org_3 | string | | |
+action_result.data.\*.contact_email_3 | string | | |
+action_result.data.\*.contact_phone_3 | string | | |
+action_result.data.\*.contact_street_3 | string | | |
+action_result.data.\*.contact_city_3 | string | | |
+action_result.data.\*.contact_postal_3 | string | | |
+action_result.data.\*.contact_region_3 | string | | |
+action_result.data.\*.contact_country_3 | string | | |
+action_result.data.\*.contact_roles_3 | string | | |
+action_result.status | string | | success failed |
+action_result.summary | string | | |
+action_result.message | string | | |
+action_result.parameter.domain | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'nod feed'
 
