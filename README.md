@@ -92,12 +92,12 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned) \
 [configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status \
 [on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules \
-[parsed domain rdap](#action-parsed-domain-rdap) - The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data. \
+[parsed domain rdap](#action-parsed-domain-rdap) - The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data \
 [nod feed](#action-nod-feed) - Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database \
 [nad feed](#action-nad-feed) - Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days \
-[noh feed](#action-noh-feed) - Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network. \
-[domain discovery feed](#action-domain-discovery-feed) - New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties. \
-[domain rdap feed](#action-domain-rdap-feed) - List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar.
+[noh feed](#action-noh-feed) - Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network \
+[domain discovery feed](#action-domain-discovery-feed) - New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties \
+[domain rdap feed](#action-domain-rdap-feed) - List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar
 
 ## action: 'test connectivity'
 
@@ -665,7 +665,7 @@ No Output
 
 ## action: 'parsed domain rdap'
 
-The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data.
+The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data
 
 Type: **investigate** \
 Read only: **True**
@@ -807,7 +807,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'noh feed'
 
-Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network.
+Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network
 
 Type: **investigate** \
 Read only: **True**
@@ -816,7 +816,7 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value. | string | |
+**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value | string | |
 **before** | optional | The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive. | string | |
 **after** | optional | The start of the query window in seconds in ISO8601 format, relative to the current time, inclusive. | string | |
 **session_id** | optional | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | |
@@ -842,7 +842,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'domain discovery feed'
 
-New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties.
+New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties
 
 Type: **investigate** \
 Read only: **True**
@@ -877,7 +877,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'domain rdap feed'
 
-List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar.
+List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar
 
 Type: **investigate** \
 Read only: **True**

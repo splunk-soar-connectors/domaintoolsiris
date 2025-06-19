@@ -2099,7 +2099,7 @@
         },
         {
             "action": "parsed domain rdap",
-            "description": "The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data.",
+            "description": "The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data",
             "type": "investigate",
             "identifier": "parsed_domain_rdap",
             "read_only": true,
@@ -2669,13 +2669,13 @@
         },
         {
             "action": "noh feed",
-            "description": "Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network.",
+            "description": "Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network",
             "type": "investigate",
             "identifier": "noh_feed",
             "read_only": true,
             "parameters": {
                 "domain": {
-                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value",
                     "data_type": "string",
                     "order": 0
                 },
@@ -2781,7 +2781,7 @@
         },
         {
             "action": "domain discovery feed",
-            "description": "New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties.",
+            "description": "New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties",
             "type": "investigate",
             "identifier": "domain_discovery_feed",
             "read_only": true,
@@ -2893,7 +2893,7 @@
         },
         {
             "action": "domain rdap feed",
-            "description": "List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar.",
+            "description": "List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar",
             "type": "investigate",
             "identifier": "parsed_domain_rdap_feed",
             "read_only": true,
@@ -3022,7 +3022,7 @@
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.4.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.5.0-py2.py3-none-any.whl"
             },
             {
                 "module": "exceptiongroup",
@@ -3054,7 +3054,7 @@
             },
             {
                 "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.19.1-py3-none-any.whl"
+                "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
             },
             {
                 "module": "requests_file",
@@ -3082,7 +3082,7 @@
             },
             {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.13.2-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.14.1-py3-none-any.whl"
             }
         ]
     },
@@ -3098,7 +3098,7 @@
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.4.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.5.0-py2.py3-none-any.whl"
             },
             {
                 "module": "filelock",
@@ -3126,7 +3126,7 @@
             },
             {
                 "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.19.1-py3-none-any.whl"
+                "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
             },
             {
                 "module": "requests_file",
@@ -3154,7 +3154,7 @@
             },
             {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.13.2-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.14.1-py3-none-any.whl"
             }
         ]
     }
