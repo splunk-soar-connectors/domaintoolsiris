@@ -33,8 +33,15 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_LOAD_HASH = "load_hash"
     ACTION_ID_ON_POLL = "on_poll"
     ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK = "configure_monitoring_scheduled_playbooks"
+    ACTION_ID_PARSED_DOMAIN_RDAP = "parsed_domain_rdap"
+
+    # RTUF action_ids
     ACTION_ID_NOD_FEED = "nod_feed"
     ACTION_ID_NAD_FEED = "nad_feed"
+    ACTION_ID_NOH_FEED = "noh_feed"
+    ACTION_ID_DOMAIN_DISCOVERY_FEED = "domain_discovery_feed"
+    ACTION_ID_PARSED_DOMAIN_RDAP_FEED = "parsed_domain_rdap_feed"
+    RTUF_SERVICES_LIST = ["nod", "nad", "noh", "domaindiscovery", "domainrdap"]
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -46,6 +53,25 @@ class DomainToolsConnector(BaseConnector):
         self._domains = None
         self._proxy_url = None
         self._scheduled_playbooks_list_name = "domaintools_scheduled_playbooks"
+        self.ACTION_ID_TO_ACTION = {
+            phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY: self._test_connectivity,
+            self.ACTION_ID_DOMAIN_REPUTATION: self._domain_reputation,
+            self.ACTION_ID_DOMAIN_ENRICH: self._domain_enrich,
+            self.ACTION_ID_DOMAIN_INVESTIGATE: self._domain_investigate,
+            self.ACTION_ID_PIVOT: self._pivot_action,
+            self.ACTION_ID_REVERSE_IP: self._reverse_lookup_ip,
+            self.ACTION_ID_REVERSE_EMAIL: self._reverse_whois_email,
+            self.ACTION_ID_REVERSE_DOMAIN: self._reverse_lookup_domain,
+            self.ACTION_ID_LOAD_HASH: self._load_hash,
+            self.ACTION_ID_ON_POLL: self._on_poll,
+            self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK: self._configure_monitoring_scheduled_playbooks,
+            self.ACTION_ID_PARSED_DOMAIN_RDAP: self._parsed_domain_rdap,
+            self.ACTION_ID_NOD_FEED: self._nod_feed,
+            self.ACTION_ID_NAD_FEED: self._nad_feed,
+            self.ACTION_ID_NOH_FEED: self._noh_feed,
+            self.ACTION_ID_DOMAIN_DISCOVERY_FEED: self._domain_discovery_feed,
+            self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED: self._parsed_domain_rdap_feed,
+        }
 
     def initialize(self):
         # get the app configuation - super class pulls domaintools_iris.json
@@ -66,9 +92,6 @@ class DomainToolsConnector(BaseConnector):
             )
 
         return phantom.APP_SUCCESS
-
-    def _is_feeds_service(self, service):
-        return service in ("nod", "nad")
 
     def _handle_py_ver_for_byte(self, input_str):
         """
@@ -106,19 +129,20 @@ class DomainToolsConnector(BaseConnector):
         if response.get("domains") == []:
             del response["domains"]
 
-    def _parse_feeds_response(self, action_result, response_json):
-        rows = response_json.strip().split("\n")
-        data = []
-        for row in rows:
-            feed_result = json.loads(row)
-            data.append(
-                {
-                    "timestamp": feed_result.get("timestamp"),
-                    "domain": feed_result.get("domain"),
-                }
-            )
+    def _parse_feeds_response(self, service, action_result, feeds_results):
+        try:
+            for response in feeds_results.response():
+                data = []
+                rows = response.strip().split("\n")
 
-        action_result.update_data(data)
+                for row in rows:
+                    data.append(json.loads(row))
+
+                action_result.update_data(data)
+        except Exception as error:
+            action_result.add_data({})
+            return action_result.set_status(phantom.APP_ERROR, str(error))
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _parse_response(self, action_result, response_json):
@@ -235,11 +259,14 @@ class DomainToolsConnector(BaseConnector):
                     response = service_api(**query_args, position=position)
 
                 try:
-                    response_json = response.data()
-
-                    if self._is_feeds_service(service):
+                    if service in self.RTUF_SERVICES_LIST:
                         # Separate parsing of feeds product
-                        return self._parse_feeds_response(action_result, response_json)
+                        return self._parse_feeds_response(service, action_result, response)
+                    elif service == self.ACTION_ID_PARSED_DOMAIN_RDAP:
+                        response_json = response.data()
+                        response_json["response"] = response.flattened()
+                    else:
+                        response_json = response.data()
 
                 except Exception as e:
                     return action_result.set_status(
@@ -252,7 +279,7 @@ class DomainToolsConnector(BaseConnector):
                     response = response_json.get("response", {})
                     has_more_results = response.get("has_more_results")
                     position = response.get("position")
-                    results_data += response.get("results")
+                    results_data += response.get("results", [])
 
         except Exception as e:
             return action_result.set_status(
@@ -261,8 +288,9 @@ class DomainToolsConnector(BaseConnector):
                 e,
             )
 
-        self.save_progress(f"Parsing {len(results_data)} results...")
-        response_json["response"]["results"] = self._convert_risk_scores_to_string(results_data)
+        self.save_progress(f"Parsing results from {service}...")
+        if results_data:
+            response_json["response"]["results"] = self._convert_risk_scores_to_string(results_data)
 
         try:
             return self._parse_response(action_result, response_json)
@@ -315,8 +343,6 @@ class DomainToolsConnector(BaseConnector):
         )
 
     def handle_action(self, param):
-        ret_val = phantom.APP_SUCCESS
-
         # Get the action that we are supposed to execute for this App Run
         action_id = self.get_action_identifier()
 
@@ -343,34 +369,15 @@ class DomainToolsConnector(BaseConnector):
             self._domains = self._get_domains(hostnames)
 
         # Handle the actions
-        if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
-            ret_val = self._test_connectivity()
-        elif action_id == self.ACTION_ID_DOMAIN_ENRICH:
-            ret_val = self._domain_enrich(param)
-        elif action_id == self.ACTION_ID_DOMAIN_INVESTIGATE:
-            ret_val = self._domain_investigate(param)
-        elif action_id == self.ACTION_ID_DOMAIN_REPUTATION:
-            ret_val = self._domain_reputation(param)
-        elif action_id == self.ACTION_ID_PIVOT:
-            ret_val = self._pivot_action(param)
-        elif action_id == self.ACTION_ID_REVERSE_IP:
-            ret_val = self._reverse_lookup_ip(param)
-        elif action_id == self.ACTION_ID_REVERSE_EMAIL:
-            ret_val = self._reverse_whois_email(param)
-        elif action_id == self.ACTION_ID_REVERSE_DOMAIN:
-            ret_val = self._reverse_lookup_domain(param)
-        elif action_id == self.ACTION_ID_LOAD_HASH:
-            ret_val = self._load_hash(param)
-        elif action_id == self.ACTION_ID_ON_POLL:
-            ret_val = self._on_poll(param)
-        elif action_id == self.ACTION_ID_CONFIGURE_SCHEDULED_PLAYBOOK:
-            ret_val = self._configure_monitoring_scheduled_playbooks(param)
-        elif action_id == self.ACTION_ID_NOD_FEED:
-            ret_val = self._nod_feed(param)
-        elif action_id == self.ACTION_ID_NAD_FEED:
-            ret_val = self._nad_feed(param)
+        action = self.ACTION_ID_TO_ACTION.get(action_id)
+        if action:
+            if action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
+                # Special handling as this requires no param
+                return action()
 
-        return ret_val
+            return action(param)
+
+        return phantom.APP_SUCCESS
 
     def _get_proxy_url(self, config):
         proxy_url = None
@@ -854,33 +861,92 @@ class DomainToolsConnector(BaseConnector):
             f"`{self._scheduled_playbooks_list_name}` custom list {res.get('message')}",
         )
 
-    def _nod_feed(self, param):
-        self.save_progress("Starting nod_feed action.")
-        action_result = self.add_action_result(ActionResult(param))
-        params = {"always_sign_api_key": False}
-        params.update(param)
-        session_id = params.pop("session_id", None)
-        if session_id:
-            params["sessionID"] = session_id
+    def _parsed_domain_rdap(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_PARSED_DOMAIN_RDAP} action.")
+        params = {"query": param.get("domain")}
+        action_result = self.add_action_result(ActionResult(params))
 
-        self._do_query("nod", action_result, query_args=params)
-        self.save_progress("Completed nod_feed action.")
+        ret_val = self._do_query(self.ACTION_ID_PARSED_DOMAIN_RDAP, action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_PARSED_DOMAIN_RDAP} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _nod_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_NOD_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("nod", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_NOD_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
 
         return action_result.get_status()
 
     def _nad_feed(self, param):
-        self.save_progress("Starting nad_feed action.")
+        self.save_progress(f"Starting {self.ACTION_ID_NAD_FEED} action.")
         action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("nad", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_NAD_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _domain_discovery_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("domaindiscovery", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_DISCOVERY_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _parsed_domain_rdap_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("domainrdap", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _noh_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_NOH_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("noh", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_NOH_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _get_rtuf_actions_params(self, param):
         params = {"always_sign_api_key": False}
         params.update(param)
         session_id = params.pop("session_id", None)
         if session_id:
             params["sessionID"] = session_id
 
-        self._do_query("nad", action_result, query_args=params)
-        self.save_progress("Completed nod_feed action.")
-
-        return action_result.get_status()
+        return params
 
 
 if __name__ == "__main__":
