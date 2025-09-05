@@ -98,7 +98,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [noh feed](#action-noh-feed) - Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network \
 [domain discovery feed](#action-domain-discovery-feed) - New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties \
 [domain rdap feed](#action-domain-rdap-feed) - List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar \
-[domain risk feed](#action-domain-risk-feed) - Real-time updates to Domain Risk Scores for apex domains, regardless of observed traffic
+[domain risk feed](#action-domain-risk-feed) - Real-time updates to Domain Risk Scores for apex domains, regardless of observed traffic \
+[domain hotlist feed](#action-domain-hotlist-feed) - Domains with high Domain Risk Scores that have also been active within 24 hours
 
 ## action: 'test connectivity'
 
@@ -915,6 +916,46 @@ summary.total_objects_successful | numeric | | 1 |
 ## action: 'domain risk feed'
 
 Real-time updates to Domain Risk Scores for apex domains, regardless of observed traffic
+
+Type: **investigate** \
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**domain** | optional | Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value. | string | |
+**before** | optional | The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive. | string | |
+**after** | optional | The start of the query window in seconds in ISO8601 format, relative to the current time, inclusive. | string | |
+**session_id** | optional | Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull. | string | |
+**top** | optional | The number of results to return in the response payload. Primarily used for testing. | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data | string | | |
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.timestamp | string | | |
+action_result.data.\*.phishing_risk | string | | |
+action_result.data.\*.malware_risk | string | | |
+action_result.data.\*.spam_risk | string | | |
+action_result.data.\*.proximity_risk | string | | |
+action_result.data.\*.overall_risk | string | | |
+action_result.status | string | | success failed |
+action_result.summary | string | | |
+action_result.message | string | | |
+action_result.parameter.after | string | | |
+action_result.parameter.before | string | | |
+action_result.parameter.domain | string | | |
+action_result.parameter.session_id | string | | |
+action_result.parameter.top | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'domain hotlist feed'
+
+Domains with high Domain Risk Scores that have also been active within 24 hours
 
 Type: **investigate** \
 Read only: **True**

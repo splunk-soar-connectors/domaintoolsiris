@@ -42,7 +42,16 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_DOMAIN_DISCOVERY_FEED = "domain_discovery_feed"
     ACTION_ID_PARSED_DOMAIN_RDAP_FEED = "parsed_domain_rdap_feed"
     ACTION_ID_DOMAIN_RISK_FEED = "domain_risk_feed"
-    RTUF_SERVICES_LIST = ["nod", "nad", "noh", "domaindiscovery", "domainrdap", "realtime_domain_risk"]
+    ACTION_ID_DOMAIN_HOTLIST_FEED = "domain_hotlist_feed"
+    RTUF_SERVICES_LIST = [
+        "nod",
+        "nad",
+        "noh",
+        "domaindiscovery",
+        "domainrdap",
+        "realtime_domain_risk",
+        "domainhotlist",
+    ]
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -73,6 +82,7 @@ class DomainToolsConnector(BaseConnector):
             self.ACTION_ID_DOMAIN_DISCOVERY_FEED: self._domain_discovery_feed,
             self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED: self._parsed_domain_rdap_feed,
             self.ACTION_ID_DOMAIN_RISK_FEED: self._domain_risk_feed,
+            self.ACTION_ID_DOMAIN_HOTLIST_FEED: self._domain_hotlist_feed,
         }
 
     def initialize(self):
@@ -948,6 +958,19 @@ class DomainToolsConnector(BaseConnector):
 
         ret_val = self._do_query("realtime_domain_risk", action_result, query_args=params)
         self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_RISK_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _domain_hotlist_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_DOMAIN_HOTLIST_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("domainhotlist", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_HOTLIST_FEED} action.")
 
         if not ret_val:
             return action_result.get_data()
