@@ -3008,13 +3008,155 @@
                 }
             ],
             "versions": "EQ(*)"
+        },
+        {
+            "action": "domain risk feed",
+            "description": "Real-time updates to Domain Risk Scores for apex domains, regardless of observed traffic",
+            "type": "investigate",
+            "identifier": "domain_risk_feed",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Used to filter feed results. The filter can be an exact match or a partial match when the * character is included at the beginning and/or end of the value.",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "before": {
+                    "description": "The end of the query window in seconds or in ISO8601 format, relative to the current time, inclusive.",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "after": {
+                    "description": "The start of the query window in seconds in ISO8601 format, relative to the current time, inclusive.",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "session_id": {
+                    "description": "Serves as a unique identifier for the session. This parameter ensures that data retrieval begins from the latest timestamp recorded in the previous data pull.",
+                    "data_type": "string",
+                    "order": 3
+                },
+                "top": {
+                    "description": "The number of results to return in the response payload. Primarily used for testing.",
+                    "data_type": "string",
+                    "order": 4
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Domain Risk Feed List",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "column_name": "Domain Names",
+                    "column_order": 0,
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.timestamp",
+                    "data_type": "string",
+                    "column_name": "Time Stamp",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.phishing_risk",
+                    "data_type": "string",
+                    "column_name": "Phishing Risk",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.malware_risk",
+                    "data_type": "string",
+                    "column_name": "Malware Risk",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.spam_risk",
+                    "data_type": "string",
+                    "column_name": "Spam Risk",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.proximity_risk",
+                    "data_type": "string",
+                    "column_name": "Proximity Risk",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.overall_risk",
+                    "data_type": "string",
+                    "column_name": "Overall Risk",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.after",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.before",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.session_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.top",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
         }
     ],
     "pip39_dependencies": {
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.9.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.10.0-py3-none-any.whl"
             },
             {
                 "module": "click",
@@ -3030,7 +3172,7 @@
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.18.0-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.19.1-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -3062,7 +3204,7 @@
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.0.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-14.1.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
@@ -3078,11 +3220,11 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.16.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.17.3-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.14.1-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.15.0-py3-none-any.whl"
             }
         ]
     },
@@ -3090,7 +3232,7 @@
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.9.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.10.0-py3-none-any.whl"
             },
             {
                 "module": "click",
@@ -3102,7 +3244,7 @@
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.18.0-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.19.1-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -3118,7 +3260,7 @@
             },
             {
                 "module": "markdown_it_py",
-                "input_file": "wheels/py3/markdown_it_py-3.0.0-py3-none-any.whl"
+                "input_file": "wheels/py3/markdown_it_py-4.0.0-py3-none-any.whl"
             },
             {
                 "module": "mdurl",
@@ -3134,7 +3276,7 @@
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.0.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-14.1.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
@@ -3150,11 +3292,11 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.16.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.17.3-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.14.1-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.15.0-py3-none-any.whl"
             }
         ]
     }
