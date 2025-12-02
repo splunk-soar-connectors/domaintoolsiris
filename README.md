@@ -982,6 +982,7 @@ action_result.data.\*.malware_risk | string | | |
 action_result.data.\*.spam_risk | string | | |
 action_result.data.\*.proximity_risk | string | | |
 action_result.data.\*.overall_risk | string | | |
+action_result.data.\*.expires | string | | |
 action_result.status | string | | success failed |
 action_result.summary | string | | |
 action_result.message | string | | |
