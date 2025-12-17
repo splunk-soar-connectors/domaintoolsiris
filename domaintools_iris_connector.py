@@ -246,9 +246,7 @@ class DomainToolsConnector(BaseConnector):
                 always_sign_api_key=always_sign_api_key,
             )
         except Exception as e:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Unable connect to DomainTools API", e
-            )
+            return action_result.set_status(phantom.APP_ERROR, "Unable connect to DomainTools API", e)
 
         try:
             domains = query_args.get("domains")
@@ -319,22 +317,14 @@ class DomainToolsConnector(BaseConnector):
         final_result = []
         for result in results_data:
             result.get("domain_risk").update(
-                {
-                    "risk_score_string": self._convert_null_value_to_empty_string(
-                        result.get("domain_risk", {}).get("risk_score")
-                    )
-                }
+                {"risk_score_string": self._convert_null_value_to_empty_string(result.get("domain_risk", {}).get("risk_score"))}
             )
             final_result.append(result)
 
         # Make the final result sorted in descending order by default
         return sorted(
             final_result,
-            key=lambda d: (
-                0
-                if d.get("domain_risk", {}).get("risk_score_string") == ""
-                else d.get("domain_risk", {}).get("risk_score")
-            ),
+            key=lambda d: (0 if d.get("domain_risk", {}).get("risk_score_string") == "" else d.get("domain_risk", {}).get("risk_score")),
             reverse=True,
         )
 
@@ -502,9 +492,7 @@ class DomainToolsConnector(BaseConnector):
                         "ip": a["address"]["value"],
                         "type": "Host IP",
                         "count": a["address"]["count"],
-                        "count_string": self._convert_null_value_to_empty_string(
-                            a["address"]["count"]
-                        ),
+                        "count_string": self._convert_null_value_to_empty_string(a["address"]["count"]),
                     }
                 )
 
@@ -631,9 +619,7 @@ class DomainToolsConnector(BaseConnector):
             if params["data_updated_after"].lower() == "today":
                 params["data_updated_after"] = datetime.today().strftime("%Y-%m-%d")
             if params["data_updated_after"].lower() == "yesterday":
-                params["data_updated_after"] = (datetime.now() - timedelta(days=1)).strftime(
-                    "%Y-%m-%d"
-                )
+                params["data_updated_after"] = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
         if "create_date" in param:
             params["create_date"] = param["create_date"]
@@ -647,9 +633,7 @@ class DomainToolsConnector(BaseConnector):
             if params["expiration_date"].lower() == "today":
                 params["expiration_date"] = datetime.today().strftime("%Y-%m-%d")
             if params["expiration_date"].lower() == "yesterday":
-                params["expiration_date"] = (datetime.now() - timedelta(days=1)).strftime(
-                    "%Y-%m-%d"
-                )
+                params["expiration_date"] = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
         if "status" in param and param["status"].lower() != "any":
             params["active"] = param["status"].lower() == "active"
@@ -720,9 +704,7 @@ class DomainToolsConnector(BaseConnector):
 
     def _run_playbook(self, data: str):
         self.debug_print(f"Running playbook: {data.get('playbook_id')}")
-        response = phantom.requests.post(
-            f"{self._rest_url}playbook_run/", data=json.dumps(data), verify=False
-        )
+        response = phantom.requests.post(f"{self._rest_url}playbook_run/", data=json.dumps(data), verify=False)
         response.raise_for_status()
         if response.json().get("recieved"):
             return True
@@ -893,9 +875,7 @@ class DomainToolsConnector(BaseConnector):
         params = {"query": param.get("domain")}
         action_result = self.add_action_result(ActionResult(params))
 
-        ret_val = self._do_query(
-            self.ACTION_ID_PARSED_DOMAIN_RDAP, action_result, query_args=params
-        )
+        ret_val = self._do_query(self.ACTION_ID_PARSED_DOMAIN_RDAP, action_result, query_args=params)
         self.save_progress(f"Completed {self.ACTION_ID_PARSED_DOMAIN_RDAP} action.")
 
         if not ret_val:

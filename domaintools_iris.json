@@ -3312,7 +3312,7 @@
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.6.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.7.0-py2.py3-none-any.whl"
             },
             {
                 "module": "exceptiongroup",
@@ -3345,6 +3345,10 @@
             {
                 "module": "pygments",
                 "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
+            },
+            {
+                "module": "pyyaml",
+                "input_file": "wheels/py39/pyyaml-6.0.3-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "requests_file",
@@ -3384,11 +3388,11 @@
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.6.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.7.0-py2.py3-none-any.whl"
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.20.0-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.20.1-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -3413,6 +3417,10 @@
             {
                 "module": "pygments",
                 "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
+            },
+            {
+                "module": "pyyaml",
+                "input_file": "wheels/py313/pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "requests_file",
