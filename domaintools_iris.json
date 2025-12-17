@@ -3304,7 +3304,7 @@
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.10.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.12.0-py3-none-any.whl"
             },
             {
                 "module": "click",
@@ -3312,11 +3312,11 @@
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.5.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.6.1-py2.py3-none-any.whl"
             },
             {
                 "module": "exceptiongroup",
-                "input_file": "wheels/py3/exceptiongroup-1.3.0-py3-none-any.whl"
+                "input_file": "wheels/py3/exceptiongroup-1.3.1-py3-none-any.whl"
             },
             {
                 "module": "filelock",
@@ -3348,19 +3348,15 @@
             },
             {
                 "module": "requests_file",
-                "input_file": "wheels/shared/requests_file-2.1.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests_file-3.0.1-py2.py3-none-any.whl"
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.1.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-14.2.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
                 "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
-            },
-            {
-                "module": "sniffio",
-                "input_file": "wheels/py3/sniffio-1.3.1-py3-none-any.whl"
             },
             {
                 "module": "tldextract",
@@ -3368,7 +3364,7 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.17.3-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.20.0-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
@@ -3380,19 +3376,19 @@
         "wheel": [
             {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.10.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.12.0-py3-none-any.whl"
             },
             {
                 "module": "click",
-                "input_file": "wheels/py3/click-8.2.1-py3-none-any.whl"
+                "input_file": "wheels/py3/click-8.3.1-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.5.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.6.1-py2.py3-none-any.whl"
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.19.1-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.20.0-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -3420,19 +3416,15 @@
             },
             {
                 "module": "requests_file",
-                "input_file": "wheels/shared/requests_file-2.1.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests_file-3.0.1-py2.py3-none-any.whl"
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.1.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-14.2.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
                 "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
-            },
-            {
-                "module": "sniffio",
-                "input_file": "wheels/py3/sniffio-1.3.1-py3-none-any.whl"
             },
             {
                 "module": "tldextract",
@@ -3440,7 +3432,7 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.17.3-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.20.0-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
