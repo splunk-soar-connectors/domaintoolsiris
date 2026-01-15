@@ -1,1 +1,4 @@
 **Unreleased**
+* Added support for domain risk feeds
+* Added support for domain hotlist feeds
+* Updated python wrapper for feed streaming

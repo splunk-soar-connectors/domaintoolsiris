@@ -41,7 +41,17 @@ class DomainToolsConnector(BaseConnector):
     ACTION_ID_NOH_FEED = "noh_feed"
     ACTION_ID_DOMAIN_DISCOVERY_FEED = "domain_discovery_feed"
     ACTION_ID_PARSED_DOMAIN_RDAP_FEED = "parsed_domain_rdap_feed"
-    RTUF_SERVICES_LIST = ["nod", "nad", "noh", "domaindiscovery", "domainrdap"]
+    ACTION_ID_DOMAIN_RISK_FEED = "domain_risk_feed"
+    ACTION_ID_DOMAIN_HOTLIST_FEED = "domain_hotlist_feed"
+    RTUF_SERVICES_LIST = [
+        "nod",
+        "nad",
+        "noh",
+        "domaindiscovery",
+        "domainrdap",
+        "realtime_domain_risk",
+        "domainhotlist",
+    ]
 
     def __init__(self):
         # Call the BaseConnectors init first
@@ -71,6 +81,8 @@ class DomainToolsConnector(BaseConnector):
             self.ACTION_ID_NOH_FEED: self._noh_feed,
             self.ACTION_ID_DOMAIN_DISCOVERY_FEED: self._domain_discovery_feed,
             self.ACTION_ID_PARSED_DOMAIN_RDAP_FEED: self._parsed_domain_rdap_feed,
+            self.ACTION_ID_DOMAIN_RISK_FEED: self._domain_risk_feed,
+            self.ACTION_ID_DOMAIN_HOTLIST_FEED: self._domain_hotlist_feed,
         }
 
     def initialize(self):
@@ -129,15 +141,12 @@ class DomainToolsConnector(BaseConnector):
         if response.get("domains") == []:
             del response["domains"]
 
-    def _parse_feeds_response(self, service, action_result, feeds_results):
+    def _parse_feeds_response(self, action_result, feeds_results):
         try:
             for response in feeds_results.response():
                 data = []
-                rows = response.strip().split("\n")
-
-                for row in rows:
-                    data.append(json.loads(row))
-
+                feeds_data = response.strip()
+                data.append(json.loads(feeds_data))
                 action_result.update_data(data)
         except Exception as error:
             action_result.add_data({})
@@ -261,7 +270,7 @@ class DomainToolsConnector(BaseConnector):
                 try:
                     if service in self.RTUF_SERVICES_LIST:
                         # Separate parsing of feeds product
-                        return self._parse_feeds_response(service, action_result, response)
+                        return self._parse_feeds_response(action_result, response)
                     elif service == self.ACTION_ID_PARSED_DOMAIN_RDAP:
                         response_json = response.data()
                         response_json["response"] = response.flattened()
@@ -933,6 +942,32 @@ class DomainToolsConnector(BaseConnector):
 
         ret_val = self._do_query("noh", action_result, query_args=params)
         self.save_progress(f"Completed {self.ACTION_ID_NOH_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _domain_risk_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_DOMAIN_RISK_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("realtime_domain_risk", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_RISK_FEED} action.")
+
+        if not ret_val:
+            return action_result.get_data()
+
+        return action_result.get_status()
+
+    def _domain_hotlist_feed(self, param):
+        self.save_progress(f"Starting {self.ACTION_ID_DOMAIN_HOTLIST_FEED} action.")
+        action_result = self.add_action_result(ActionResult(param))
+        params = self._get_rtuf_actions_params(param)
+
+        ret_val = self._do_query("domainhotlist", action_result, query_args=params)
+        self.save_progress(f"Completed {self.ACTION_ID_DOMAIN_HOTLIST_FEED} action.")
 
         if not ret_val:
             return action_result.get_data()
