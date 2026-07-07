@@ -134,6 +134,48 @@ sys.modules.setdefault("phantom.rules", _phantom.rules)
 
 
 # ---------------------------------------------------------------------------
+# do_query stub helpers
+# ---------------------------------------------------------------------------
+
+def do_query_success(extra_data=None):
+    """Return a fake _do_query that sets APP_SUCCESS and optionally adds data."""
+    def fake(service, action_result, query_args=None):
+        if extra_data is not None:
+            action_result.add_data(extra_data)
+        action_result.set_status(True)
+        return True
+    return fake
+
+
+def do_query_failure(message="API error"):
+    """Return a fake _do_query that sets APP_ERROR."""
+    def fake(service, action_result, query_args=None):
+        action_result.set_status(False, message)
+        return False
+    return fake
+
+
+def do_query_capture_service():
+    """Return (fake, calls) where calls accumulates the service name on each call."""
+    calls = []
+    def fake(service, action_result, query_args=None):
+        calls.append(service)
+        action_result.set_status(True)
+        return True
+    return fake, calls
+
+
+def do_query_capture_args():
+    """Return (fake, calls) where calls accumulates query_args on each call."""
+    calls = []
+    def fake(service, action_result, query_args=None):
+        calls.append(query_args)
+        action_result.set_status(True)
+        return True
+    return fake, calls
+
+
+# ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
 
