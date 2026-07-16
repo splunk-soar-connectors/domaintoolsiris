@@ -1,3 +1,16 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """
 Shared fixtures and phantom module stubs for DomainTools connector tests.
 
@@ -7,7 +20,7 @@ We stub the minimum surface area needed to import and exercise the connector.
 
 import sys
 from types import ModuleType
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -15,6 +28,7 @@ import pytest
 # ---------------------------------------------------------------------------
 # Stub out the phantom.* namespace before the connector is imported
 # ---------------------------------------------------------------------------
+
 
 def _make_phantom_stub():
     phantom = ModuleType("phantom")
@@ -137,47 +151,57 @@ sys.modules.setdefault("phantom.rules", _phantom.rules)
 # do_query stub helpers
 # ---------------------------------------------------------------------------
 
+
 def do_query_success(extra_data=None):
     """Return a fake _do_query that sets APP_SUCCESS and optionally adds data."""
+
     def fake(service, action_result, query_args=None):
         if extra_data is not None:
             action_result.add_data(extra_data)
         action_result.set_status(True)
         return True
+
     return fake
 
 
 def do_query_failure(message="API error"):
     """Return a fake _do_query that sets APP_ERROR."""
+
     def fake(service, action_result, query_args=None):
         action_result.set_status(False, message)
         return False
+
     return fake
 
 
 def do_query_capture_service():
     """Return (fake, calls) where calls accumulates the service name on each call."""
     calls = []
+
     def fake(service, action_result, query_args=None):
         calls.append(service)
         action_result.set_status(True)
         return True
+
     return fake, calls
 
 
 def do_query_capture_args():
     """Return (fake, calls) where calls accumulates query_args on each call."""
     calls = []
+
     def fake(service, action_result, query_args=None):
         calls.append(query_args)
         action_result.set_status(True)
         return True
+
     return fake, calls
 
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def connector():
@@ -209,6 +233,7 @@ def mock_dt_api(mocker):
 # ---------------------------------------------------------------------------
 # Sample API response helpers
 # ---------------------------------------------------------------------------
+
 
 def make_domain(
     domain="evil-example.com",

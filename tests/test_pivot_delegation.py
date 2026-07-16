@@ -1,3 +1,16 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """
 Unit tests for actions that delegate to _pivot_action.
 
@@ -14,20 +27,21 @@ import pytest
 
 DELEGATION_CASES = [
     # (method,               input_param,                      pivot_type,     query_value,        preserved_key, preserved_value)
-    ("_reverse_lookup_ip",   {"ip": "1.2.3.4"},                "ip",           "1.2.3.4",          "ip",          "1.2.3.4"),
-    ("_reverse_whois_email", {"email": "admin@evil.com"},      "email",        "admin@evil.com",   "email",       "admin@evil.com"),
-    ("_load_hash",           {"search_hash": "abc123"},        "search_hash",  "abc123",           "hash",        "abc123"),
+    ("_reverse_lookup_ip", {"ip": "1.2.3.4"}, "ip", "1.2.3.4", "ip", "1.2.3.4"),
+    ("_reverse_whois_email", {"email": "admin@evil.com"}, "email", "admin@evil.com", "email", "admin@evil.com"),
+    ("_load_hash", {"search_hash": "abc123"}, "search_hash", "abc123", "hash", "abc123"),
 ]
 
 
 @pytest.mark.parametrize("method_name,param,pivot_type,query_value,preserved_key,preserved_value", DELEGATION_CASES)
 class TestPivotDelegation:
-
     def _fake_pivot(self):
         calls = []
+
         def fake(param):
             calls.append(param)
             return True
+
         return fake, calls
 
     def test_delegates_to_pivot_action(self, connector, method_name, param, pivot_type, query_value, preserved_key, preserved_value):

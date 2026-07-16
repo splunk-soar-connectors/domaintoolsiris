@@ -1,10 +1,22 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """Unit tests for _iris_detect_get_escalated_domains action."""
 
 from tests.conftest import make_domain
 
 
 class TestIrisDetectGetEscalatedDomains:
-
     def test_returns_success_with_results(self, connector, mock_dt_api):
         domains = [
             make_domain("evil.com", state="watched", domain_id="id1", escalations=[{"escalation_type": "google_safe", "id": "e1"}]),
@@ -40,21 +52,23 @@ class TestIrisDetectGetEscalatedDomains:
     def test_passes_additional_params(self, connector, mock_dt_api):
         mock_dt_api.iris_detect_watched_domains.return_value = iter([])
 
-        connector._iris_detect_get_escalated_domains({
-            "monitor_id": "mon789",
-            "tlds": "com",
-            "risk_score_ranges": "70-99",
-            "mx_exists": True,
-            "discovered_since": "2026-01-01T00:00:00Z",
-            "changed_since": "2026-01-02T00:00:00Z",
-            "escalated_since": "2026-01-03T00:00:00Z",
-            "search": "brand",
-            "sort": "changed_date",
-            "order": "desc",
-            "include_domain_data": True,
-            "limit": 20,
-            "preview": False,
-        })
+        connector._iris_detect_get_escalated_domains(
+            {
+                "monitor_id": "mon789",
+                "tlds": "com",
+                "risk_score_ranges": "70-99",
+                "mx_exists": True,
+                "discovered_since": "2026-01-01T00:00:00Z",
+                "changed_since": "2026-01-02T00:00:00Z",
+                "escalated_since": "2026-01-03T00:00:00Z",
+                "search": "brand",
+                "sort": "changed_date",
+                "order": "desc",
+                "include_domain_data": True,
+                "limit": 20,
+                "preview": False,
+            }
+        )
 
         mock_dt_api.iris_detect_watched_domains.assert_called_once_with(
             monitor_id="mon789",

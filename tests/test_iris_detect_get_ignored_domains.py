@@ -1,10 +1,22 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """Unit tests for _iris_detect_get_ignored_domains action."""
 
 from tests.conftest import make_domain
 
 
 class TestIrisDetectGetIgnoredDomains:
-
     def test_returns_success_with_results(self, connector, mock_dt_api):
         domains = [make_domain("fp1.com", state="ignored", domain_id="id1"), make_domain("fp2.net", state="ignored", domain_id="id2")]
         mock_dt_api.iris_detect_ignored_domains.return_value = iter(domains)
@@ -30,21 +42,23 @@ class TestIrisDetectGetIgnoredDomains:
     def test_passes_all_params(self, connector, mock_dt_api):
         mock_dt_api.iris_detect_ignored_domains.return_value = iter([])
 
-        connector._iris_detect_get_ignored_domains({
-            "monitor_id": "mon456",
-            "tlds": "org",
-            "risk_score_ranges": "1-39",
-            "mx_exists": False,
-            "discovered_since": "2026-01-01T00:00:00Z",
-            "changed_since": "2026-01-02T00:00:00Z",
-            "escalated_since": "2026-01-03T00:00:00Z",
-            "search": "false-positive",
-            "sort": "discovered_date",
-            "order": "asc",
-            "include_domain_data": False,
-            "limit": 10,
-            "preview": True,
-        })
+        connector._iris_detect_get_ignored_domains(
+            {
+                "monitor_id": "mon456",
+                "tlds": "org",
+                "risk_score_ranges": "1-39",
+                "mx_exists": False,
+                "discovered_since": "2026-01-01T00:00:00Z",
+                "changed_since": "2026-01-02T00:00:00Z",
+                "escalated_since": "2026-01-03T00:00:00Z",
+                "search": "false-positive",
+                "sort": "discovered_date",
+                "order": "asc",
+                "include_domain_data": False,
+                "limit": 10,
+                "preview": True,
+            }
+        )
 
         mock_dt_api.iris_detect_ignored_domains.assert_called_once_with(
             monitor_id="mon456",

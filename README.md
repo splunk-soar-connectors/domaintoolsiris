@@ -1,9 +1,9 @@
 # DomainTools Iris Investigate
 
-Publisher: DomainTools \
-Connector Version: 1.8.0 \
-Product Vendor: DomainTools \
-Product Name: DomainTools Iris Investigate \
+Publisher: DomainTools <br>
+Connector Version: 1.8.0 <br>
+Product Vendor: DomainTools <br>
+Product Name: DomainTools Iris Investigate <br>
 Minimum Product Version: 6.3.1
 
 This app supports investigative actions to profile domain names, get risk scores, and find connected domains that share the same Whois details, web hosting profiles, SSL certificates, and more on DomainTools Iris Investigate
@@ -81,31 +81,41 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity \
-[domain reputation](#action-domain-reputation) - Evaluates the risk of a given domain \
-[pivot action](#action-pivot-action) - Find domains connected by any supported Iris Investigate search parameter \
-[reverse domain](#action-reverse-domain) - Extract IPs from a single domain response for further pivoting \
-[reverse ip](#action-reverse-ip) - Find domains with web hosting IP, NS IP or MX IP \
-[load hash](#action-load-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash \
-[reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate \
-[lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required) \
-[enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned) \
-[configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status \
-[on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules \
-[parsed domain rdap](#action-parsed-domain-rdap) - The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data \
-[nod feed](#action-nod-feed) - Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database \
-[nad feed](#action-nad-feed) - Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days \
-[noh feed](#action-noh-feed) - Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network \
-[domain discovery feed](#action-domain-discovery-feed) - New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties \
-[domain rdap feed](#action-domain-rdap-feed) - List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar \
-[domain risk feed](#action-domain-risk-feed) - Real-time updates to Domain Risk Scores for apex domains, regardless of observed traffic \
-[domain hotlist feed](#action-domain-hotlist-feed) - Domains with high Domain Risk Scores that have also been active within 24 hours
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity <br>
+[domain reputation](#action-domain-reputation) - Evaluates the risk of a given domain <br>
+[pivot action](#action-pivot-action) - Find domains connected by any supported Iris Investigate search parameter <br>
+[reverse domain](#action-reverse-domain) - Extract IPs from a single domain response for further pivoting <br>
+[reverse ip](#action-reverse-ip) - Find domains with web hosting IP, NS IP or MX IP <br>
+[load hash](#action-load-hash) - Load or monitor Iris Investigate search results by Iris Investigate export hash <br>
+[reverse email](#action-reverse-email) - Find domains with email in Whois, DNS SOA or SSL certificate <br>
+[lookup domain](#action-lookup-domain) - Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required) <br>
+[enrich domain](#action-enrich-domain) - Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned) <br>
+[configure scheduled playbooks](#action-configure-scheduled-playbooks) - Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status <br>
+[on poll](#action-on-poll) - Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules <br>
+[parsed domain rdap](#action-parsed-domain-rdap) - The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data <br>
+[nod feed](#action-nod-feed) - Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database <br>
+[nad feed](#action-nad-feed) - Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days <br>
+[noh feed](#action-noh-feed) - Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network <br>
+[domain discovery feed](#action-domain-discovery-feed) - New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties <br>
+[domain rdap feed](#action-domain-rdap-feed) - List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar <br>
+[domain risk feed](#action-domain-risk-feed) - Real-time updates to Domain Risk Scores for apex domains, regardless of observed traffic <br>
+[domain hotlist feed](#action-domain-hotlist-feed) - Domains with high Domain Risk Scores that have also been active within 24 hours <br>
+[iris detect get new domains](#action-iris-detect-get-new-domains) - Retrieve newly discovered domains from Iris Detect across all monitors or a specific monitor <br>
+[iris detect get watched domains](#action-iris-detect-get-watched-domains) - Retrieve watched domains from Iris Detect across all monitors or a specific monitor <br>
+[iris detect get ignored domains](#action-iris-detect-get-ignored-domains) - Retrieve ignored (false positive) domains from Iris Detect across all monitors or a specific monitor <br>
+[iris detect get escalated domains](#action-iris-detect-get-escalated-domains) - Retrieve domains escalated to Google Safe Browsing from Iris Detect <br>
+[iris detect get blocklist domains](#action-iris-detect-get-blocklist-domains) - Retrieve domains escalated for internal blocking from Iris Detect <br>
+[iris detect get monitors list](#action-iris-detect-get-monitors-list) - Retrieve the list of monitors configured in Iris Detect for your account <br>
+[iris detect escalate domains](#action-iris-detect-escalate-domains) - Escalate one or more watched domains to Google Safe Browsing via Iris Detect <br>
+[iris detect blocklist domains](#action-iris-detect-blocklist-domains) - Escalate one or more watched domains for internal blocking via Iris Detect <br>
+[iris detect watch domains](#action-iris-detect-watch-domains) - Add one or more domains to the Iris Detect watchlist for ongoing monitoring <br>
+[iris detect ignore domains](#action-iris-detect-ignore-domains) - Mark one or more domains as ignored (false positives) in Iris Detect
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -120,7 +130,7 @@ No Output
 
 Evaluates the risk of a given domain
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -151,7 +161,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Find domains connected by any supported Iris Investigate search parameter
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -202,7 +212,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Extract IPs from a single domain response for further pivoting
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -236,7 +246,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Find domains with web hosting IP, NS IP or MX IP
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -279,7 +289,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Load or monitor Iris Investigate search results by Iris Investigate export hash
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -306,7 +316,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Find domains with email in Whois, DNS SOA or SSL certificate
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -355,7 +365,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get all Iris Investigate data for a domain using the Iris Investigate API endpoint (required)
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -530,7 +540,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get all Iris Investigate data for a domain except counts using the high volume Iris Enrich API endpoint (if provisioned)
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -632,7 +642,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Run on initial setup to configure the optional monitoring playbooks. This action creates a custom list to manage the playbook scheduling and run status
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -654,7 +664,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Execute scheduled playbooks based on the set interval(mins) in 'domaintools_scheduled_playbooks' custom list. Smaller intervals will result in more accurate schedules
 
-Type: **ingest** \
+Type: **ingest** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -669,7 +679,7 @@ No Output
 
 The Parsed Domain RDAP API returns the most recent Domain-RDAP registration record in response to a HTTP GET query. This API compliments the Parsed Whois API as some registries and registrar are beginning to support RDAP as an alternative to Whois for providing domain registration data
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -741,7 +751,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Apex-level domains (e.g. example.com but not www.example.com) observed for the first time by the DomainTools sensor network, and which are not present in our DNSDB historical database
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -776,7 +786,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Apex-level domains (e.g. example.com but not www.example.com) DomainTools has newly observed in our DNS sensor network. This includes domains observed in DNS for the first time as well as domains observed in DNS again after not being observed for at least 10 days
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -811,7 +821,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Contains fully qualified domain names (i.e. host names) that have never been seen before in passive DNS, emitted as soon as they are first observed. Hostname resolutions that we observe for the first time with our global DNS sensor network
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -846,7 +856,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 New domains as they are either discovered in domain registration information, observed by our global sensor network, or reported by trusted third parties
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -881,7 +891,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List of records for a given domain may be provided by a domain registry, registrar, or both. Domain registries maintain authoritative information about one or more top-level domains (e.g., .com), while domain registrars manage apex domains (e.g., domaintools.com). When domain information is present from both the registry and registrar, this API presents a record containing both sets of results, as well the original raw JSON record, from both the registry and registrar
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -917,7 +927,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Real-time updates to Domain Risk Scores for apex domains, regardless of observed traffic
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -957,7 +967,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Domains with high Domain Risk Scores that have also been active within 24 hours
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -991,6 +1001,466 @@ action_result.parameter.before | string | | |
 action_result.parameter.domain | string | | |
 action_result.parameter.session_id | string | | |
 action_result.parameter.top | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'iris detect get new domains'
+
+Retrieve newly discovered domains from Iris Detect across all monitors or a specific monitor
+
+Type: **investigate** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**monitor_id** | optional | Monitor ID to filter results to a specific monitor | string | |
+**tlds** | optional | Comma-separated list of TLDs to filter results (e.g. com,net) | string | |
+**risk_score_ranges** | optional | Comma-separated risk score ranges to filter by (e.g. 70-99,100-100) | string | |
+**mx_exists** | optional | Filter by whether the domain has an MX record | boolean | |
+**discovered_since** | optional | Filter domains discovered since this datetime (ISO 8601 format) | string | |
+**changed_since** | optional | Filter domains changed since this datetime (ISO 8601 format) | string | |
+**search** | optional | Search string to filter domains by name (contains match) | string | |
+**sort** | optional | Sort field (discovered_date, changed_date, or risk_score) | string | |
+**order** | optional | Sort order | string | |
+**include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
+**limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.risk_score | numeric | | |
+action_result.data.\*.risk_score_status | string | | |
+action_result.data.\*.discovered_date | string | | |
+action_result.data.\*.changed_date | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.tld | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.mx_exists | boolean | | |
+action_result.data.\*.monitor_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.domain_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+action_result.parameter.monitor_id | string | | |
+action_result.parameter.tlds | string | | |
+action_result.parameter.risk_score_ranges | string | | |
+action_result.parameter.mx_exists | boolean | | |
+action_result.parameter.discovered_since | string | | |
+action_result.parameter.changed_since | string | | |
+action_result.parameter.search | string | | |
+action_result.parameter.sort | string | | |
+action_result.parameter.order | string | | |
+action_result.parameter.include_domain_data | boolean | | |
+action_result.parameter.limit | numeric | | |
+action_result.parameter.preview | boolean | | |
+
+## action: 'iris detect get watched domains'
+
+Retrieve watched domains from Iris Detect across all monitors or a specific monitor
+
+Type: **investigate** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**monitor_id** | optional | Monitor ID to filter results to a specific monitor | string | |
+**tlds** | optional | Comma-separated list of TLDs to filter results (e.g. com,net) | string | |
+**risk_score_ranges** | optional | Comma-separated risk score ranges to filter by (e.g. 70-99,100-100) | string | |
+**mx_exists** | optional | Filter by whether the domain has an MX record | boolean | |
+**discovered_since** | optional | Filter domains discovered since this datetime (ISO 8601 format) | string | |
+**changed_since** | optional | Filter domains changed since this datetime (ISO 8601 format) | string | |
+**escalated_since** | optional | Filter domains escalated since this datetime (ISO 8601 format) | string | |
+**search** | optional | Search string to filter domains by name (contains match) | string | |
+**sort** | optional | Sort field | string | |
+**order** | optional | Sort order | string | |
+**include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
+**limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.risk_score | numeric | | |
+action_result.data.\*.risk_score_status | string | | |
+action_result.data.\*.discovered_date | string | | |
+action_result.data.\*.changed_date | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.escalations | string | | |
+action_result.data.\*.tld | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.mx_exists | boolean | | |
+action_result.data.\*.monitor_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.domain_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+action_result.parameter.monitor_id | string | | |
+action_result.parameter.tlds | string | | |
+action_result.parameter.risk_score_ranges | string | | |
+action_result.parameter.mx_exists | boolean | | |
+action_result.parameter.discovered_since | string | | |
+action_result.parameter.changed_since | string | | |
+action_result.parameter.escalated_since | string | | |
+action_result.parameter.search | string | | |
+action_result.parameter.sort | string | | |
+action_result.parameter.order | string | | |
+action_result.parameter.include_domain_data | boolean | | |
+action_result.parameter.limit | numeric | | |
+action_result.parameter.preview | boolean | | |
+
+## action: 'iris detect get ignored domains'
+
+Retrieve ignored (false positive) domains from Iris Detect across all monitors or a specific monitor
+
+Type: **investigate** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**monitor_id** | optional | Monitor ID to filter results to a specific monitor | string | |
+**tlds** | optional | Comma-separated list of TLDs to filter results (e.g. com,net) | string | |
+**risk_score_ranges** | optional | Comma-separated risk score ranges to filter by (e.g. 70-99,100-100) | string | |
+**mx_exists** | optional | Filter by whether the domain has an MX record | boolean | |
+**discovered_since** | optional | Filter domains discovered since this datetime (ISO 8601 format) | string | |
+**changed_since** | optional | Filter domains changed since this datetime (ISO 8601 format) | string | |
+**escalated_since** | optional | Filter domains escalated since this datetime (ISO 8601 format) | string | |
+**search** | optional | Search string to filter domains by name (contains match) | string | |
+**sort** | optional | Sort field | string | |
+**order** | optional | Sort order | string | |
+**include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
+**limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.risk_score | numeric | | |
+action_result.data.\*.risk_score_status | string | | |
+action_result.data.\*.discovered_date | string | | |
+action_result.data.\*.changed_date | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.tld | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.mx_exists | boolean | | |
+action_result.data.\*.monitor_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.domain_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+action_result.parameter.monitor_id | string | | |
+action_result.parameter.tlds | string | | |
+action_result.parameter.risk_score_ranges | string | | |
+action_result.parameter.mx_exists | boolean | | |
+action_result.parameter.discovered_since | string | | |
+action_result.parameter.changed_since | string | | |
+action_result.parameter.escalated_since | string | | |
+action_result.parameter.search | string | | |
+action_result.parameter.sort | string | | |
+action_result.parameter.order | string | | |
+action_result.parameter.include_domain_data | boolean | | |
+action_result.parameter.limit | numeric | | |
+action_result.parameter.preview | boolean | | |
+
+## action: 'iris detect get escalated domains'
+
+Retrieve domains escalated to Google Safe Browsing from Iris Detect
+
+Type: **investigate** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**monitor_id** | optional | Monitor ID to filter results to a specific monitor | string | |
+**tlds** | optional | Comma-separated list of TLDs to filter results (e.g. com,net) | string | |
+**risk_score_ranges** | optional | Comma-separated risk score ranges to filter by (e.g. 70-99,100-100) | string | |
+**mx_exists** | optional | Filter by whether the domain has an MX record | boolean | |
+**discovered_since** | optional | Filter domains discovered since this datetime (ISO 8601 format) | string | |
+**changed_since** | optional | Filter domains changed since this datetime (ISO 8601 format) | string | |
+**escalated_since** | optional | Filter domains escalated since this datetime (ISO 8601 format) | string | |
+**search** | optional | Search string to filter domains by name (contains match) | string | |
+**sort** | optional | Sort field | string | |
+**order** | optional | Sort order | string | |
+**include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
+**limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.risk_score | numeric | | |
+action_result.data.\*.risk_score_status | string | | |
+action_result.data.\*.discovered_date | string | | |
+action_result.data.\*.changed_date | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.escalations | string | | |
+action_result.data.\*.tld | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.mx_exists | boolean | | |
+action_result.data.\*.monitor_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.domain_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+action_result.parameter.monitor_id | string | | |
+action_result.parameter.tlds | string | | |
+action_result.parameter.risk_score_ranges | string | | |
+action_result.parameter.mx_exists | boolean | | |
+action_result.parameter.discovered_since | string | | |
+action_result.parameter.changed_since | string | | |
+action_result.parameter.escalated_since | string | | |
+action_result.parameter.search | string | | |
+action_result.parameter.sort | string | | |
+action_result.parameter.order | string | | |
+action_result.parameter.include_domain_data | boolean | | |
+action_result.parameter.limit | numeric | | |
+action_result.parameter.preview | boolean | | |
+
+## action: 'iris detect get blocklist domains'
+
+Retrieve domains escalated for internal blocking from Iris Detect
+
+Type: **investigate** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**monitor_id** | optional | Monitor ID to filter results to a specific monitor | string | |
+**tlds** | optional | Comma-separated list of TLDs to filter results (e.g. com,net) | string | |
+**risk_score_ranges** | optional | Comma-separated risk score ranges to filter by (e.g. 70-99,100-100) | string | |
+**mx_exists** | optional | Filter by whether the domain has an MX record | boolean | |
+**discovered_since** | optional | Filter domains discovered since this datetime (ISO 8601 format) | string | |
+**changed_since** | optional | Filter domains changed since this datetime (ISO 8601 format) | string | |
+**escalated_since** | optional | Filter domains escalated since this datetime (ISO 8601 format) | string | |
+**search** | optional | Search string to filter domains by name (contains match) | string | |
+**sort** | optional | Sort field | string | |
+**order** | optional | Sort order | string | |
+**include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
+**limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.risk_score | numeric | | |
+action_result.data.\*.risk_score_status | string | | |
+action_result.data.\*.discovered_date | string | | |
+action_result.data.\*.changed_date | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.escalations | string | | |
+action_result.data.\*.tld | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.mx_exists | boolean | | |
+action_result.data.\*.monitor_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.domain_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+action_result.parameter.monitor_id | string | | |
+action_result.parameter.tlds | string | | |
+action_result.parameter.risk_score_ranges | string | | |
+action_result.parameter.mx_exists | boolean | | |
+action_result.parameter.discovered_since | string | | |
+action_result.parameter.changed_since | string | | |
+action_result.parameter.escalated_since | string | | |
+action_result.parameter.search | string | | |
+action_result.parameter.sort | string | | |
+action_result.parameter.order | string | | |
+action_result.parameter.include_domain_data | boolean | | |
+action_result.parameter.limit | numeric | | |
+action_result.parameter.preview | boolean | | |
+
+## action: 'iris detect get monitors list'
+
+Retrieve the list of monitors configured in Iris Detect for your account
+
+Type: **investigate** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**include_counts** | optional | Include counts of new, watched, changed, and escalated domains per monitor | boolean | |
+**datetime_counts_since** | optional | Required if include_counts is true. Datetime to count domains from (ISO 8601 format) | string | |
+**sort** | optional | Sort field | string | |
+**order** | optional | Sort order | string | |
+**limit** | optional | Maximum number of monitors to return (max 500, or 100 if include_counts is true) | numeric | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.term | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.created_date | string | | |
+action_result.data.\*.updated_date | string | | |
+action_result.data.\*.created_by | string | | |
+action_result.data.\*.match_substring_variations | boolean | | |
+action_result.data.\*.nameserver_exclusions | string | | |
+action_result.data.\*.text_exclusions | string | | |
+action_result.data.\*.domain_counts.new | numeric | | |
+action_result.data.\*.domain_counts.watched | numeric | | |
+action_result.data.\*.domain_counts.changed | numeric | | |
+action_result.data.\*.domain_counts.escalated | numeric | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.monitor_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+action_result.parameter.include_counts | boolean | | |
+action_result.parameter.datetime_counts_since | string | | |
+action_result.parameter.sort | string | | |
+action_result.parameter.order | string | | |
+action_result.parameter.limit | numeric | | |
+
+## action: 'iris detect escalate domains'
+
+Escalate one or more watched domains to Google Safe Browsing via Iris Detect
+
+Type: **correct** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**watchlist_domain_ids** | required | Comma-separated list of Iris Detect domain IDs to escalate to Google Safe Browsing | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.watchlist_domain_id | string | | |
+action_result.data.\*.escalation_type | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.created_date | string | | |
+action_result.data.\*.created_by | string | | |
+action_result.data.\*.updated_date | string | | |
+action_result.parameter.watchlist_domain_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.escalated_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'iris detect blocklist domains'
+
+Escalate one or more watched domains for internal blocking via Iris Detect
+
+Type: **correct** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**watchlist_domain_ids** | required | Comma-separated list of Iris Detect domain IDs to escalate for internal blocking | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.watchlist_domain_id | string | | |
+action_result.data.\*.escalation_type | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.created_date | string | | |
+action_result.data.\*.created_by | string | | |
+action_result.data.\*.updated_date | string | | |
+action_result.parameter.watchlist_domain_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.blocklisted_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'iris detect watch domains'
+
+Add one or more domains to the Iris Detect watchlist for ongoing monitoring
+
+Type: **correct** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**watchlist_domain_ids** | required | Comma-separated list of Iris Detect domain IDs to add to the watchlist | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.discovered_date | string | | |
+action_result.data.\*.changed_date | string | | |
+action_result.parameter.watchlist_domain_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.watched_count | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'iris detect ignore domains'
+
+Mark one or more domains as ignored (false positives) in Iris Detect
+
+Type: **correct** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**watchlist_domain_ids** | required | Comma-separated list of Iris Detect domain IDs to mark as ignored | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.domain | string | `domain` | |
+action_result.data.\*.state | string | | |
+action_result.data.\*.id | string | | |
+action_result.data.\*.discovered_date | string | | |
+action_result.data.\*.changed_date | string | | |
+action_result.parameter.watchlist_domain_ids | string | | |
+action_result.status | string | | success failed |
+action_result.message | string | | |
+action_result.summary.ignored_count | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 

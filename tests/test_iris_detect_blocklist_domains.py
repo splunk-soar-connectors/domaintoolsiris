@@ -1,10 +1,22 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """Unit tests for _iris_detect_blocklist_domains action."""
 
 from tests.conftest import make_escalation
 
 
 class TestIrisDetectBlocklistDomains:
-
     def test_returns_success_with_results(self, connector, mock_dt_api):
         escalations = [make_escalation("id1", "blocked", "b1"), make_escalation("id2", "blocked", "b2")]
         mock_dt_api.iris_detect_escalate_domains.return_value = iter(escalations)

@@ -15,26 +15,31 @@ pip install -r requirements-test.txt
 ## Running Tests
 
 ### All tests
+
 ```bash
 .venv/bin/python -m pytest
 ```
 
 ### A specific test file
+
 ```bash
 .venv/bin/python -m pytest tests/test_iris_detect_get_new_domains.py
 ```
 
 ### A specific test case
+
 ```bash
 .venv/bin/python -m pytest tests/test_iris_detect_get_new_domains.py::TestIrisDetectGetNewDomains::test_returns_success_with_results
 ```
 
 ### With verbose output
+
 ```bash
 .venv/bin/python -m pytest -v
 ```
 
 ### Stop on first failure
+
 ```bash
 .venv/bin/python -m pytest -x
 ```

@@ -1,3 +1,16 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """Unit tests for _reverse_lookup_domain action."""
 
 from tests.conftest import do_query_capture_service, do_query_failure, do_query_success
@@ -13,7 +26,6 @@ def make_domain_response(host_ips=None, mx_ips=None, ns_ips=None):
 
 
 class TestReverseLookupDomain:
-
     def test_returns_success_with_no_ips(self, connector):
         connector._domains = ["evil.com"]
         connector._do_query = do_query_success(make_domain_response())

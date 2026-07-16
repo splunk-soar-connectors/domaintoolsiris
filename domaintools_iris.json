@@ -5,7 +5,7 @@
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019-2025 DomainTools, LLC",
+    "license": "Copyright (c) 2019-2026 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
     "app_version": "1.8.0",
     "utctime_updated": "2026-01-16T20:50:41.666447Z",
@@ -3372,7 +3372,7 @@
                     "order": 10
                 },
                 "preview": {
-                    "description": "Preview mode for testing — limits results to 2 without hourly rate limit",
+                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
                     "data_type": "boolean",
                     "order": 11
                 }
@@ -3387,7 +3387,9 @@
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "contains": ["domain"],
+                    "contains": [
+                        "domain"
+                    ],
                     "column_name": "Domain",
                     "column_order": 0
                 },
@@ -3446,7 +3448,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -3459,12 +3464,64 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
                 }
             ],
             "versions": "EQ(*)"
@@ -3547,7 +3604,7 @@
                     "order": 11
                 },
                 "preview": {
-                    "description": "Preview mode for testing — limits results to 2 without hourly rate limit",
+                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
                     "data_type": "boolean",
                     "order": 12
                 }
@@ -3562,7 +3619,9 @@
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "contains": ["domain"],
+                    "contains": [
+                        "domain"
+                    ],
                     "column_name": "Domain",
                     "column_order": 0
                 },
@@ -3625,7 +3684,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -3638,12 +3700,68 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
                 }
             ],
             "versions": "EQ(*)"
@@ -3726,7 +3844,7 @@
                     "order": 11
                 },
                 "preview": {
-                    "description": "Preview mode for testing — limits results to 2 without hourly rate limit",
+                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
                     "data_type": "boolean",
                     "order": 12
                 }
@@ -3741,7 +3859,9 @@
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "contains": ["domain"],
+                    "contains": [
+                        "domain"
+                    ],
                     "column_name": "Domain",
                     "column_order": 0
                 },
@@ -3800,7 +3920,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -3813,12 +3936,68 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
                 }
             ],
             "versions": "EQ(*)"
@@ -3901,7 +4080,7 @@
                     "order": 11
                 },
                 "preview": {
-                    "description": "Preview mode for testing — limits results to 2 without hourly rate limit",
+                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
                     "data_type": "boolean",
                     "order": 12
                 }
@@ -3916,7 +4095,9 @@
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "contains": ["domain"],
+                    "contains": [
+                        "domain"
+                    ],
                     "column_name": "Domain",
                     "column_order": 0
                 },
@@ -3979,7 +4160,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -3992,12 +4176,68 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
                 }
             ],
             "versions": "EQ(*)"
@@ -4080,7 +4320,7 @@
                     "order": 11
                 },
                 "preview": {
-                    "description": "Preview mode for testing — limits results to 2 without hourly rate limit",
+                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
                     "data_type": "boolean",
                     "order": 12
                 }
@@ -4095,7 +4335,9 @@
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "contains": ["domain"],
+                    "contains": [
+                        "domain"
+                    ],
                     "column_name": "Domain",
                     "column_order": 0
                 },
@@ -4158,7 +4400,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -4171,12 +4416,68 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
                 }
             ],
             "versions": "EQ(*)"
@@ -4306,7 +4607,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -4319,12 +4623,36 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.include_counts",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.datetime_counts_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
                 }
             ],
             "versions": "EQ(*)"
@@ -4392,7 +4720,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -4405,12 +4736,16 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "versions": "EQ(*)"
@@ -4478,7 +4813,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -4491,12 +4829,16 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "versions": "EQ(*)"
@@ -4526,7 +4868,9 @@
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "contains": ["domain"],
+                    "contains": [
+                        "domain"
+                    ],
                     "column_name": "Domain",
                     "column_order": 0
                 },
@@ -4561,7 +4905,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -4574,12 +4921,16 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "versions": "EQ(*)"
@@ -4609,7 +4960,9 @@
                 {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
-                    "contains": ["domain"],
+                    "contains": [
+                        "domain"
+                    ],
                     "column_name": "Domain",
                     "column_order": 0
                 },
@@ -4644,7 +4997,10 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "example_values": ["success", "failed"]
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
@@ -4657,12 +5013,16 @@
                 {
                     "data_path": "summary.total_objects",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric",
-                    "example_values": [1]
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "versions": "EQ(*)"
@@ -4671,8 +5031,12 @@
     "pip39_dependencies": {
         "wheel": [
             {
+                "module": "annotated_doc",
+                "input_file": "wheels/py3/annotated_doc-0.0.4-py3-none-any.whl"
+            },
+            {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.12.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.12.1-py3-none-any.whl"
             },
             {
                 "module": "click",
@@ -4712,7 +5076,7 @@
             },
             {
                 "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
+                "input_file": "wheels/py3/pygments-2.20.0-py3-none-any.whl"
             },
             {
                 "module": "pyyaml",
@@ -4724,7 +5088,7 @@
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.2.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-15.0.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
@@ -4736,23 +5100,23 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.20.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.23.2-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.15.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.16.0-py3-none-any.whl"
             }
         ]
     },
     "pip313_dependencies": {
         "wheel": [
             {
-                "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.12.0-py3-none-any.whl"
+                "module": "annotated_doc",
+                "input_file": "wheels/py3/annotated_doc-0.0.4-py3-none-any.whl"
             },
             {
-                "module": "click",
-                "input_file": "wheels/py3/click-8.3.1-py3-none-any.whl"
+                "module": "anyio",
+                "input_file": "wheels/py3/anyio-4.14.2-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
@@ -4760,7 +5124,7 @@
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.20.1-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.30.1-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -4776,7 +5140,7 @@
             },
             {
                 "module": "markdown_it_py",
-                "input_file": "wheels/py3/markdown_it_py-4.0.0-py3-none-any.whl"
+                "input_file": "wheels/py3/markdown_it_py-4.2.0-py3-none-any.whl"
             },
             {
                 "module": "mdurl",
@@ -4784,7 +5148,7 @@
             },
             {
                 "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
+                "input_file": "wheels/py3/pygments-2.20.0-py3-none-any.whl"
             },
             {
                 "module": "pyyaml",
@@ -4796,7 +5160,7 @@
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.2.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-15.0.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
@@ -4808,11 +5172,7 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.20.0-py3-none-any.whl"
-            },
-            {
-                "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.15.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.27.0-py3-none-any.whl"
             }
         ]
     }

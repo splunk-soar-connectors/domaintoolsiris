@@ -1,3 +1,16 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """
 Unit tests for all RTUF feed actions.
 
@@ -12,19 +25,18 @@ from tests.conftest import do_query_capture_args, do_query_capture_service, do_q
 
 
 FEED_CASES = [
-    ("_nod_feed",                "nod"),
-    ("_nad_feed",                "nad"),
-    ("_noh_feed",                "noh"),
-    ("_domain_discovery_feed",   "domaindiscovery"),
+    ("_nod_feed", "nod"),
+    ("_nad_feed", "nad"),
+    ("_noh_feed", "noh"),
+    ("_domain_discovery_feed", "domaindiscovery"),
     ("_parsed_domain_rdap_feed", "domainrdap"),
-    ("_domain_risk_feed",        "realtime_domain_risk"),
-    ("_domain_hotlist_feed",     "domainhotlist"),
+    ("_domain_risk_feed", "realtime_domain_risk"),
+    ("_domain_hotlist_feed", "domainhotlist"),
 ]
 
 
 @pytest.mark.parametrize("method_name,service_name", FEED_CASES)
 class TestRtufFeeds:
-
     def _call(self, connector, method_name, param=None):
         return getattr(connector, method_name)(param or {})
 

@@ -1,10 +1,22 @@
+# Copyright (c) 2026 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """Unit tests for _iris_detect_watch_domains action."""
 
 from tests.conftest import make_domain
 
 
 class TestIrisDetectWatchDomains:
-
     def test_returns_success_with_results(self, connector, mock_dt_api):
         domains = [make_domain("watch1.com", state="watched", domain_id="id1"), make_domain("watch2.net", state="watched", domain_id="id2")]
         mock_dt_api.iris_detect_manage_watchlist_domains.return_value = iter(domains)
