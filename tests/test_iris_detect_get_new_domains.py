@@ -13,13 +13,13 @@
 # limitations under the License.
 """Unit tests for _iris_detect_get_new_domains action."""
 
-from tests.conftest import make_domain
+from tests.conftest import make_detect_page, make_domain
 
 
 class TestIrisDetectGetNewDomains:
     def test_returns_success_with_results(self, connector, mock_dt_api):
         domains = [make_domain("evil.com", domain_id="id1"), make_domain("phish.net", domain_id="id2")]
-        mock_dt_api.iris_detect_new_domains.return_value = iter(domains)
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page(domains)
 
         result = connector._iris_detect_get_new_domains({})
         ar = connector.last_action_result()
@@ -30,7 +30,7 @@ class TestIrisDetectGetNewDomains:
         assert len(ar.get_data()) == 2
 
     def test_returns_success_with_no_results(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         result = connector._iris_detect_get_new_domains({})
         ar = connector.last_action_result()
@@ -40,11 +40,12 @@ class TestIrisDetectGetNewDomains:
         assert ar.get_data() == []
 
     def test_passes_monitor_id(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_new_domains({"monitor_id": "mon123"})
 
         mock_dt_api.iris_detect_new_domains.assert_called_once_with(
+            offset=0,
             monitor_id="mon123",
             tlds=None,
             risk_score_ranges=None,
@@ -60,7 +61,7 @@ class TestIrisDetectGetNewDomains:
         )
 
     def test_passes_discovered_since(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_new_domains({"discovered_since": "2026-01-01T00:00:00Z"})
 
@@ -68,15 +69,15 @@ class TestIrisDetectGetNewDomains:
         assert kwargs["discovered_since"] == "2026-01-01T00:00:00Z"
 
     def test_passes_risk_score_ranges(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_new_domains({"risk_score_ranges": "70-99,100-100"})
 
         _, kwargs = mock_dt_api.iris_detect_new_domains.call_args
-        assert kwargs["risk_score_ranges"] == "70-99,100-100"
+        assert kwargs["risk_score_ranges"] == ["70-99", "100-100"]
 
     def test_passes_include_domain_data(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_new_domains({"include_domain_data": True})
 
@@ -84,7 +85,7 @@ class TestIrisDetectGetNewDomains:
         assert kwargs["include_domain_data"] is True
 
     def test_passes_preview(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_new_domains({"preview": True})
 
@@ -92,7 +93,7 @@ class TestIrisDetectGetNewDomains:
         assert kwargs["preview"] is True
 
     def test_passes_limit(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_new_domains({"limit": 50})
 
@@ -100,7 +101,7 @@ class TestIrisDetectGetNewDomains:
         assert kwargs["limit"] == 50
 
     def test_passes_sort_and_order(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_new_domains.return_value = iter([])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_new_domains({"sort": "risk_score", "order": "desc"})
 
@@ -110,7 +111,7 @@ class TestIrisDetectGetNewDomains:
 
     def test_domain_data_stored_correctly(self, connector, mock_dt_api):
         domain = make_domain("evil.com", risk_score=99, domain_id="xyz", state="new")
-        mock_dt_api.iris_detect_new_domains.return_value = iter([domain])
+        mock_dt_api.iris_detect_new_domains.return_value = make_detect_page([domain])
 
         connector._iris_detect_get_new_domains({})
         ar = connector.last_action_result()

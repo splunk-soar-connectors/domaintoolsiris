@@ -285,6 +285,19 @@ def make_monitor(
     }
 
 
+def make_detect_page(items):
+    """Fake SDK result object that supports iteration and .response() for pagination."""
+
+    class _Page:
+        def __iter__(self):
+            return iter(items)
+
+        def response(self):
+            return {"total_count": len(items), "count": len(items), "offset": 0}
+
+    return _Page()
+
+
 def make_escalation(
     watchlist_domain_id="abc123",
     escalation_type="blocked",

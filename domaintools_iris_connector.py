@@ -1018,11 +1018,21 @@ class DomainToolsConnector(BaseConnector):
             https=self._ssl if isinstance(self._ssl, bool) else True,
         )
 
-    def _parse_detect_response(self, action_result, results, summary_key="domain_count"):
-        data = list(results)
+    def _fetch_detect_page(self, fn, **kwargs):
+        page = fn(**kwargs)
+        items = list(page)
+        total_count = page.response().get("total_count", len(items))
+        return items, total_count
+
+    def _parse_detect_response(self, action_result, data, summary_key="domain_count", total_count=None):
+        if not isinstance(data, list):
+            data = list(data)
         action_result.update_data(data)
-        action_result.update_summary({summary_key: len(data)})
-        return action_result.set_status(phantom.APP_SUCCESS)
+        summary = {summary_key: len(data)}
+        if total_count is not None:
+            summary["total_count"] = total_count
+        action_result.update_summary(summary)
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully retrieved results")
 
     def _detect_error(self, action_result, e):
         error_code, error_msg = self._get_error_message_from_exception(e)
@@ -1033,10 +1043,11 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            results = dt_api.iris_detect_new_domains(
+            data, total_count = self._fetch_detect_page(
+                dt_api.iris_detect_new_domains,
                 monitor_id=param.get("monitor_id"),
-                tlds=param.get("tlds"),
-                risk_score_ranges=param.get("risk_score_ranges"),
+                tlds=[t.strip() for t in param["tlds"].split(",")] if param.get("tlds") else None,
+                risk_score_ranges=[r.strip() for r in param["risk_score_ranges"].split(",")] if param.get("risk_score_ranges") else None,
                 mx_exists=param.get("mx_exists"),
                 discovered_since=param.get("discovered_since"),
                 changed_since=param.get("changed_since"),
@@ -1044,10 +1055,11 @@ class DomainToolsConnector(BaseConnector):
                 sort=param.get("sort"),
                 order=param.get("order"),
                 include_domain_data=param.get("include_domain_data", False),
+                offset=param.get("offset", 0),
                 limit=param.get("limit"),
                 preview=param.get("preview"),
             )
-            ret_val = self._parse_detect_response(action_result, results)
+            ret_val = self._parse_detect_response(action_result, data, total_count=total_count)
             self.save_progress(f"Completed {self.ACTION_ID_IRIS_DETECT_GET_NEW_DOMAINS} action.")
             return ret_val
         except Exception as e:
@@ -1058,10 +1070,11 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            results = dt_api.iris_detect_watched_domains(
+            data, total_count = self._fetch_detect_page(
+                dt_api.iris_detect_watched_domains,
                 monitor_id=param.get("monitor_id"),
-                tlds=param.get("tlds"),
-                risk_score_ranges=param.get("risk_score_ranges"),
+                tlds=[t.strip() for t in param["tlds"].split(",")] if param.get("tlds") else None,
+                risk_score_ranges=[r.strip() for r in param["risk_score_ranges"].split(",")] if param.get("risk_score_ranges") else None,
                 mx_exists=param.get("mx_exists"),
                 discovered_since=param.get("discovered_since"),
                 changed_since=param.get("changed_since"),
@@ -1070,10 +1083,11 @@ class DomainToolsConnector(BaseConnector):
                 sort=param.get("sort"),
                 order=param.get("order"),
                 include_domain_data=param.get("include_domain_data", False),
+                offset=param.get("offset", 0),
                 limit=param.get("limit"),
                 preview=param.get("preview"),
             )
-            ret_val = self._parse_detect_response(action_result, results)
+            ret_val = self._parse_detect_response(action_result, data, total_count=total_count)
             self.save_progress(f"Completed {self.ACTION_ID_IRIS_DETECT_GET_WATCHED_DOMAINS} action.")
             return ret_val
         except Exception as e:
@@ -1084,10 +1098,11 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            results = dt_api.iris_detect_ignored_domains(
+            data, total_count = self._fetch_detect_page(
+                dt_api.iris_detect_ignored_domains,
                 monitor_id=param.get("monitor_id"),
-                tlds=param.get("tlds"),
-                risk_score_ranges=param.get("risk_score_ranges"),
+                tlds=[t.strip() for t in param["tlds"].split(",")] if param.get("tlds") else None,
+                risk_score_ranges=[r.strip() for r in param["risk_score_ranges"].split(",")] if param.get("risk_score_ranges") else None,
                 mx_exists=param.get("mx_exists"),
                 discovered_since=param.get("discovered_since"),
                 changed_since=param.get("changed_since"),
@@ -1096,10 +1111,11 @@ class DomainToolsConnector(BaseConnector):
                 sort=param.get("sort"),
                 order=param.get("order"),
                 include_domain_data=param.get("include_domain_data", False),
+                offset=param.get("offset", 0),
                 limit=param.get("limit"),
                 preview=param.get("preview"),
             )
-            ret_val = self._parse_detect_response(action_result, results)
+            ret_val = self._parse_detect_response(action_result, data, total_count=total_count)
             self.save_progress(f"Completed {self.ACTION_ID_IRIS_DETECT_GET_IGNORED_DOMAINS} action.")
             return ret_val
         except Exception as e:
@@ -1110,11 +1126,12 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            results = dt_api.iris_detect_watched_domains(
+            data, total_count = self._fetch_detect_page(
+                dt_api.iris_detect_watched_domains,
                 monitor_id=param.get("monitor_id"),
                 escalation_types=["google_safe"],
-                tlds=param.get("tlds"),
-                risk_score_ranges=param.get("risk_score_ranges"),
+                tlds=[t.strip() for t in param["tlds"].split(",")] if param.get("tlds") else None,
+                risk_score_ranges=[r.strip() for r in param["risk_score_ranges"].split(",")] if param.get("risk_score_ranges") else None,
                 mx_exists=param.get("mx_exists"),
                 discovered_since=param.get("discovered_since"),
                 changed_since=param.get("changed_since"),
@@ -1123,10 +1140,11 @@ class DomainToolsConnector(BaseConnector):
                 sort=param.get("sort"),
                 order=param.get("order"),
                 include_domain_data=param.get("include_domain_data", False),
+                offset=param.get("offset", 0),
                 limit=param.get("limit"),
                 preview=param.get("preview"),
             )
-            ret_val = self._parse_detect_response(action_result, results)
+            ret_val = self._parse_detect_response(action_result, data, total_count=total_count)
             self.save_progress(f"Completed {self.ACTION_ID_IRIS_DETECT_GET_ESCALATED_DOMAINS} action.")
             return ret_val
         except Exception as e:
@@ -1137,11 +1155,12 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            results = dt_api.iris_detect_watched_domains(
+            data, total_count = self._fetch_detect_page(
+                dt_api.iris_detect_watched_domains,
                 monitor_id=param.get("monitor_id"),
                 escalation_types=["blocked"],
-                tlds=param.get("tlds"),
-                risk_score_ranges=param.get("risk_score_ranges"),
+                tlds=[t.strip() for t in param["tlds"].split(",")] if param.get("tlds") else None,
+                risk_score_ranges=[r.strip() for r in param["risk_score_ranges"].split(",")] if param.get("risk_score_ranges") else None,
                 mx_exists=param.get("mx_exists"),
                 discovered_since=param.get("discovered_since"),
                 changed_since=param.get("changed_since"),
@@ -1150,10 +1169,11 @@ class DomainToolsConnector(BaseConnector):
                 sort=param.get("sort"),
                 order=param.get("order"),
                 include_domain_data=param.get("include_domain_data", False),
+                offset=param.get("offset", 0),
                 limit=param.get("limit"),
                 preview=param.get("preview"),
             )
-            ret_val = self._parse_detect_response(action_result, results)
+            ret_val = self._parse_detect_response(action_result, data, total_count=total_count)
             self.save_progress(f"Completed {self.ACTION_ID_IRIS_DETECT_GET_BLOCKLIST_DOMAINS} action.")
             return ret_val
         except Exception as e:
@@ -1169,13 +1189,15 @@ class DomainToolsConnector(BaseConnector):
             if include_counts:
                 kwargs["include_counts"] = True
                 kwargs["datetime_counts_since"] = param.get("datetime_counts_since")
-            results = dt_api.iris_detect_monitors(
+            data, total_count = self._fetch_detect_page(
+                dt_api.iris_detect_monitors,
                 sort=param.get("sort"),
                 order=param.get("order", "desc"),
+                offset=param.get("offset", 0),
                 limit=param.get("limit"),
                 **kwargs,
             )
-            ret_val = self._parse_detect_response(action_result, results, summary_key="monitor_count")
+            ret_val = self._parse_detect_response(action_result, data, summary_key="monitor_count", total_count=total_count)
             self.save_progress(f"Completed {self.ACTION_ID_IRIS_DETECT_GET_MONITORS_LIST} action.")
             return ret_val
         except Exception as e:
@@ -1186,7 +1208,7 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            watchlist_domain_ids = param.get("watchlist_domain_ids", "").replace(" ", "").split(",")
+            watchlist_domain_ids = [i.strip() for i in param.get("watchlist_domain_ids", "").split(",") if i.strip()]
             results = dt_api.iris_detect_escalate_domains(
                 watchlist_domain_ids=watchlist_domain_ids,
                 escalation_type="google_safe",
@@ -1202,7 +1224,7 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            watchlist_domain_ids = param.get("watchlist_domain_ids", "").replace(" ", "").split(",")
+            watchlist_domain_ids = [i.strip() for i in param.get("watchlist_domain_ids", "").split(",") if i.strip()]
             results = dt_api.iris_detect_escalate_domains(
                 watchlist_domain_ids=watchlist_domain_ids,
                 escalation_type="blocked",
@@ -1218,7 +1240,7 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            watchlist_domain_ids = param.get("watchlist_domain_ids", "").replace(" ", "").split(",")
+            watchlist_domain_ids = [i.strip() for i in param.get("watchlist_domain_ids", "").split(",") if i.strip()]
             results = dt_api.iris_detect_manage_watchlist_domains(
                 watchlist_domain_ids=watchlist_domain_ids,
                 state="watched",
@@ -1234,7 +1256,7 @@ class DomainToolsConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             dt_api = self._get_dt_api()
-            watchlist_domain_ids = param.get("watchlist_domain_ids", "").replace(" ", "").split(",")
+            watchlist_domain_ids = [i.strip() for i in param.get("watchlist_domain_ids", "").split(",") if i.strip()]
             results = dt_api.iris_detect_manage_watchlist_domains(
                 watchlist_domain_ids=watchlist_domain_ids,
                 state="ignored",

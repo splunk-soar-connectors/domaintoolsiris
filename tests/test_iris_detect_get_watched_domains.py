@@ -13,13 +13,13 @@
 # limitations under the License.
 """Unit tests for _iris_detect_get_watched_domains action."""
 
-from tests.conftest import make_domain
+from tests.conftest import make_detect_page, make_domain
 
 
 class TestIrisDetectGetWatchedDomains:
     def test_returns_success_with_results(self, connector, mock_dt_api):
         domains = [make_domain("evil.com", state="watched", domain_id="id1"), make_domain("phish.net", state="watched", domain_id="id2")]
-        mock_dt_api.iris_detect_watched_domains.return_value = iter(domains)
+        mock_dt_api.iris_detect_watched_domains.return_value = make_detect_page(domains)
 
         result = connector._iris_detect_get_watched_domains({})
         ar = connector.last_action_result()
@@ -30,7 +30,7 @@ class TestIrisDetectGetWatchedDomains:
         assert len(ar.get_data()) == 2
 
     def test_returns_success_with_no_results(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_watched_domains.return_value = iter([])
+        mock_dt_api.iris_detect_watched_domains.return_value = make_detect_page([])
 
         result = connector._iris_detect_get_watched_domains({})
         ar = connector.last_action_result()
@@ -40,7 +40,7 @@ class TestIrisDetectGetWatchedDomains:
         assert ar.get_data() == []
 
     def test_passes_all_params(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_watched_domains.return_value = iter([])
+        mock_dt_api.iris_detect_watched_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_watched_domains(
             {
@@ -62,8 +62,8 @@ class TestIrisDetectGetWatchedDomains:
 
         mock_dt_api.iris_detect_watched_domains.assert_called_once_with(
             monitor_id="mon123",
-            tlds="com,net",
-            risk_score_ranges="70-99",
+            tlds=["com", "net"],
+            risk_score_ranges=["70-99"],
             mx_exists=True,
             discovered_since="2026-01-01T00:00:00Z",
             changed_since="2026-01-02T00:00:00Z",
@@ -72,12 +72,13 @@ class TestIrisDetectGetWatchedDomains:
             sort="risk_score",
             order="desc",
             include_domain_data=True,
+            offset=0,
             limit=25,
             preview=False,
         )
 
     def test_passes_escalated_since(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_watched_domains.return_value = iter([])
+        mock_dt_api.iris_detect_watched_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_watched_domains({"escalated_since": "2026-06-01T00:00:00Z"})
 
@@ -85,7 +86,7 @@ class TestIrisDetectGetWatchedDomains:
         assert kwargs["escalated_since"] == "2026-06-01T00:00:00Z"
 
     def test_defaults_include_domain_data_to_false(self, connector, mock_dt_api):
-        mock_dt_api.iris_detect_watched_domains.return_value = iter([])
+        mock_dt_api.iris_detect_watched_domains.return_value = make_detect_page([])
 
         connector._iris_detect_get_watched_domains({})
 
@@ -100,7 +101,7 @@ class TestIrisDetectGetWatchedDomains:
             domain_id="w1",
             escalations=[{"escalation_type": "blocked", "id": "esc1"}],
         )
-        mock_dt_api.iris_detect_watched_domains.return_value = iter([domain])
+        mock_dt_api.iris_detect_watched_domains.return_value = make_detect_page([domain])
 
         connector._iris_detect_get_watched_domains({})
         ar = connector.last_action_result()

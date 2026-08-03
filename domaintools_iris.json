@@ -3371,10 +3371,15 @@
                     "data_type": "numeric",
                     "order": 10
                 },
-                "preview": {
-                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
-                    "data_type": "boolean",
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
                     "order": 11
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 12
                 }
             },
             "render": {
@@ -3459,6 +3464,10 @@
                 },
                 {
                     "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
                     "data_type": "numeric"
                 },
                 {
@@ -3603,10 +3612,15 @@
                     "data_type": "numeric",
                     "order": 11
                 },
-                "preview": {
-                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
-                    "data_type": "boolean",
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
                     "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
                 }
             },
             "render": {
@@ -3695,6 +3709,10 @@
                 },
                 {
                     "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
                     "data_type": "numeric"
                 },
                 {
@@ -3843,10 +3861,15 @@
                     "data_type": "numeric",
                     "order": 11
                 },
-                "preview": {
-                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
-                    "data_type": "boolean",
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
                     "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
                 }
             },
             "render": {
@@ -3931,6 +3954,10 @@
                 },
                 {
                     "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
                     "data_type": "numeric"
                 },
                 {
@@ -4079,10 +4106,15 @@
                     "data_type": "numeric",
                     "order": 11
                 },
-                "preview": {
-                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
-                    "data_type": "boolean",
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
                     "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
                 }
             },
             "render": {
@@ -4171,6 +4203,10 @@
                 },
                 {
                     "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
                     "data_type": "numeric"
                 },
                 {
@@ -4319,10 +4355,15 @@
                     "data_type": "numeric",
                     "order": 11
                 },
-                "preview": {
-                    "description": "Preview mode for testing \u2014 limits results to 2 without hourly rate limit",
-                    "data_type": "boolean",
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
                     "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
                 }
             },
             "render": {
@@ -4411,6 +4452,10 @@
                 },
                 {
                     "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
                     "data_type": "numeric"
                 },
                 {
@@ -4522,9 +4567,14 @@
                     "order": 3
                 },
                 "limit": {
-                    "description": "Maximum number of monitors to return (max 500, or 100 if include_counts is true)",
+                    "description": "Maximum number of monitors to return (max 100)",
                     "data_type": "numeric",
                     "order": 4
+                },
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
+                    "order": 5
                 }
             },
             "render": {
@@ -4618,6 +4668,10 @@
                 },
                 {
                     "data_path": "action_result.summary.monitor_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
                     "data_type": "numeric"
                 },
                 {
