@@ -3531,6 +3531,10 @@
                 {
                     "data_path": "action_result.parameter.preview",
                     "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
                 }
             ],
             "versions": "EQ(*)"
@@ -3780,6 +3784,10 @@
                 {
                     "data_path": "action_result.parameter.preview",
                     "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
                 }
             ],
             "versions": "EQ(*)"
@@ -4025,6 +4033,10 @@
                 {
                     "data_path": "action_result.parameter.preview",
                     "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
                 }
             ],
             "versions": "EQ(*)"
@@ -4274,6 +4286,10 @@
                 {
                     "data_path": "action_result.parameter.preview",
                     "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
                 }
             ],
             "versions": "EQ(*)"
@@ -4523,6 +4539,10 @@
                 {
                     "data_path": "action_result.parameter.preview",
                     "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
                 }
             ],
             "versions": "EQ(*)"
@@ -4706,6 +4726,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
                     "data_type": "numeric"
                 }
             ],
@@ -5086,7 +5110,7 @@
         "wheel": [
             {
                 "module": "annotated_doc",
-                "input_file": "wheels/py3/annotated_doc-0.0.4-py3-none-any.whl"
+                "input_file": "wheels/py3/annotated_doc-0.0.5-py3-none-any.whl"
             },
             {
                 "module": "anyio",
@@ -5166,7 +5190,7 @@
         "wheel": [
             {
                 "module": "annotated_doc",
-                "input_file": "wheels/py3/annotated_doc-0.0.4-py3-none-any.whl"
+                "input_file": "wheels/py3/annotated_doc-0.0.5-py3-none-any.whl"
             },
             {
                 "module": "anyio",
@@ -5178,7 +5202,7 @@
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.32.0-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.32.2-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -5226,7 +5250,7 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.27.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.27.1-py3-none-any.whl"
             }
         ]
     }

@@ -1026,7 +1026,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **order** | optional | Sort order | string | |
 **include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
 **limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
-**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+**offset** | optional | Number of results to skip for pagination | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 10 without hourly rate limit | boolean | |
 
 #### Action Output
 
@@ -1046,6 +1047,7 @@ action_result.data.\*.monitor_ids | string | | |
 action_result.status | string | | success failed |
 action_result.message | string | | |
 action_result.summary.domain_count | numeric | | |
+action_result.summary.total_count | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 action_result.parameter.monitor_id | string | | |
@@ -1060,6 +1062,7 @@ action_result.parameter.order | string | | |
 action_result.parameter.include_domain_data | boolean | | |
 action_result.parameter.limit | numeric | | |
 action_result.parameter.preview | boolean | | |
+action_result.parameter.offset | numeric | | |
 
 ## action: 'iris detect get watched domains'
 
@@ -1084,7 +1087,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **order** | optional | Sort order | string | |
 **include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
 **limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
-**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+**offset** | optional | Number of results to skip for pagination | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 10 without hourly rate limit | boolean | |
 
 #### Action Output
 
@@ -1105,6 +1109,7 @@ action_result.data.\*.monitor_ids | string | | |
 action_result.status | string | | success failed |
 action_result.message | string | | |
 action_result.summary.domain_count | numeric | | |
+action_result.summary.total_count | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 action_result.parameter.monitor_id | string | | |
@@ -1120,6 +1125,7 @@ action_result.parameter.order | string | | |
 action_result.parameter.include_domain_data | boolean | | |
 action_result.parameter.limit | numeric | | |
 action_result.parameter.preview | boolean | | |
+action_result.parameter.offset | numeric | | |
 
 ## action: 'iris detect get ignored domains'
 
@@ -1144,7 +1150,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **order** | optional | Sort order | string | |
 **include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
 **limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
-**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+**offset** | optional | Number of results to skip for pagination | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 10 without hourly rate limit | boolean | |
 
 #### Action Output
 
@@ -1164,6 +1171,7 @@ action_result.data.\*.monitor_ids | string | | |
 action_result.status | string | | success failed |
 action_result.message | string | | |
 action_result.summary.domain_count | numeric | | |
+action_result.summary.total_count | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 action_result.parameter.monitor_id | string | | |
@@ -1179,6 +1187,7 @@ action_result.parameter.order | string | | |
 action_result.parameter.include_domain_data | boolean | | |
 action_result.parameter.limit | numeric | | |
 action_result.parameter.preview | boolean | | |
+action_result.parameter.offset | numeric | | |
 
 ## action: 'iris detect get escalated domains'
 
@@ -1203,7 +1212,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **order** | optional | Sort order | string | |
 **include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
 **limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
-**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+**offset** | optional | Number of results to skip for pagination | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 10 without hourly rate limit | boolean | |
 
 #### Action Output
 
@@ -1224,6 +1234,7 @@ action_result.data.\*.monitor_ids | string | | |
 action_result.status | string | | success failed |
 action_result.message | string | | |
 action_result.summary.domain_count | numeric | | |
+action_result.summary.total_count | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 action_result.parameter.monitor_id | string | | |
@@ -1239,6 +1250,7 @@ action_result.parameter.order | string | | |
 action_result.parameter.include_domain_data | boolean | | |
 action_result.parameter.limit | numeric | | |
 action_result.parameter.preview | boolean | | |
+action_result.parameter.offset | numeric | | |
 
 ## action: 'iris detect get blocklist domains'
 
@@ -1263,7 +1275,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **order** | optional | Sort order | string | |
 **include_domain_data** | optional | Include DNS and WHOIS/RDAP details in the response | boolean | |
 **limit** | optional | Maximum number of results to return (max 100, or 50 if include_domain_data is true) | numeric | |
-**preview** | optional | Preview mode for testing — limits results to 2 without hourly rate limit | boolean | |
+**offset** | optional | Number of results to skip for pagination | numeric | |
+**preview** | optional | Preview mode for testing — limits results to 10 without hourly rate limit | boolean | |
 
 #### Action Output
 
@@ -1284,6 +1297,7 @@ action_result.data.\*.monitor_ids | string | | |
 action_result.status | string | | success failed |
 action_result.message | string | | |
 action_result.summary.domain_count | numeric | | |
+action_result.summary.total_count | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 action_result.parameter.monitor_id | string | | |
@@ -1299,6 +1313,7 @@ action_result.parameter.order | string | | |
 action_result.parameter.include_domain_data | boolean | | |
 action_result.parameter.limit | numeric | | |
 action_result.parameter.preview | boolean | | |
+action_result.parameter.offset | numeric | | |
 
 ## action: 'iris detect get monitors list'
 
@@ -1315,7 +1330,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **datetime_counts_since** | optional | Required if include_counts is true. Datetime to count domains from (ISO 8601 format) | string | |
 **sort** | optional | Sort field | string | |
 **order** | optional | Sort order | string | |
-**limit** | optional | Maximum number of monitors to return (max 500, or 100 if include_counts is true) | numeric | |
+**limit** | optional | Maximum number of monitors to return (max 100) | numeric | |
+**offset** | optional | Number of results to skip for pagination | numeric | |
 
 #### Action Output
 
@@ -1338,6 +1354,7 @@ action_result.data.\*.domain_counts.escalated | numeric | | |
 action_result.status | string | | success failed |
 action_result.message | string | | |
 action_result.summary.monitor_count | numeric | | |
+action_result.summary.total_count | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 action_result.parameter.include_counts | boolean | | |
@@ -1345,6 +1362,7 @@ action_result.parameter.datetime_counts_since | string | | |
 action_result.parameter.sort | string | | |
 action_result.parameter.order | string | | |
 action_result.parameter.limit | numeric | | |
+action_result.parameter.offset | numeric | | |
 
 ## action: 'iris detect escalate domains'
 
