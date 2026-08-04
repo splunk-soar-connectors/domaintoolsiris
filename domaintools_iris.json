@@ -5,7 +5,7 @@
     "publisher": "DomainTools",
     "package_name": "phantom_domaintools_iris",
     "type": "information",
-    "license": "Copyright (c) 2019-2025 DomainTools, LLC",
+    "license": "Copyright (c) 2019-2026 DomainTools, LLC",
     "main_module": "domaintools_iris_connector.py",
     "app_version": "1.8.0",
     "utctime_updated": "2026-01-16T20:50:41.666447Z",
@@ -3298,13 +3298,1823 @@
                 }
             ],
             "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect get new domains",
+            "description": "Retrieve newly discovered domains from Iris Detect across all monitors or a specific monitor",
+            "type": "investigate",
+            "identifier": "iris_detect_get_new_domains",
+            "read_only": true,
+            "parameters": {
+                "monitor_id": {
+                    "description": "Monitor ID to filter results to a specific monitor",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "tlds": {
+                    "description": "Comma-separated list of TLDs to filter results (e.g. com,net)",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "risk_score_ranges": {
+                    "description": "Comma-separated risk score ranges to filter by (e.g. 70-99,100-100)",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "mx_exists": {
+                    "description": "Filter by whether the domain has an MX record",
+                    "data_type": "boolean",
+                    "order": 3
+                },
+                "discovered_since": {
+                    "description": "Filter domains discovered since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "changed_since": {
+                    "description": "Filter domains changed since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 5
+                },
+                "search": {
+                    "description": "Search string to filter domains by name (contains match)",
+                    "data_type": "string",
+                    "order": 6
+                },
+                "sort": {
+                    "description": "Sort field (discovered_date, changed_date, or risk_score)",
+                    "data_type": "string",
+                    "value_list": [
+                        "discovered_date",
+                        "changed_date",
+                        "risk_score"
+                    ],
+                    "order": 7
+                },
+                "order": {
+                    "description": "Sort order",
+                    "data_type": "string",
+                    "value_list": [
+                        "asc",
+                        "desc"
+                    ],
+                    "order": 8
+                },
+                "include_domain_data": {
+                    "description": "Include DNS and WHOIS/RDAP details in the response",
+                    "data_type": "boolean",
+                    "default": false,
+                    "order": 9
+                },
+                "limit": {
+                    "description": "Maximum number of results to return (max 100, or 50 if include_domain_data is true)",
+                    "data_type": "numeric",
+                    "order": 10
+                },
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
+                    "order": 11
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 12
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect New Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score",
+                    "data_type": "numeric",
+                    "column_name": "Risk Score",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score_status",
+                    "data_type": "string",
+                    "column_name": "Risk Score Status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.discovered_date",
+                    "data_type": "string",
+                    "column_name": "Discovered Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.changed_date",
+                    "data_type": "string",
+                    "column_name": "Changed Date",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.tld",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.monitor_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect get watched domains",
+            "description": "Retrieve watched domains from Iris Detect across all monitors or a specific monitor",
+            "type": "investigate",
+            "identifier": "iris_detect_get_watched_domains",
+            "read_only": true,
+            "parameters": {
+                "monitor_id": {
+                    "description": "Monitor ID to filter results to a specific monitor",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "tlds": {
+                    "description": "Comma-separated list of TLDs to filter results (e.g. com,net)",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "risk_score_ranges": {
+                    "description": "Comma-separated risk score ranges to filter by (e.g. 70-99,100-100)",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "mx_exists": {
+                    "description": "Filter by whether the domain has an MX record",
+                    "data_type": "boolean",
+                    "order": 3
+                },
+                "discovered_since": {
+                    "description": "Filter domains discovered since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "changed_since": {
+                    "description": "Filter domains changed since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 5
+                },
+                "escalated_since": {
+                    "description": "Filter domains escalated since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 6
+                },
+                "search": {
+                    "description": "Search string to filter domains by name (contains match)",
+                    "data_type": "string",
+                    "order": 7
+                },
+                "sort": {
+                    "description": "Sort field",
+                    "data_type": "string",
+                    "value_list": [
+                        "discovered_date",
+                        "changed_date",
+                        "risk_score"
+                    ],
+                    "order": 8
+                },
+                "order": {
+                    "description": "Sort order",
+                    "data_type": "string",
+                    "value_list": [
+                        "asc",
+                        "desc"
+                    ],
+                    "order": 9
+                },
+                "include_domain_data": {
+                    "description": "Include DNS and WHOIS/RDAP details in the response",
+                    "data_type": "boolean",
+                    "default": false,
+                    "order": 10
+                },
+                "limit": {
+                    "description": "Maximum number of results to return (max 100, or 50 if include_domain_data is true)",
+                    "data_type": "numeric",
+                    "order": 11
+                },
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
+                    "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Watched Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score",
+                    "data_type": "numeric",
+                    "column_name": "Risk Score",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score_status",
+                    "data_type": "string",
+                    "column_name": "Risk Score Status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.discovered_date",
+                    "data_type": "string",
+                    "column_name": "Discovered Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.changed_date",
+                    "data_type": "string",
+                    "column_name": "Changed Date",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.escalations",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tld",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.monitor_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect get ignored domains",
+            "description": "Retrieve ignored (false positive) domains from Iris Detect across all monitors or a specific monitor",
+            "type": "investigate",
+            "identifier": "iris_detect_get_ignored_domains",
+            "read_only": true,
+            "parameters": {
+                "monitor_id": {
+                    "description": "Monitor ID to filter results to a specific monitor",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "tlds": {
+                    "description": "Comma-separated list of TLDs to filter results (e.g. com,net)",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "risk_score_ranges": {
+                    "description": "Comma-separated risk score ranges to filter by (e.g. 70-99,100-100)",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "mx_exists": {
+                    "description": "Filter by whether the domain has an MX record",
+                    "data_type": "boolean",
+                    "order": 3
+                },
+                "discovered_since": {
+                    "description": "Filter domains discovered since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "changed_since": {
+                    "description": "Filter domains changed since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 5
+                },
+                "escalated_since": {
+                    "description": "Filter domains escalated since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 6
+                },
+                "search": {
+                    "description": "Search string to filter domains by name (contains match)",
+                    "data_type": "string",
+                    "order": 7
+                },
+                "sort": {
+                    "description": "Sort field",
+                    "data_type": "string",
+                    "value_list": [
+                        "discovered_date",
+                        "changed_date",
+                        "risk_score"
+                    ],
+                    "order": 8
+                },
+                "order": {
+                    "description": "Sort order",
+                    "data_type": "string",
+                    "value_list": [
+                        "asc",
+                        "desc"
+                    ],
+                    "order": 9
+                },
+                "include_domain_data": {
+                    "description": "Include DNS and WHOIS/RDAP details in the response",
+                    "data_type": "boolean",
+                    "default": false,
+                    "order": 10
+                },
+                "limit": {
+                    "description": "Maximum number of results to return (max 100, or 50 if include_domain_data is true)",
+                    "data_type": "numeric",
+                    "order": 11
+                },
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
+                    "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Ignored Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score",
+                    "data_type": "numeric",
+                    "column_name": "Risk Score",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score_status",
+                    "data_type": "string",
+                    "column_name": "Risk Score Status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.discovered_date",
+                    "data_type": "string",
+                    "column_name": "Discovered Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.changed_date",
+                    "data_type": "string",
+                    "column_name": "Changed Date",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.tld",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.monitor_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect get escalated domains",
+            "description": "Retrieve domains escalated to Google Safe Browsing from Iris Detect",
+            "type": "investigate",
+            "identifier": "iris_detect_get_escalated_domains",
+            "read_only": true,
+            "parameters": {
+                "monitor_id": {
+                    "description": "Monitor ID to filter results to a specific monitor",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "tlds": {
+                    "description": "Comma-separated list of TLDs to filter results (e.g. com,net)",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "risk_score_ranges": {
+                    "description": "Comma-separated risk score ranges to filter by (e.g. 70-99,100-100)",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "mx_exists": {
+                    "description": "Filter by whether the domain has an MX record",
+                    "data_type": "boolean",
+                    "order": 3
+                },
+                "discovered_since": {
+                    "description": "Filter domains discovered since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "changed_since": {
+                    "description": "Filter domains changed since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 5
+                },
+                "escalated_since": {
+                    "description": "Filter domains escalated since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 6
+                },
+                "search": {
+                    "description": "Search string to filter domains by name (contains match)",
+                    "data_type": "string",
+                    "order": 7
+                },
+                "sort": {
+                    "description": "Sort field",
+                    "data_type": "string",
+                    "value_list": [
+                        "discovered_date",
+                        "changed_date",
+                        "risk_score"
+                    ],
+                    "order": 8
+                },
+                "order": {
+                    "description": "Sort order",
+                    "data_type": "string",
+                    "value_list": [
+                        "asc",
+                        "desc"
+                    ],
+                    "order": 9
+                },
+                "include_domain_data": {
+                    "description": "Include DNS and WHOIS/RDAP details in the response",
+                    "data_type": "boolean",
+                    "default": false,
+                    "order": 10
+                },
+                "limit": {
+                    "description": "Maximum number of results to return (max 100, or 50 if include_domain_data is true)",
+                    "data_type": "numeric",
+                    "order": 11
+                },
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
+                    "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Escalated Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score",
+                    "data_type": "numeric",
+                    "column_name": "Risk Score",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score_status",
+                    "data_type": "string",
+                    "column_name": "Risk Score Status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.discovered_date",
+                    "data_type": "string",
+                    "column_name": "Discovered Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.changed_date",
+                    "data_type": "string",
+                    "column_name": "Changed Date",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.escalations",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tld",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.monitor_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect get blocklist domains",
+            "description": "Retrieve domains escalated for internal blocking from Iris Detect",
+            "type": "investigate",
+            "identifier": "iris_detect_get_blocklist_domains",
+            "read_only": true,
+            "parameters": {
+                "monitor_id": {
+                    "description": "Monitor ID to filter results to a specific monitor",
+                    "data_type": "string",
+                    "order": 0
+                },
+                "tlds": {
+                    "description": "Comma-separated list of TLDs to filter results (e.g. com,net)",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "risk_score_ranges": {
+                    "description": "Comma-separated risk score ranges to filter by (e.g. 70-99,100-100)",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "mx_exists": {
+                    "description": "Filter by whether the domain has an MX record",
+                    "data_type": "boolean",
+                    "order": 3
+                },
+                "discovered_since": {
+                    "description": "Filter domains discovered since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "changed_since": {
+                    "description": "Filter domains changed since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 5
+                },
+                "escalated_since": {
+                    "description": "Filter domains escalated since this datetime (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 6
+                },
+                "search": {
+                    "description": "Search string to filter domains by name (contains match)",
+                    "data_type": "string",
+                    "order": 7
+                },
+                "sort": {
+                    "description": "Sort field",
+                    "data_type": "string",
+                    "value_list": [
+                        "discovered_date",
+                        "changed_date",
+                        "risk_score"
+                    ],
+                    "order": 8
+                },
+                "order": {
+                    "description": "Sort order",
+                    "data_type": "string",
+                    "value_list": [
+                        "asc",
+                        "desc"
+                    ],
+                    "order": 9
+                },
+                "include_domain_data": {
+                    "description": "Include DNS and WHOIS/RDAP details in the response",
+                    "data_type": "boolean",
+                    "default": false,
+                    "order": 10
+                },
+                "limit": {
+                    "description": "Maximum number of results to return (max 100, or 50 if include_domain_data is true)",
+                    "data_type": "numeric",
+                    "order": 11
+                },
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
+                    "order": 12
+                },
+                "preview": {
+                    "description": "Preview mode for testing \u2014 limits results to 10 without hourly rate limit",
+                    "data_type": "boolean",
+                    "order": 13
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Blocklist Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score",
+                    "data_type": "numeric",
+                    "column_name": "Risk Score",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.risk_score_status",
+                    "data_type": "string",
+                    "column_name": "Risk Score Status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.discovered_date",
+                    "data_type": "string",
+                    "column_name": "Discovered Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.changed_date",
+                    "data_type": "string",
+                    "column_name": "Changed Date",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.escalations",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tld",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.monitor_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.domain_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.monitor_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.tlds",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.risk_score_ranges",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.mx_exists",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.discovered_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.changed_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.escalated_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.include_domain_data",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.preview",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect get monitors list",
+            "description": "Retrieve the list of monitors configured in Iris Detect for your account",
+            "type": "investigate",
+            "identifier": "iris_detect_get_monitors_list",
+            "read_only": true,
+            "parameters": {
+                "include_counts": {
+                    "description": "Include counts of new, watched, changed, and escalated domains per monitor",
+                    "data_type": "boolean",
+                    "default": false,
+                    "order": 0
+                },
+                "datetime_counts_since": {
+                    "description": "Required if include_counts is true. Datetime to count domains from (ISO 8601 format)",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "sort": {
+                    "description": "Sort field",
+                    "data_type": "string",
+                    "value_list": [
+                        "term",
+                        "created_date",
+                        "domain_counts_changed",
+                        "domain_counts_discovered"
+                    ],
+                    "order": 2
+                },
+                "order": {
+                    "description": "Sort order",
+                    "data_type": "string",
+                    "value_list": [
+                        "asc",
+                        "desc"
+                    ],
+                    "default": "desc",
+                    "order": 3
+                },
+                "limit": {
+                    "description": "Maximum number of monitors to return (max 100)",
+                    "data_type": "numeric",
+                    "order": 4
+                },
+                "offset": {
+                    "description": "Number of results to skip for pagination",
+                    "data_type": "numeric",
+                    "order": 5
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Monitors List",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.term",
+                    "data_type": "string",
+                    "column_name": "Term",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "column_name": "Monitor ID",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.created_date",
+                    "data_type": "string",
+                    "column_name": "Created Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.updated_date",
+                    "data_type": "string",
+                    "column_name": "Updated Date",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.created_by",
+                    "data_type": "string",
+                    "column_name": "Created By",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.match_substring_variations",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.nameserver_exclusions",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.text_exclusions",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_counts.new",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_counts.watched",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_counts.changed",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.domain_counts.escalated",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.monitor_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.include_counts",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.parameter.datetime_counts_since",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.order",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect escalate domains",
+            "description": "Escalate one or more watched domains to Google Safe Browsing via Iris Detect",
+            "type": "correct",
+            "identifier": "iris_detect_escalate_domains",
+            "read_only": false,
+            "parameters": {
+                "watchlist_domain_ids": {
+                    "description": "Comma-separated list of Iris Detect domain IDs to escalate to Google Safe Browsing",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "order": 0
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Escalated Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.watchlist_domain_id",
+                    "data_type": "string",
+                    "column_name": "Watchlist Domain ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_type",
+                    "data_type": "string",
+                    "column_name": "Escalation Type",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "column_name": "Escalation ID",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.created_date",
+                    "data_type": "string",
+                    "column_name": "Created Date",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.created_by",
+                    "data_type": "string",
+                    "column_name": "Created By",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.updated_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.watchlist_domain_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.escalated_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect blocklist domains",
+            "description": "Escalate one or more watched domains for internal blocking via Iris Detect",
+            "type": "correct",
+            "identifier": "iris_detect_blocklist_domains",
+            "read_only": false,
+            "parameters": {
+                "watchlist_domain_ids": {
+                    "description": "Comma-separated list of Iris Detect domain IDs to escalate for internal blocking",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "order": 0
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Blocklisted Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.watchlist_domain_id",
+                    "data_type": "string",
+                    "column_name": "Watchlist Domain ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_type",
+                    "data_type": "string",
+                    "column_name": "Escalation Type",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "column_name": "Escalation ID",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.created_date",
+                    "data_type": "string",
+                    "column_name": "Created Date",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.created_by",
+                    "data_type": "string",
+                    "column_name": "Created By",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.updated_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.watchlist_domain_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.blocklisted_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect watch domains",
+            "description": "Add one or more domains to the Iris Detect watchlist for ongoing monitoring",
+            "type": "correct",
+            "identifier": "iris_detect_watch_domains",
+            "read_only": false,
+            "parameters": {
+                "watchlist_domain_ids": {
+                    "description": "Comma-separated list of Iris Detect domain IDs to add to the watchlist",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "order": 0
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Watched Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "column_name": "Domain ID",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.discovered_date",
+                    "data_type": "string",
+                    "column_name": "Discovered Date",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.changed_date",
+                    "data_type": "string",
+                    "column_name": "Changed Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.parameter.watchlist_domain_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.watched_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "iris detect ignore domains",
+            "description": "Mark one or more domains as ignored (false positives) in Iris Detect",
+            "type": "correct",
+            "identifier": "iris_detect_ignore_domains",
+            "read_only": false,
+            "parameters": {
+                "watchlist_domain_ids": {
+                    "description": "Comma-separated list of Iris Detect domain IDs to mark as ignored",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "order": 0
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Iris Detect Ignored Domains",
+                "type": "table",
+                "height": 10
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "column_name": "Domain ID",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.discovered_date",
+                    "data_type": "string",
+                    "column_name": "Discovered Date",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.changed_date",
+                    "data_type": "string",
+                    "column_name": "Changed Date",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.parameter.watchlist_domain_ids",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.ignored_count",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
         }
     ],
     "pip39_dependencies": {
         "wheel": [
             {
+                "module": "annotated_doc",
+                "input_file": "wheels/py3/annotated_doc-0.0.5-py3-none-any.whl"
+            },
+            {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.12.0-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.12.1-py3-none-any.whl"
             },
             {
                 "module": "click",
@@ -3344,7 +5154,7 @@
             },
             {
                 "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
+                "input_file": "wheels/py3/pygments-2.20.0-py3-none-any.whl"
             },
             {
                 "module": "pyyaml",
@@ -3356,7 +5166,7 @@
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.2.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-15.0.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
@@ -3368,23 +5178,23 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.20.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.23.2-py3-none-any.whl"
             },
             {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.15.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.16.0-py3-none-any.whl"
             }
         ]
     },
     "pip313_dependencies": {
         "wheel": [
             {
-                "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.12.0-py3-none-any.whl"
+                "module": "annotated_doc",
+                "input_file": "wheels/py3/annotated_doc-0.0.5-py3-none-any.whl"
             },
             {
-                "module": "click",
-                "input_file": "wheels/py3/click-8.3.1-py3-none-any.whl"
+                "module": "anyio",
+                "input_file": "wheels/py3/anyio-4.14.2-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
@@ -3392,7 +5202,7 @@
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.20.1-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.32.2-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -3408,7 +5218,7 @@
             },
             {
                 "module": "markdown_it_py",
-                "input_file": "wheels/py3/markdown_it_py-4.0.0-py3-none-any.whl"
+                "input_file": "wheels/py3/markdown_it_py-4.2.0-py3-none-any.whl"
             },
             {
                 "module": "mdurl",
@@ -3416,7 +5226,7 @@
             },
             {
                 "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.19.2-py3-none-any.whl"
+                "input_file": "wheels/py3/pygments-2.20.0-py3-none-any.whl"
             },
             {
                 "module": "pyyaml",
@@ -3428,7 +5238,7 @@
             },
             {
                 "module": "rich",
-                "input_file": "wheels/py3/rich-14.2.0-py3-none-any.whl"
+                "input_file": "wheels/py3/rich-15.0.0-py3-none-any.whl"
             },
             {
                 "module": "shellingham",
@@ -3440,11 +5250,7 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.20.0-py3-none-any.whl"
-            },
-            {
-                "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.15.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.27.1-py3-none-any.whl"
             }
         ]
     }
