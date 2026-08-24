@@ -13,7 +13,7 @@
     "product_name": "DomainTools Iris Investigate",
     "product_version_regex": ".*",
     "min_phantom_version": "6.3.1",
-    "python_version": "3",
+    "python_version": "3.9, 3.13",
     "logo": "logo_domaintools_iris.svg",
     "logo_dark": "logo_domaintools_iris_dark.svg",
     "contributors": [
@@ -5106,6 +5106,74 @@
             "versions": "EQ(*)"
         }
     ],
+    "pip313_dependencies": {
+        "wheel": [
+            {
+                "module": "annotated_doc",
+                "input_file": "wheels/py3/annotated_doc-0.0.5-py3-none-any.whl"
+            },
+            {
+                "module": "anyio",
+                "input_file": "wheels/py3/anyio-4.14.2-py3-none-any.whl"
+            },
+            {
+                "module": "domaintools_api",
+                "input_file": "wheels/shared/domaintools_api-2.9.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "filelock",
+                "input_file": "wheels/py3/filelock-3.32.3-py3-none-any.whl"
+            },
+            {
+                "module": "h11",
+                "input_file": "wheels/py3/h11-0.16.0-py3-none-any.whl"
+            },
+            {
+                "module": "httpcore",
+                "input_file": "wheels/py3/httpcore-1.0.9-py3-none-any.whl"
+            },
+            {
+                "module": "httpx",
+                "input_file": "wheels/py3/httpx-0.28.1-py3-none-any.whl"
+            },
+            {
+                "module": "markdown_it_py",
+                "input_file": "wheels/py3/markdown_it_py-4.2.0-py3-none-any.whl"
+            },
+            {
+                "module": "mdurl",
+                "input_file": "wheels/py3/mdurl-0.1.2-py3-none-any.whl"
+            },
+            {
+                "module": "pygments",
+                "input_file": "wheels/py3/pygments-2.21.0-py3-none-any.whl"
+            },
+            {
+                "module": "pyyaml",
+                "input_file": "wheels/py313/pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "requests_file",
+                "input_file": "wheels/shared/requests_file-3.0.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "rich",
+                "input_file": "wheels/py3/rich-15.0.0-py3-none-any.whl"
+            },
+            {
+                "module": "shellingham",
+                "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
+            },
+            {
+                "module": "tldextract",
+                "input_file": "wheels/py3/tldextract-5.3.0-py3-none-any.whl"
+            },
+            {
+                "module": "typer",
+                "input_file": "wheels/py3/typer-0.27.1-py3-none-any.whl"
+            }
+        ]
+    },
     "pip39_dependencies": {
         "wheel": [
             {
@@ -5122,7 +5190,7 @@
             },
             {
                 "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.7.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/domaintools_api-2.9.0-py2.py3-none-any.whl"
             },
             {
                 "module": "exceptiongroup",
@@ -5154,7 +5222,7 @@
             },
             {
                 "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.20.0-py3-none-any.whl"
+                "input_file": "wheels/py3/pygments-2.21.0-py3-none-any.whl"
             },
             {
                 "module": "pyyaml",
@@ -5183,74 +5251,6 @@
             {
                 "module": "typing_extensions",
                 "input_file": "wheels/py3/typing_extensions-4.16.0-py3-none-any.whl"
-            }
-        ]
-    },
-    "pip313_dependencies": {
-        "wheel": [
-            {
-                "module": "annotated_doc",
-                "input_file": "wheels/py3/annotated_doc-0.0.5-py3-none-any.whl"
-            },
-            {
-                "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.14.2-py3-none-any.whl"
-            },
-            {
-                "module": "domaintools_api",
-                "input_file": "wheels/shared/domaintools_api-2.7.0-py2.py3-none-any.whl"
-            },
-            {
-                "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.32.2-py3-none-any.whl"
-            },
-            {
-                "module": "h11",
-                "input_file": "wheels/py3/h11-0.16.0-py3-none-any.whl"
-            },
-            {
-                "module": "httpcore",
-                "input_file": "wheels/py3/httpcore-1.0.9-py3-none-any.whl"
-            },
-            {
-                "module": "httpx",
-                "input_file": "wheels/py3/httpx-0.28.1-py3-none-any.whl"
-            },
-            {
-                "module": "markdown_it_py",
-                "input_file": "wheels/py3/markdown_it_py-4.2.0-py3-none-any.whl"
-            },
-            {
-                "module": "mdurl",
-                "input_file": "wheels/py3/mdurl-0.1.2-py3-none-any.whl"
-            },
-            {
-                "module": "pygments",
-                "input_file": "wheels/py3/pygments-2.20.0-py3-none-any.whl"
-            },
-            {
-                "module": "pyyaml",
-                "input_file": "wheels/py313/pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
-            },
-            {
-                "module": "requests_file",
-                "input_file": "wheels/shared/requests_file-3.0.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "rich",
-                "input_file": "wheels/py3/rich-15.0.0-py3-none-any.whl"
-            },
-            {
-                "module": "shellingham",
-                "input_file": "wheels/shared/shellingham-1.5.4-py2.py3-none-any.whl"
-            },
-            {
-                "module": "tldextract",
-                "input_file": "wheels/py3/tldextract-5.3.0-py3-none-any.whl"
-            },
-            {
-                "module": "typer",
-                "input_file": "wheels/py3/typer-0.27.1-py3-none-any.whl"
             }
         ]
     }
