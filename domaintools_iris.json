@@ -5114,7 +5114,7 @@
             },
             {
                 "module": "anyio",
-                "input_file": "wheels/py3/anyio-4.14.2-py3-none-any.whl"
+                "input_file": "wheels/py3/anyio-4.15.0-py3-none-any.whl"
             },
             {
                 "module": "domaintools_api",
@@ -5122,7 +5122,7 @@
             },
             {
                 "module": "filelock",
-                "input_file": "wheels/py3/filelock-3.32.3-py3-none-any.whl"
+                "input_file": "wheels/py3/filelock-3.32.5-py3-none-any.whl"
             },
             {
                 "module": "h11",
@@ -5170,7 +5170,11 @@
             },
             {
                 "module": "typer",
-                "input_file": "wheels/py3/typer-0.27.1-py3-none-any.whl"
+                "input_file": "wheels/py3/typer-0.27.2-py3-none-any.whl"
+            },
+            {
+                "module": "typing_extensions",
+                "input_file": "wheels/py3/typing_extensions-4.16.0-py3-none-any.whl"
             }
         ]
     },
